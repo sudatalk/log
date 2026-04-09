@@ -1,5 +1,5 @@
 import { Header } from "@/components/Header";
-import { BookDetail } from "@/components/BookDetail";
+import { BookDetail } from "@/components/home/BookDetail";
 import { ReviewCTA } from "@/components/ReviewCTA";
 import { BottomNav } from "@/components/BottomNav";
 

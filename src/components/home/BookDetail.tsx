@@ -1,4 +1,4 @@
-import { BookStats } from "@/components/BookStats";
+import { BookStats } from "@/components/home/BookStats";
 
 export function BookDetail({
   imageUrl,
