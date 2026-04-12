@@ -22,6 +22,10 @@ const Redirect = (props: Props) => {
 
     Kakao.Auth.setAccessToken(props.access_token);
 
+    /**
+     * TODO : 회원가입 필요 시 회원가입 페이지로 이동 그 외 redirect 페이지로 이동
+     */
+
     router.replace(props.redirectUrl);
   }, [isReady, router, props]);
 
