@@ -1,3 +1,5 @@
+import { BG_BASE } from "@/constants/tailwind";
+import clsx from "clsx";
 import { Home, Library, PenLine } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 
@@ -9,7 +11,10 @@ const navItems: { icon: LucideIcon; active?: boolean }[] = [
 
 export function BottomNav() {
   return (
-    <nav className="flex h-[70px] items-start self-stretch">
+    <nav
+      className={clsx("flex h-[70px] items-start self-stretch", BG_BASE)}
+      style={{ position: "sticky", bottom: 0, zIndex: 2 }}
+    >
       {navItems.map(({ icon: Icon, active }, i) => (
         <div
           key={i}
