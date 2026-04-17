@@ -37,7 +37,7 @@ export function BookDetail({
         </p>
       </div>
 
-      <p className="self-stretch text-xs font-normal leading-[160%] text-ink-muted">
+      <p className="self-stretch text-xs font-light leading-[160%] text-ink-muted">
         {description}
       </p>
     </div>

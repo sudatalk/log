@@ -1,7 +1,7 @@
 export function ReviewCTA({ daysLeft }: { daysLeft: number }) {
   return (
     <div className="flex flex-col items-center gap-1 self-stretch">
-      <p className="text-[11px] font-normal leading-[13px] text-ink-muted">
+      <p className="text-[11px] font-light leading-[13px] text-ink-muted">
         리뷰 마감까지 <span className="font-semibold text-ink">{daysLeft}일</span> 남았습니다
       </p>
       <button className="flex h-12 w-full items-center justify-center rounded-[4px] bg-amber px-7">
