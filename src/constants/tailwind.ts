@@ -38,6 +38,8 @@ export const FLEX_1 = "flex-1";
 
 export const P_3 = "p-3";
 
+export const GAP_1 = "gap-1";
+
 export const GAP_3 = "gap-3";
 
 export const FONT_SEMIBOLD = "font-semibold";
