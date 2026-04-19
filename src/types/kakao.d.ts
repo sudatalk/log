@@ -387,7 +387,7 @@ declare namespace Kakao {
       returnUrl?: string;
     }
 
-    interface SelectFriendSettings extends FriendPickerBaseSettings {}
+    type SelectFriendSettings = FriendPickerBaseSettings;
 
     interface SelectFriendsSettings extends FriendPickerBaseSettings {
       /** @default true */
