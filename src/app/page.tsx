@@ -5,17 +5,18 @@ import { BottomNav } from "@/components/BottomNav";
 import { QueryHydrator } from "@/components/QueryHydrator";
 import { contentStatsQueryOptions } from "@/hooks/useContentStats";
 import { currentSchedulesQueryOptions } from "@/hooks/useCurrentSchedules";
+import { calculateDaysLeft } from "@/lib/date";
 import { getQueryClient } from "@/lib/queryClient";
-import { CategoryType } from "@/types/api";
 
 export default async function HomePage() {
   const queryClient = getQueryClient();
   const schedules = await queryClient.fetchQuery(currentSchedulesQueryOptions());
-  const book = schedules?.find((s) => s.categoryType === CategoryType.BOOK);
+  const book = schedules?.[0];
+  const daysLeft = calculateDaysLeft(book?.endedAt);
   if (book) {
     await queryClient.prefetchQuery(contentStatsQueryOptions(book.contentId));
   }  
-
+  // TODO: 책 못가져왔을 때 보여줄 화면
   return (
     <QueryHydrator>
       <div className="flex min-h-dvh w-full flex-col bg-surface">
@@ -23,7 +24,7 @@ export default async function HomePage() {
 
         <main className="mx-auto flex w-full flex-1 flex-col items-center gap-3 p-3">
           <BookSection />
-          <ReviewCTA daysLeft={6} />
+          <ReviewCTA daysLeft={daysLeft} />
         </main>
 
         <BottomNav />
