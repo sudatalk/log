@@ -1,32 +1,36 @@
 import { BookStats } from "@/components/home/BookStats";
 
 export function BookDetail({
-  imageUrl,
+  coverImageUrl,
   title,
   author,
   description,
-  likes,
-  comments,
-  rating,
+  likeCount,
+  reviewCount,
+  averageRating,
 }: {
-  imageUrl: string;
+  coverImageUrl: string;
   title: string;
   author: string;
   description: string;
-  likes: number;
-  comments: number;
-  rating: number;
+  likeCount: number;
+  reviewCount: number;
+  averageRating: number | null;
 }) {
   return (
     <div className="flex flex-1 flex-col items-start gap-2 self-stretch">
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
-        src={imageUrl}
+        src={coverImageUrl}
         alt={`${title} 커버`}
         className="aspect-[384/434] w-full object-cover"
       />
 
-      <BookStats likes={likes} comments={comments} rating={rating} />
+      <BookStats
+        likeCount={likeCount}
+        reviewCount={reviewCount}
+        averageRating={averageRating}
+      />
 
       <div className="flex flex-col items-start gap-1.5 self-stretch">
         <h2 className="self-stretch text-2xl font-semibold leading-[29px] tracking-[0.2px] text-ink">
