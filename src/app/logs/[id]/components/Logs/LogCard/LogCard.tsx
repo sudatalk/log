@@ -1,3 +1,5 @@
+"use client";
+
 import {
   BG_SURFACE,
   BORDER,
@@ -12,16 +14,70 @@ import {
   ROUNDED,
   TEXT_LG,
   TEXT_SM,
+  W_FULL,
 } from "@/constants/tailwind";
 import clsx from "clsx";
 import Rating from "./Rating";
 import LogEmoji from "./LogEmoji";
 import LogBadge from "./LogBadge";
 import { Button } from "@/components/ui/button";
+import { useState } from "react";
+import { CardType } from "./types/card";
+import Description from "./Description";
+
+const LOG_BADGE = (selectedType: string) => [
+  {
+    type: CardType.ONE_LINE,
+    bgColor: selectedType === CardType.ONE_LINE ? "#fb4b0033" : "transparent",
+    color: "#fb4b00",
+    svg: "/svg/one-line-full.svg",
+    label: "한줄평",
+  },
+  {
+    type: CardType.RECOMMEND,
+    bgColor: selectedType === CardType.RECOMMEND ? "#7e22ce33" : "transparent",
+    color: "#7e22ce",
+    svg: "/svg/ai-question-full.svg",
+    label: "추천 질문",
+  },
+  {
+    type: CardType.IMPRESSIVE,
+    bgColor: selectedType === CardType.IMPRESSIVE ? "#1d4ed833" : "transparent",
+    color: "#1d4ed8",
+    svg: "/svg/impressive-sentence-full.svg",
+    label: "인상 문장",
+  },
+  {
+    type: CardType.FREE,
+    bgColor: selectedType === CardType.FREE ? "#15803d33" : "transparent",
+    color: "#15803d",
+    svg: "/svg/free-review-full.svg",
+    label: "자유 리뷰",
+  },
+];
 
 const LogCard = () => {
+  const [selectedType, setSelectedType] = useState(CardType.ONE_LINE);
+
+  const handleClickBadge = (value: string) => {
+    setSelectedType(value);
+  };
+
   return (
-    <div className={clsx(FLEX, FLEX_COL, BG_SURFACE, ROUNDED, BORDER, BORDER_SOLID, BORDER_STRONG, "gap-2.5", "p-2.5")}>
+    <div
+      className={clsx(
+        FLEX,
+        FLEX_COL,
+        W_FULL,
+        BG_SURFACE,
+        ROUNDED,
+        BORDER,
+        BORDER_SOLID,
+        BORDER_STRONG,
+        "gap-2.5",
+        "p-2.5",
+      )}
+    >
       <div className={clsx(FLEX, ITEMS_CENTER, JUSTIFY_BETWEEN)}>
         <div className={clsx(FLEX, FLEX_COL, GAP_1)}>
           <div className={TEXT_LG}>1984</div>
@@ -30,11 +86,13 @@ const LogCard = () => {
         <Rating />
       </div>
       <div className={clsx(FLEX, ITEMS_CENTER, "gap-[5px]")}>
-        <LogBadge bgColor="#7e22ce33" color="text-purple-700" svg="/svg/ai-question-full.svg" label="AI 질문" />
-        <LogBadge bgColor="#1d4ed833" color="text-blue-700" svg="/svg/impressive-sentence-full.svg" label="인상 문장" />
-        <LogBadge bgColor="#15803d33" color="text-green-700" svg="/svg/free-review-full.svg" label="자유 리뷰" />
+        {LOG_BADGE(selectedType).map((badge) => (
+          <LogBadge key={badge.label} {...badge} onClickBadge={handleClickBadge} />
+        ))}
       </div>
-      <p className={TEXT_SM}>{'“교육 제도의 억압성과 개인의 자유에 대한 깊은 성찰을 담은 작품"'}</p>
+
+      <Description type={selectedType} />
+
       <div className={clsx(FLEX, ITEMS_CENTER, JUSTIFY_BETWEEN)}>
         <LogEmoji />
         <Button className={clsx("px-5 h-8", FONT_SEMIBOLD)} size="sm">

@@ -44,6 +44,8 @@ export const GAP_3 = "gap-3";
 
 export const FONT_SEMIBOLD = "font-semibold";
 
+export const FONT_MEDIUM = "font-medium";
+
 export const TEXT_WHITE = "text-white";
 
 export const TEXT_XS = "text-xs";
