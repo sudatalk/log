@@ -7,10 +7,10 @@ import { BottomNav } from "@/components/BottomNav";
 
 export default function HomePage() {
   return (
-    <div className="mx-auto flex min-h-dvh w-full max-w-[412px] flex-col bg-surface">
+    <div className="flex min-h-dvh w-full flex-col bg-surface">
       <Header />
 
-      <main className="flex flex-1 flex-col items-center gap-3 p-3">
+      <main className="mx-auto flex w-full flex-1 flex-col items-center gap-3 p-3">
         <BookDetail
           imageUrl="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800&q=80"
           title="수레바퀴 아래서"

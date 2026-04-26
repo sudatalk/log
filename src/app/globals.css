@@ -7,9 +7,9 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-sans);
-  --font-mono: var(--font-geist-mono);
-  --font-heading: var(--font-sans);
+  --font-sans: var(--font-pretendard);
+  --font-mono: var(--font-pretendard);
+  --font-heading: var(--font-pretendard);
   --font-noto: var(--font-noto-serif-kr);
 
   /* LOG 디자인 토큰 */
@@ -63,13 +63,13 @@
 
 :root {
   /* LOG 디자인 토큰 */
-  --app-bg: #F2E8D8;
-  --app-ink: #151008;
-  --app-ink-secondary: #35291E;
+  --app-bg: #F7F1E6;
+  --app-ink: #1A1410;
+  --app-ink-secondary: #3D3028;
   --app-ink-muted: #1A1410;
-  --app-amber: #CB8240;
+  --app-amber: #D4894A;
   --app-amber-light: #E8A96A;
-  --app-nav: #383838;
+  --app-nav: #414040;
   --app-line: #DED4C0;
   --app-on-amber: #FEFEFF;
   --card: oklch(1 0 0);
