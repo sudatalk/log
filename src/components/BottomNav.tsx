@@ -1,3 +1,5 @@
+import { BG_BASE } from "@/constants/tailwind";
+import clsx from "clsx";
 import { Home, Library, PenLine } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 
