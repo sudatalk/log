@@ -1,3 +1,5 @@
+"use client";
+
 import { Header } from "@/components/Header";
 import { BookSection } from "@/components/home/BookSection";
 import { ReviewCTA } from "@/components/ReviewCTA";

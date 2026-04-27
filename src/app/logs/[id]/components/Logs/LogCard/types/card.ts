@@ -1,0 +1,6 @@
+export const CardType = {
+  ONE_LINE: "ONE_LINE",
+  RECOMMEND: "RECOMMEND",
+  IMPRESSIVE: "IMPRESSIVE",
+  FREE: "FREE",
+};

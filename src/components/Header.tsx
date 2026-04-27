@@ -13,9 +13,7 @@ export function Header() {
         </div>
         <div className="flex h-10 w-[43px] items-center justify-center">
           <div className="flex size-6 items-center justify-center rounded-full bg-[#333333]">
-            <span className="text-[10px] font-semibold leading-3 text-[#FEFEFF]">
-              JO
-            </span>
+            <span className="text-[10px] font-semibold leading-3 text-[#FEFEFF]">JO</span>
           </div>
         </div>
       </div>
