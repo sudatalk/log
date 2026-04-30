@@ -18,12 +18,12 @@ import {
 } from "@/constants/tailwind";
 import clsx from "clsx";
 import Rating from "./Rating";
-import LogEmoji from "./LogEmoji";
 import LogBadge from "./LogBadge";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { CardType } from "./types/card";
 import Description from "./Description";
+import Emoji from "@/components/shared/Emoji";
 
 const LOG_BADGE = (selectedType: string) => [
   {
@@ -94,7 +94,7 @@ const LogCard = () => {
       <Description type={selectedType} />
 
       <div className={clsx(FLEX, ITEMS_CENTER, JUSTIFY_BETWEEN)}>
-        <LogEmoji />
+        <Emoji heartCount={21} messageCount={5} />
         <Button className={clsx("px-5 h-8", FONT_SEMIBOLD)} size="sm">
           수정
         </Button>

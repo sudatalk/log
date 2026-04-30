@@ -58,7 +58,11 @@ export const TEXT_XL = "text-xl";
 
 export const TEXT_LG = "text-lg";
 
+export const TEXT_ELLIPSIS = "text-ellipsis";
+
 export const BORDER_STRONG = "border-[#C4B4A4]";
+
+export const BORDER_ACCENT = "border-[#E8A96A]";
 
 export const ROUNDED = "rounded";
 
