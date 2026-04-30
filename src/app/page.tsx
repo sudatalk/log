@@ -1,29 +1,36 @@
 "use client";
 
 import { Header } from "@/components/Header";
-import { BookDetail } from "@/components/home/BookDetail";
+import { BookSection } from "@/components/home/BookSection";
 import { ReviewCTA } from "@/components/ReviewCTA";
 import { BottomNav } from "@/components/BottomNav";
+import { QueryHydrator } from "@/components/QueryHydrator";
+import { contentStatsQueryOptions } from "@/hooks/useContentStats";
+import { currentSchedulesQueryOptions } from "@/hooks/useCurrentSchedules";
+import { calculateDaysLeft } from "@/lib/date";
+import { getQueryClient } from "@/lib/queryClient";
 
-export default function HomePage() {
+export default async function HomePage() {
+  const queryClient = getQueryClient();
+  const schedules = await queryClient.fetchQuery(currentSchedulesQueryOptions());
+  const book = schedules?.[0];
+  const daysLeft = calculateDaysLeft(book?.endedAt);
+  if (book) {
+    await queryClient.prefetchQuery(contentStatsQueryOptions(book.contentId));
+  }  
+  // TODO: 책 못가져왔을 때 보여줄 화면
   return (
-    <div className="flex min-h-dvh w-full flex-col bg-surface">
-      <Header />
+    <QueryHydrator>
+      <div className="flex min-h-dvh w-full flex-col bg-surface">
+        <Header />
 
-      <main className="mx-auto flex w-full flex-1 flex-col items-center gap-3 p-3">
-        <BookDetail
-          imageUrl="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800&q=80"
-          title="수레바퀴 아래서"
-          author="헤르만 헤세"
-          description="소년 한스 기벤라트는 마을 사람들의 기대와 격려를 한 몸에 받으며 마울브론 신학교에 입학한다. 하지만 끊임없는 압박으로 다가오는 가족과 고루한 신학교의 종교적 엄숙주의 아래서 한스는 점점 마음이 병들어간다. 급기야 소년은 신경쇠약증에 걸려 학교에서 쫓겨나게 되고, 떠날 때와 달리 아무도 맞아주지 않는 고향마을로 돌아온다."
-          likes={21}
-          comments={4}
-          rating={3.7}
-        />
-        <ReviewCTA daysLeft={6} />
-      </main>
+        <main className="mx-auto flex w-full flex-1 flex-col items-center gap-3 p-3">
+          <BookSection />
+          <ReviewCTA daysLeft={daysLeft} />
+        </main>
 
-      <BottomNav />
-    </div>
+        <BottomNav />
+      </div>
+    </QueryHydrator>
   );
 }

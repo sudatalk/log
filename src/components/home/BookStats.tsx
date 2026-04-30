@@ -13,19 +13,19 @@ function Stat({ icon: Icon, value }: { icon: LucideIcon; value: string | number 
 }
 
 export function BookStats({
-  likes,
-  comments,
-  rating,
+  likeCount,
+  reviewCount,
+  averageRating,
 }: {
-  likes: number;
-  comments: number;
-  rating: number;
+  likeCount: number;
+  reviewCount: number;
+  averageRating: number | null;
 }) {
   return (
     <div className="flex items-center gap-[5px] self-stretch py-1">
-      <Stat icon={Heart} value={likes} />
-      <Stat icon={MessageCircle} value={comments} />
-      <Stat icon={Star} value={rating} />
+      <Stat icon={Heart} value={likeCount} />
+      <Stat icon={MessageCircle} value={reviewCount} />
+      {averageRating && <Stat icon={Star} value={averageRating} />}
     </div>
   );
 }
