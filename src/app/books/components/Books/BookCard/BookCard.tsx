@@ -18,42 +18,35 @@ import Rating from "@/app/logs/[id]/components/Logs/LogCard/Rating";
 import BookImage from "./BookImage";
 import BookDescription from "./BookDescription";
 import BookCardTitle from "./BookCardTitle";
+import type { Schedule } from "@/types/api";
 
-type BookCardData = {
-  title: string;
-  author: string;
-  description: string;
-  likes: number;
-  comments: number;
-  date: string;
-  dateTime: string;
-  imageSrc: string;
-};
-const bookCard: BookCardData = {
-  title: "수레바퀴 아래서",
-  author: "헤르만 헤세",
-  description:
-    "소년 한스 기벤라트는 마을 사람들의 기대와 격려를 한 몸에 받으며 마울브론 신학교에 입학한다. 하지만 끊임없는 압박으로 다가오는 가족과 고루한 신학교의 종교적 엄숙주의 아래서 한스는 점점 마음이 병들어간다. 급기야 소년은 신경쇠약증에 걸려 학교에서 쫓겨나게 되고, 떠날 때와 달리 아무도 맞아주지 않는 고향마을로 돌아온다.",
-  likes: 21,
-  comments: 4,
-  date: "2026. 03. 08",
-  dateTime: "2026-03-08",
-  imageSrc: "full-dummy-image.png",
+type Props = {
+  schedule: Schedule;
 };
 
-const BookCard = () => {
+const formatDate = (iso: string) => {
+  const d = new Date(iso);
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, "0");
+  const day = String(d.getDate()).padStart(2, "0");
+  return { date: `${y}. ${m}. ${day}`, dateTime: `${y}-${m}-${day}` };
+};
+
+const BookCard = ({ schedule }: Props) => {
+  const { date, dateTime } = formatDate(schedule.endedAt);
+
   return (
     <article className={clsx(FLEX, ROUNDED, BORDER, BORDER_SOLID, BORDER_STRONG, "p-3.5", "gap-2.5", BG_SURFACE)}>
-      <BookImage imageSrc={bookCard.imageSrc} />
+      <BookImage imageSrc={schedule.coverImageUrl} />
       <div className={clsx(FLEX, FLEX_1, FLEX_COL, "gap-[10px]")}>
         <header className={clsx(FLEX, W_FULL, ITEMS_CENTER, JUSTIFY_BETWEEN)}>
-          <BookCardTitle title={bookCard.title} author={bookCard.author} />
-          <Rating />
+          <BookCardTitle title={schedule.title} author={schedule.author} />
+          <Rating value={schedule.averageRating} />
         </header>
-        <BookDescription description={bookCard.description} />
+        <BookDescription description={schedule.description} />
         <footer className={clsx(FLEX, W_FULL, ITEMS_CENTER, JUSTIFY_BETWEEN)}>
-          <Emoji heartCount={bookCard.likes} messageCount={bookCard.comments} />
-          <BookTime date={bookCard.date} dateTime={bookCard.dateTime} />
+          <Emoji heartCount={schedule.likeCount} messageCount={schedule.reviewCount} />
+          <BookTime date={date} dateTime={dateTime} />
         </footer>
       </div>
     </article>
