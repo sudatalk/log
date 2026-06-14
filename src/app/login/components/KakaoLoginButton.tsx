@@ -3,11 +3,11 @@ import { Button } from "@base-ui/react";
 import Image from "next/image";
 
 type Props = {
-  redirectUrl?: string;
+  redirectUrl?: string | null;
 };
 
 const KakaoLoginButton = (props: Props) => {
-  const { redirectUrl } = props;
+  const { redirectUrl = "/" } = props;
 
   const handleClickKakaoLoginButton = () => {
     Kakao.Auth.authorize({

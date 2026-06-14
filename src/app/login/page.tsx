@@ -70,7 +70,7 @@ const LoginPage = () => {
         <Image src="/logo.png" alt="LOG" width={280} height={138} priority />
       </div>
       <div className={clsx(FLEX, FLEX_2, CENTER)}>
-        <KakaoLoginButton />
+        <KakaoLoginButton redirectUrl={redirectUrl} />
       </div>
     </div>
   );
