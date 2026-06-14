@@ -5,7 +5,7 @@ import { QueryProvider } from "@/components/QueryProvider";
 import "./globals.css";
 
 const pretendard = localFont({
-  src: "./fonts/PretendardVariable.woff2",
+  src: "../fonts/PretendardVariable.woff2",
   variable: "--font-pretendard",
   display: "swap",
   weight: "45 920",
@@ -28,10 +28,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html
-      lang="en"
-      className={`${pretendard.variable} ${notoSerifKR.variable} h-full antialiased`}
-    >
+    <html lang="en" className={`${pretendard.variable} ${notoSerifKR.variable} h-full antialiased`}>
       <body className="min-h-full flex flex-col">
         <QueryProvider>{children}</QueryProvider>
       </body>
