@@ -1,5 +1,3 @@
-"use client";
-
 import { Header } from "@/components/Header";
 import { BookSection } from "@/components/home/BookSection";
 import { ReviewCTA } from "@/components/ReviewCTA";
@@ -17,7 +15,7 @@ export default async function HomePage() {
   const daysLeft = calculateDaysLeft(book?.endedAt);
   if (book) {
     await queryClient.prefetchQuery(contentStatsQueryOptions(book.contentId));
-  }  
+  }
   // TODO: 책 못가져왔을 때 보여줄 화면
   return (
     <QueryHydrator>
