@@ -61,3 +61,17 @@ export type UserCheckResponse = {
   userId: number;
   status: UserStatus;
 };
+
+export type UserSignUpRequest = {
+  appUserId: number;
+  nickname?: string;
+  email?: string;
+  profileImageUrl?: string;
+  agreedTermsIds?: number[];
+};
+
+export type UserSignUpResponse = {
+  id: number;
+  appUserId: number;
+  nickname?: string;
+};

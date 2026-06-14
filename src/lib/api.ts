@@ -1,4 +1,12 @@
-import type { ContentStats, Schedule, SchedulesRequest, SchedulesResponse, UserCheckResponse } from "@/types/api";
+import type {
+  ContentStats,
+  Schedule,
+  SchedulesRequest,
+  SchedulesResponse,
+  UserCheckResponse,
+  UserSignUpRequest,
+  UserSignUpResponse,
+} from "@/types/api";
 
 // TODO: api host 환경변수로 분리
 // 임시코드. 서버는 백엔드를 직접 호출, 브라우저는 next.config.ts의 rewrites로 같은 origin 프록시.
@@ -40,6 +48,20 @@ export async function getCheckUser({ appUserId }: { appUserId: number }): Promis
   });
   if (!res.ok) {
     throw new Error(`Failed to fetch /users/check: ${res.status} ${res.statusText}`);
+  }
+  return res.json();
+}
+
+export async function postSignUpUser(data: UserSignUpRequest): Promise<UserSignUpResponse> {
+  const res = await fetch(`${API_BASE_URL}/users/sign-up`, {
+    method: "POST",
+    body: JSON.stringify(data),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  if (!res.ok) {
+    throw new Error(`Failed to fetch /users/sign-up: ${res.status} ${res.statusText}`);
   }
   return res.json();
 }

@@ -66,6 +66,12 @@ declare namespace Kakao {
       status: "connected" | "not_connected" | string;
       user?: {
         id: string;
+        kakao_account: {
+          email?: string;
+          profile?: {
+            nickname?: string;
+          };
+        };
       };
     }
 
