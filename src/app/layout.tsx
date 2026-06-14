@@ -3,6 +3,7 @@ import localFont from "next/font/local";
 import { Noto_Serif_KR } from "next/font/google";
 import { QueryProvider } from "@/components/QueryProvider";
 import "./globals.css";
+import KakaoSDKChecker from "@/components/KakaoSDKChecker";
 
 const pretendard = localFont({
   src: "../fonts/PretendardVariable.woff2",
@@ -30,7 +31,9 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${pretendard.variable} ${notoSerifKR.variable} h-full antialiased`}>
       <body className="min-h-full flex flex-col">
-        <QueryProvider>{children}</QueryProvider>
+        <KakaoSDKChecker>
+          <QueryProvider>{children}</QueryProvider>
+        </KakaoSDKChecker>
       </body>
     </html>
   );

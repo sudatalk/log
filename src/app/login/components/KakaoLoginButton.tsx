@@ -1,4 +1,3 @@
-import { KakaoSdkScript } from "@/components/KakaoSdkScript";
 import { NEXT_PUBLIC_KAKAO_LOGIN_REDIRECT_URI } from "@/constants/env";
 import { Button } from "@base-ui/react";
 import Image from "next/image";
@@ -22,7 +21,6 @@ const KakaoLoginButton = (props: Props) => {
       <Button onClick={handleClickKakaoLoginButton}>
         <Image src="/kakao_login_medium_wide.png" alt="카카오 로그인" width={300} height={45} priority />
       </Button>
-      <KakaoSdkScript />
     </>
   );
 };

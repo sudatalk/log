@@ -1,11 +1,10 @@
 "use client";
 
-import { KakaoSdkScript } from "@/components/KakaoSdkScript";
 import { Spinner } from "@/components/ui/spinner";
 import { BG_BASE, CENTER, FLEX, FULL } from "@/constants/tailwind";
 import clsx from "clsx";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 type Props = {
   access_token: string;
@@ -15,11 +14,7 @@ type Props = {
 const Redirect = (props: Props) => {
   const router = useRouter();
 
-  const [isReady, setIsReady] = useState(false);
-
   useEffect(() => {
-    if (!isReady) return;
-
     Kakao.Auth.setAccessToken(props.access_token);
 
     /**
@@ -27,12 +22,11 @@ const Redirect = (props: Props) => {
      */
 
     router.replace(props.redirectUrl);
-  }, [isReady, router, props]);
+  }, [router, props]);
 
   return (
     <div className={clsx(FULL, FLEX, CENTER, BG_BASE)}>
       <Spinner />
-      <KakaoSdkScript setIsReady={setIsReady} />
     </div>
   );
 };
