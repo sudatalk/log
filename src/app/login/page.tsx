@@ -10,8 +10,7 @@ import { getCheckUser } from "@/lib/api";
 import { UserStatus } from "@/types/api";
 import { useRouter } from "next/navigation";
 import { Spinner } from "@/components/ui/spinner";
-
-const REDIRECT_URL_KEY = "redirectUrl";
+import { REDIRECT_URL_KEY } from "@/constants/router";
 
 const LoginPage = () => {
   const router = useRouter();

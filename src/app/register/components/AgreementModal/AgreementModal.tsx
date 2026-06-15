@@ -4,13 +4,16 @@ import AgreementModalContainer from "./AgreementModalContainer";
 type Props = {
   isOpen: boolean;
   setIsOpen: (value: boolean) => void;
+  handleSubmit: () => void;
 };
 
 const AgreementModal = (props: Props) => {
-  const { isOpen, setIsOpen } = props;
+  const { isOpen, setIsOpen, handleSubmit } = props;
 
-  const handleSubmit = () => {
+  const handleClickButton = () => {
     setIsOpen(false);
+
+    handleSubmit();
   };
 
   return (
@@ -18,7 +21,7 @@ const AgreementModal = (props: Props) => {
       <Sheet.Container>
         <Sheet.Header />
         <Sheet.Content>
-          <AgreementModalContainer onSubmit={handleSubmit} />
+          <AgreementModalContainer onSubmit={handleClickButton} />
         </Sheet.Content>
       </Sheet.Container>
       <Sheet.Backdrop onClick={() => setIsOpen(false)} />

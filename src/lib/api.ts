@@ -7,6 +7,8 @@ import type {
   SchedulesRequest,
   SchedulesResponse,
   UserCheckResponse,
+  UserSignUpRequest,
+  UserSignUpResponse,
 } from "@/types/api";
 
 // TODO: api host 환경변수로 분리
@@ -84,6 +86,20 @@ export async function getContentReviews(
   });
   if (!res.ok) {
     throw new Error(`Failed to fetch /contents/${contentId}/reviews: ${res.status} ${res.statusText}`);
+  }
+  return res.json();
+}
+
+export async function postSignUpUser(data: UserSignUpRequest): Promise<UserSignUpResponse> {
+  const res = await fetch(`${API_BASE_URL}/users/sign-up`, {
+    method: "POST",
+    body: JSON.stringify(data),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  if (!res.ok) {
+    throw new Error(`Failed to fetch /users/sign-up: ${res.status} ${res.statusText}`);
   }
   return res.json();
 }
