@@ -1,4 +1,13 @@
-import type { ContentStats, Schedule, SchedulesRequest, SchedulesResponse, UserCheckResponse } from "@/types/api";
+import type {
+  ContentDetail,
+  ContentReviewsRequest,
+  ContentReviewsResponse,
+  ContentStats,
+  Schedule,
+  SchedulesRequest,
+  SchedulesResponse,
+  UserCheckResponse,
+} from "@/types/api";
 
 // TODO: api host 환경변수로 분리
 // 임시코드. 서버는 백엔드를 직접 호출, 브라우저는 next.config.ts의 rewrites로 같은 origin 프록시.
@@ -40,6 +49,41 @@ export async function getCheckUser({ appUserId }: { appUserId: number }): Promis
   });
   if (!res.ok) {
     throw new Error(`Failed to fetch /users/check: ${res.status} ${res.statusText}`);
+  }
+  return res.json();
+}
+
+export async function getContentDetail(contentId: number, userId: number): Promise<ContentDetail> {
+  const res = await fetch(`${API_BASE_URL}/contents/${contentId}`, {
+    headers: {
+      "X-User-Id": String(userId),
+    },
+  });
+  if (!res.ok) {
+    throw new Error(`Failed to fetch /contents/${contentId}: ${res.status} ${res.statusText}`);
+  }
+  return res.json();
+}
+
+export async function getContentReviews(
+  contentId: number,
+  params: ContentReviewsRequest,
+  userId?: number,
+): Promise<ContentReviewsResponse> {
+  const query = new URLSearchParams({
+    page: String(params.page),
+    size: String(params.size),
+  });
+  const headers: HeadersInit = {};
+  if (userId !== undefined) {
+    headers["X-User-Id"] = String(userId);
+  }
+
+  const res = await fetch(`${API_BASE_URL}/contents/${contentId}/reviews?${query}`, {
+    headers,
+  });
+  if (!res.ok) {
+    throw new Error(`Failed to fetch /contents/${contentId}/reviews: ${res.status} ${res.statusText}`);
   }
   return res.json();
 }
