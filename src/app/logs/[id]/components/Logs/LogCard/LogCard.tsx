@@ -1,5 +1,7 @@
 "use client";
 
+import Emoji from "@/components/shared/Emoji";
+import { Button } from "@/components/ui/button";
 import {
   BG_SURFACE,
   BORDER,
@@ -8,22 +10,18 @@ import {
   FLEX,
   FLEX_COL,
   FONT_SEMIBOLD,
-  GAP_1,
   ITEMS_CENTER,
   JUSTIFY_BETWEEN,
   ROUNDED,
-  TEXT_LG,
-  TEXT_SM,
   W_FULL,
 } from "@/constants/tailwind";
+import type { ReviewListItem } from "@/types/api";
 import clsx from "clsx";
-import Rating from "./Rating";
-import LogBadge from "./LogBadge";
-import { Button } from "@/components/ui/button";
-import { useState } from "react";
-import { CardType } from "./types/card";
+import { useMemo, useState } from "react";
 import Description from "./Description";
-import Emoji from "@/components/shared/Emoji";
+import LogBadge from "./LogBadge";
+import LogCardHeader from "./LogCardHeader";
+import { CardType } from "./types/card";
 
 const LOG_BADGE = (selectedType: string) => [
   {
@@ -56,8 +54,27 @@ const LOG_BADGE = (selectedType: string) => [
   },
 ];
 
-const LogCard = () => {
-  const [selectedType, setSelectedType] = useState(CardType.ONE_LINE);
+const getAvailableTypes = (review: ReviewListItem) => {
+  const types: string[] = [];
+
+  if (review.shortComment) types.push(CardType.ONE_LINE);
+  if (review.questions.length > 0) types.push(CardType.RECOMMEND);
+  if (review.quotes.length > 0) types.push(CardType.IMPRESSIVE);
+  if (review.comment) types.push(CardType.FREE);
+
+  return types;
+};
+
+type Props = {
+  review: ReviewListItem;
+  currentUserId: number;
+};
+
+const LogCard = ({ review, currentUserId }: Props) => {
+  const isMyReview = review.userId === currentUserId;
+  const availableTypes = useMemo(() => getAvailableTypes(review), [review]);
+  const [selectedType, setSelectedType] = useState(availableTypes[0] ?? CardType.ONE_LINE);
+  const badges = LOG_BADGE(selectedType).filter((badge) => availableTypes.includes(badge.type));
 
   const handleClickBadge = (value: string) => {
     setSelectedType(value);
@@ -78,26 +95,33 @@ const LogCard = () => {
         "p-2.5",
       )}
     >
-      <div className={clsx(FLEX, ITEMS_CENTER, JUSTIFY_BETWEEN)}>
-        <div className={clsx(FLEX, FLEX_COL, GAP_1)}>
-          <div className={TEXT_LG}>1984</div>
-          <div className={TEXT_SM}>헤르만 헤세</div>
+      <LogCardHeader
+        nickname={review.nickname}
+        profileImageUrl={review.profileImageUrl}
+        createdAt={review.createdAt}
+        rating={review.rating}
+      />
+      {badges.length > 0 && (
+        <div className={clsx(FLEX, ITEMS_CENTER, "gap-[5px]")}>
+          {badges.map((badge) => (
+            <LogBadge key={badge.label} {...badge} onClickBadge={handleClickBadge} />
+          ))}
         </div>
-        <Rating />
-      </div>
-      <div className={clsx(FLEX, ITEMS_CENTER, "gap-[5px]")}>
-        {LOG_BADGE(selectedType).map((badge) => (
-          <LogBadge key={badge.label} {...badge} onClickBadge={handleClickBadge} />
-        ))}
-      </div>
+      )}
 
-      <Description type={selectedType} />
+      {availableTypes.includes(selectedType) && <Description type={selectedType} review={review} />}
 
       <div className={clsx(FLEX, ITEMS_CENTER, JUSTIFY_BETWEEN)}>
-        <Emoji heartCount={21} messageCount={5} />
-        <Button className={clsx("px-5 h-8", FONT_SEMIBOLD)} size="sm">
-          수정
-        </Button>
+        <Emoji
+          heartCount={review.likeCount}
+          isLiked={review.isLiked}
+          messageCount={review.commentCount}
+        />
+        {isMyReview && (
+          <Button className={clsx("px-5 h-8", FONT_SEMIBOLD)} size="sm">
+            수정
+          </Button>
+        )}
       </div>
     </div>
   );

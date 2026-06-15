@@ -40,6 +40,61 @@ export type ContentDetail = {
   averageRating: number | null;
 };
 
+export type ContentReviewsRequest = {
+  page: number;
+  size: number;
+};
+
+export type ReviewQuoteItem = {
+  id: number;
+  quote: string;
+  sequence: number;
+};
+
+export type ReviewQuestionItem = {
+  id: number;
+  question: string;
+  sequence: number;
+  answer: string;
+};
+
+export type ReviewListItem = {
+  reviewId: number;
+  userId: number;
+  nickname: string;
+  profileImageUrl: string;
+  comment: string;
+  shortComment: string;
+  rating: number;
+  isLiked: boolean;
+  likeCount: number;
+  commentCount: number;
+  quotes: ReviewQuoteItem[];
+  questions: ReviewQuestionItem[];
+  createdAt: string;
+};
+
+export type ContentReviewsResponse = {
+  content: ReviewListItem[];
+  totalElements: number;
+  totalPages: number;
+  pageable: {
+    unpaged: boolean;
+    paged: boolean;
+    pageSize: number;
+    pageNumber: number;
+    offset: number;
+    sort: Sort;
+  };
+  first: boolean;
+  last: boolean;
+  numberOfElements: number;
+  size: number;
+  number: number;
+  sort: Sort;
+  empty: boolean;
+};
+
 export type SchedulesRequest = {
   size: number;
   page: number;
