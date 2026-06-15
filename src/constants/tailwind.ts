@@ -32,6 +32,8 @@ export const JUSTIFY_END = "justify-end";
 
 export const CENTER = "items-center justify-center";
 
+export const FLEX_9 = "flex-9";
+
 export const FLEX_8 = "flex-8";
 
 export const FLEX_2 = "flex-2";
@@ -43,6 +45,8 @@ export const P_3 = "p-3";
 export const GAP_1 = "gap-1";
 
 export const GAP_3 = "gap-3";
+
+export const GAP_5 = "gap-5";
 
 export const FONT_SEMIBOLD = "font-semibold";
 
