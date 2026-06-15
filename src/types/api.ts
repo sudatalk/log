@@ -98,13 +98,13 @@ export type ContentReviewsResponse = {
 export type SchedulesRequest = {
   size: number;
   page: number;
-}
+};
 
 export type Sort = {
   unsorted: boolean;
   sorted: boolean;
   empty: boolean;
-}
+};
 
 export type SchedulesResponse = {
   content: Schedule[];
@@ -121,4 +121,15 @@ export type SchedulesResponse = {
   number: number;
   sort: Sort;
   empty: boolean;
+};
+
+export enum UserStatus {
+  JOIN = "JOIN",
+  WITHDRAW = "WITHDRAW",
+}
+
+export type UserCheckResponse = {
+  registered: boolean;
+  userId: number;
+  status: UserStatus;
 };

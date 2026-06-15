@@ -63,9 +63,9 @@ declare namespace Kakao {
     }
 
     interface StatusResponse {
-      statusInfo: {
-        status: "connected" | "not_connected" | string;
-        user?: object;
+      status: "connected" | "not_connected" | string;
+      user?: {
+        id: string;
       };
     }
 
@@ -274,9 +274,7 @@ declare namespace Kakao {
 
     function cleanup(): void;
     function createCustomButton(settings: CreateCustomButtonSettings): void;
-    function createDefaultButton(settings: {
-      container: ContainerSelector;
-    }): void;
+    function createDefaultButton(settings: { container: ContainerSelector }): void;
     function createScrapButton(settings: CreateScrapButtonSettings): void;
     function deleteImage(settings: { imageUrl: string }): Promise<unknown>;
     function scrapImage(settings: { imageUrl: string }): Promise<ImageInfos>;
@@ -333,9 +331,7 @@ declare namespace Kakao {
     function cleanup(): void;
     function createAddChannelButton(settings: CreateAddChannelButtonSettings): void;
     function createChatButton(settings: CreateChatButtonSettings): void;
-    function followChannel(
-      settings: ChannelPublicIdSettings,
-    ): Promise<FollowChannelResponse | FollowChannelError>;
+    function followChannel(settings: ChannelPublicIdSettings): Promise<FollowChannelResponse | FollowChannelError>;
   }
 
   namespace Navi {
@@ -421,11 +417,7 @@ declare namespace Kakao {
     }
 
     function cleanup(): void;
-    function selectFriend(
-      settings: SelectFriendSettings,
-    ): Promise<FriendsPickerResponse | PickerError>;
-    function selectFriends(
-      settings: SelectFriendsSettings,
-    ): Promise<FriendsPickerResponse | PickerError>;
+    function selectFriend(settings: SelectFriendSettings): Promise<FriendsPickerResponse | PickerError>;
+    function selectFriends(settings: SelectFriendsSettings): Promise<FriendsPickerResponse | PickerError>;
   }
 }
