@@ -19,10 +19,21 @@ import Rating from "@/app/logs/[id]/components/Logs/LogCard/Rating";
 import BookImage from "./BookImage";
 import BookDescription from "./BookDescription";
 import BookCardTitle from "./BookCardTitle";
-import type { Schedule } from "@/types/api";
+
+export type BookCardData = {
+  title: string;
+  author: string;
+  description: string;
+  coverImageUrl: string;
+  averageRating: number | null;
+  likeCount: number;
+  reviewCount: number;
+  endedAt?: string;
+};
 
 type Props = {
-  schedule: Schedule;
+  book: BookCardData;
+  href?: string;
 };
 
 const formatDate = (iso: string) => {
@@ -33,27 +44,37 @@ const formatDate = (iso: string) => {
   return { date: `${y}. ${m}. ${day}`, dateTime: `${y}-${m}-${day}` };
 };
 
-const BookCard = ({ schedule }: Props) => {
-  const { date, dateTime } = formatDate(schedule.endedAt);
+const BookCard = ({ book, href }: Props) => {
+  const { title, author, description, coverImageUrl, averageRating, likeCount, reviewCount, endedAt } =
+    book;
+  const dateInfo = endedAt ? formatDate(endedAt) : null;
 
-  return (
-    <Link href={`/logs/${schedule.contentId}`} className="block">
-      <article className={clsx(FLEX, ROUNDED, BORDER, BORDER_SOLID, BORDER_STRONG, "p-3.5", "gap-2.5", BG_SURFACE)}>
-        <BookImage imageSrc={schedule.coverImageUrl} />
-        <div className={clsx(FLEX, FLEX_1, FLEX_COL, "gap-[10px]")}>
-          <header className={clsx(FLEX, W_FULL, ITEMS_CENTER, JUSTIFY_BETWEEN)}>
-            <BookCardTitle title={schedule.title} author={schedule.author} />
-            <Rating value={schedule.averageRating} />
-          </header>
-          <BookDescription description={schedule.description} />
-          <footer className={clsx(FLEX, W_FULL, ITEMS_CENTER, JUSTIFY_BETWEEN)}>
-            <Emoji heartCount={schedule.likeCount} messageCount={schedule.reviewCount} />
-            <BookTime date={date} dateTime={dateTime} />
-          </footer>
-        </div>
-      </article>
-    </Link>
+  const article = (
+    <article className={clsx(FLEX, ROUNDED, BORDER, BORDER_SOLID, BORDER_STRONG, "p-3.5", "gap-2.5", BG_SURFACE)}>
+      <BookImage imageSrc={coverImageUrl} />
+      <div className={clsx(FLEX, FLEX_1, FLEX_COL, "gap-[10px]")}>
+        <header className={clsx(FLEX, W_FULL, ITEMS_CENTER, JUSTIFY_BETWEEN)}>
+          <BookCardTitle title={title} author={author} />
+          <Rating value={averageRating ?? undefined} />
+        </header>
+        <BookDescription description={description} />
+        <footer className={clsx(FLEX, W_FULL, ITEMS_CENTER, JUSTIFY_BETWEEN)}>
+          <Emoji heartCount={likeCount} messageCount={reviewCount} />
+          {dateInfo && <BookTime date={dateInfo.date} dateTime={dateInfo.dateTime} />}
+        </footer>
+      </div>
+    </article>
   );
+
+  if (href) {
+    return (
+      <Link href={href} className="block">
+        {article}
+      </Link>
+    );
+  }
+
+  return article;
 };
 
 export default BookCard;

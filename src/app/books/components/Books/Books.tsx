@@ -25,7 +25,11 @@ const Books = () => {
         {isPending && <Loading />}
         {isError && <Error />}
         {schedules.map((schedule) => (
-          <BookCard key={schedule.scheduleId} schedule={schedule} />
+          <BookCard
+            key={schedule.scheduleId}
+            book={schedule}
+            href={`/logs/${schedule.contentId}`}
+          />
         ))}
         {hasNextPage && <div ref={sentinelRef} aria-hidden />}
         {isFetchingNextPage && <Loading />}

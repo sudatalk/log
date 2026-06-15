@@ -23,6 +23,23 @@ export type ContentStats = {
   averageRating: number | null;
 };
 
+export type ContentDetail = {
+  id: number;
+  categoryType: CategoryType;
+  title: string;
+  description: string;
+  coverImageUrl: string;
+  author: string;
+  publisher: string | null;
+  isbn: string | null;
+  director: string | null;
+  runtimeMinutes: number | null;
+  liked: boolean;
+  reviewCount: number;
+  likeCount: number;
+  averageRating: number | null;
+};
+
 export type SchedulesRequest = {
   size: number;
   page: number;
