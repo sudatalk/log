@@ -13,6 +13,7 @@ import {
   W_FULL,
 } from "@/constants/tailwind";
 import clsx from "clsx";
+import Link from "next/link";
 import BookTime from "./BookTime";
 import Rating from "@/app/logs/[id]/components/Logs/LogCard/Rating";
 import BookImage from "./BookImage";
@@ -36,20 +37,22 @@ const BookCard = ({ schedule }: Props) => {
   const { date, dateTime } = formatDate(schedule.endedAt);
 
   return (
-    <article className={clsx(FLEX, ROUNDED, BORDER, BORDER_SOLID, BORDER_STRONG, "p-3.5", "gap-2.5", BG_SURFACE)}>
-      <BookImage imageSrc={schedule.coverImageUrl} />
-      <div className={clsx(FLEX, FLEX_1, FLEX_COL, "gap-[10px]")}>
-        <header className={clsx(FLEX, W_FULL, ITEMS_CENTER, JUSTIFY_BETWEEN)}>
-          <BookCardTitle title={schedule.title} author={schedule.author} />
-          <Rating value={schedule.averageRating} />
-        </header>
-        <BookDescription description={schedule.description} />
-        <footer className={clsx(FLEX, W_FULL, ITEMS_CENTER, JUSTIFY_BETWEEN)}>
-          <Emoji heartCount={schedule.likeCount} messageCount={schedule.reviewCount} />
-          <BookTime date={date} dateTime={dateTime} />
-        </footer>
-      </div>
-    </article>
+    <Link href={`/logs/${schedule.contentId}`} className="block">
+      <article className={clsx(FLEX, ROUNDED, BORDER, BORDER_SOLID, BORDER_STRONG, "p-3.5", "gap-2.5", BG_SURFACE)}>
+        <BookImage imageSrc={schedule.coverImageUrl} />
+        <div className={clsx(FLEX, FLEX_1, FLEX_COL, "gap-[10px]")}>
+          <header className={clsx(FLEX, W_FULL, ITEMS_CENTER, JUSTIFY_BETWEEN)}>
+            <BookCardTitle title={schedule.title} author={schedule.author} />
+            <Rating value={schedule.averageRating} />
+          </header>
+          <BookDescription description={schedule.description} />
+          <footer className={clsx(FLEX, W_FULL, ITEMS_CENTER, JUSTIFY_BETWEEN)}>
+            <Emoji heartCount={schedule.likeCount} messageCount={schedule.reviewCount} />
+            <BookTime date={date} dateTime={dateTime} />
+          </footer>
+        </div>
+      </article>
+    </Link>
   );
 };
 
