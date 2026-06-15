@@ -4,6 +4,7 @@ import { Heart, MessageCircle } from "lucide-react";
 
 type Props = {
   heartCount: number;
+  isLiked?: boolean;
   handleClickHeart?: () => void;
 
   messageCount: number;
@@ -11,12 +12,18 @@ type Props = {
 };
 
 const Emoji = (props: Props) => {
-  const { heartCount, handleClickHeart, messageCount, handleClickMessage } = props;
+  const { heartCount, isLiked = false, handleClickHeart, messageCount, handleClickMessage } = props;
 
   return (
     <div className={clsx(FLEX, ITEMS_CENTER, "gap-[5px]")}>
       <div className={clsx(FLEX, "gap-[5px]")}>
-        <Heart size={14} strokeWidth={2} onClick={handleClickHeart} />
+        <Heart
+          size={14}
+          strokeWidth={2}
+          onClick={handleClickHeart}
+          color={isLiked ? "#ef4444" : undefined}
+          fill={isLiked ? "#ef4444" : "none"}
+        />
         <div className={clsx(FLEX, TEXT_XS, ITEMS_END, FONT_SEMIBOLD)}>{heartCount}</div>
       </div>
       <div className={clsx(FLEX, "gap-[5px]")}>

@@ -8,5 +8,7 @@ export const queryKeys = {
       ["contents", contentId, "stats"] as const,
     detail: (contentId: number | undefined, userId: number | undefined) =>
       ["contents", contentId, "detail", userId] as const,
+    reviews: (contentId: number | undefined, userId: number | undefined) =>
+      ["contents", contentId, "reviews", userId] as const,
   },
 } as const;

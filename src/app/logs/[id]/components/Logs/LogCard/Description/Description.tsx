@@ -1,24 +1,24 @@
 import { FLEX, W_FULL } from "@/constants/tailwind";
+import type { ReviewListItem } from "@/types/api";
+import clsx from "clsx";
 import { CardType } from "../types/card";
+import Free from "./Free";
+import Impressive from "./Impressive";
 import OneLine from "./OneLine";
 import Recommend from "./Recommend";
-import clsx from "clsx";
-import Impressive from "./Impressive";
-import Free from "./Free";
 
 type Props = {
   type: string;
+  review: ReviewListItem;
 };
 
-const Description = (props: Props) => {
-  const { type } = props;
-
+const Description = ({ type, review }: Props) => {
   return (
     <div className={clsx(FLEX, W_FULL)}>
-      {type === CardType.ONE_LINE && <OneLine />}
-      {type === CardType.RECOMMEND && <Recommend />}
-      {type === CardType.IMPRESSIVE && <Impressive />}
-      {type === CardType.FREE && <Free />}
+      {type === CardType.ONE_LINE && <OneLine shortComment={review.shortComment} />}
+      {type === CardType.RECOMMEND && <Recommend questions={review.questions} />}
+      {type === CardType.IMPRESSIVE && <Impressive quotes={review.quotes} />}
+      {type === CardType.FREE && <Free comment={review.comment} />}
     </div>
   );
 };

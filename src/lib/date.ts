@@ -11,3 +11,11 @@ export function calculateDaysLeft(endedAt: string | undefined): number {
   const diff = Math.round((endDay.getTime() - today.getTime()) / MS_PER_DAY);
   return Math.max(0, diff);
 }
+
+export function formatReviewDate(iso: string) {
+  const d = new Date(iso);
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, "0");
+  const day = String(d.getDate()).padStart(2, "0");
+  return `${y}. ${m}. ${day}`;
+}
