@@ -7,7 +7,18 @@ const BookImage = (props: Props) => {
 
   return (
     // eslint-disable-next-line @next/next/no-img-element
-    <img alt="표지" className="rounded object-cover" height={120} src={imageSrc} width={80} />
+    <img
+      alt="표지"
+      className="rounded object-cover"
+      height={120}
+      src={imageSrc}
+      width={80}
+      style={{
+        width: "80px",
+        height: "120px",
+        objectFit: "cover",
+      }}
+    />
   );
 };
 
