@@ -7,6 +7,7 @@ import {
   CENTER,
   FLEX,
   FLEX_COL,
+  FONT_MEDIUM,
   ROUNDED,
   TEXT_LG,
 } from "@/constants/tailwind";
@@ -26,6 +27,7 @@ const OneLineReview = () => {
         BG_SURFACE,
         CENTER,
         FLEX_COL,
+        FONT_MEDIUM,
       )}
     >
       <p className={TEXT_LG}>한줄평</p>
