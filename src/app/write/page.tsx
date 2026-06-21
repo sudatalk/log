@@ -4,6 +4,7 @@ import clsx from "clsx";
 import WriteReviewButton from "./components/WriteReviewButton";
 import BookInfo from "./components/BookInfo";
 import OneLineReview from "./components/OneLineRiview";
+import StarReview from "./components/StarReview";
 
 const ReviewWritePage = () => {
   const book = {
@@ -36,6 +37,7 @@ const ReviewWritePage = () => {
             endedAt={"2026-06-23T00:00:00"}
           />
           <OneLineReview />
+          <StarReview />
         </div>
         <WriteReviewButton />
       </div>
