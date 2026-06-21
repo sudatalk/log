@@ -33,11 +33,11 @@ const StarReview = () => {
     >
       <p className={TEXT_LG}>별점을 선택해주세요</p>
       <div className={clsx(FLEX, GAP_5)}>
-        <Star size={33} />
-        <Star size={33} />
-        <Star size={33} />
-        <Star size={33} />
-        <Star size={33} />
+        <Star size={33} strokeWidth={1.5} />
+        <Star size={33} strokeWidth={1.5} />
+        <Star size={33} strokeWidth={1.5} />
+        <Star size={33} strokeWidth={1.5} />
+        <Star size={33} strokeWidth={1.5} />
       </div>
     </div>
   );

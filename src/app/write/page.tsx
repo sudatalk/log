@@ -1,10 +1,29 @@
 import { Header } from "@/components/Header";
-import { BG_BASE, FLEX, FLEX_1, FLEX_COL, FULL, GAP_3, GAP_5, H_FULL, P_3, W_FULL } from "@/constants/tailwind";
+import {
+  BG_BASE,
+  FLEX,
+  FLEX_1,
+  FLEX_COL,
+  FONT_MEDIUM,
+  FULL,
+  GAP_3,
+  GAP_5,
+  H_FULL,
+  P_3,
+  TEXT_2XL,
+  TEXT_LG,
+  TEXT_SM,
+  TEXT_XL,
+  W_FULL,
+} from "@/constants/tailwind";
 import clsx from "clsx";
 import WriteReviewButton from "./components/WriteReviewButton";
 import BookInfo from "./components/BookInfo";
 import OneLineReview from "./components/OneLineRiview";
 import StarReview from "./components/StarReview";
+import Recommend from "./components/Recommend";
+import Impressive from "./components/Impressive";
+import Free from "./components/Free";
 
 const ReviewWritePage = () => {
   const book = {
@@ -38,6 +57,11 @@ const ReviewWritePage = () => {
           />
           <OneLineReview />
           <StarReview />
+          <div className={clsx(FLEX, GAP_3, FLEX_COL)}>
+            <Recommend />
+            <Impressive />
+            <Free />
+          </div>
         </div>
         <WriteReviewButton />
       </div>
