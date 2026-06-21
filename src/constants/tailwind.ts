@@ -4,7 +4,7 @@ export const BG_SURFACE = "bg-[#FDFAF4]";
 
 export const EMBER_ICON = "bg-[#D4894A]";
 
-export const FULL = "w-full min-h-dvh";
+export const FULL = "w-full h-full";
 
 export const W_FULL = "w-full";
 
