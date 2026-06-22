@@ -5,7 +5,7 @@ import { BG_BASE, CENTER, FLEX, FULL } from "@/constants/tailwind";
 import { getCheckUser } from "@/lib/api";
 import { UserStatus } from "@/types/api";
 import clsx from "clsx";
-import { redirect, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
 type Props = {
