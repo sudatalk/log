@@ -27,8 +27,13 @@ const Emoji = (props: Props) => {
         />
         <div className={clsx(FLEX, TEXT_XS, ITEMS_END, FONT_SEMIBOLD)}>{heartCount}</div>
       </div>
-      <div className={clsx(FLEX, "gap-[5px]")}>
-        <MessageCircle size={14} strokeWidth={2} onClick={handleClickMessage} />
+      <div className={clsx(FLEX, "gap-[5px]", handleClickMessage && "cursor-pointer")}>
+        <MessageCircle
+          size={14}
+          strokeWidth={2}
+          onClick={handleClickMessage}
+          className={handleClickMessage ? "cursor-pointer" : undefined}
+        />
         <div className={clsx(FLEX, TEXT_XS, ITEMS_END, FONT_SEMIBOLD)}>{messageCount}</div>
       </div>
     </div>

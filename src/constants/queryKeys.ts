@@ -11,4 +11,7 @@ export const queryKeys = {
     reviews: (contentId: number | undefined, userId: number | undefined) =>
       ["contents", contentId, "reviews", userId] as const,
   },
+  reviews: {
+    comments: (reviewId: number | undefined) => ["reviews", reviewId, "comments"] as const,
+  },
 } as const;

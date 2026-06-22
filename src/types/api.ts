@@ -113,6 +113,46 @@ export type ContentReviewsResponse = {
   empty: boolean;
 };
 
+export type ReviewComment = {
+  commentId: number;
+  reviewId: number;
+  userId: number;
+  nickname: string;
+  profileImageUrl: string;
+  content: string;
+  createdAt: string;
+};
+
+export type ReviewCommentsRequest = {
+  page: number;
+  size: number;
+};
+
+export type ReviewCommentsResponse = {
+  content: ReviewComment[];
+  totalElements: number;
+  totalPages: number;
+  pageable: {
+    unpaged: boolean;
+    paged: boolean;
+    pageSize: number;
+    pageNumber: number;
+    offset: number;
+    sort: Sort;
+  };
+  first: boolean;
+  last: boolean;
+  numberOfElements: number;
+  size: number;
+  number: number;
+  sort: Sort;
+  empty: boolean;
+};
+
+export type ReviewCommentCreateRequest = {
+  content: string;
+};
+
 export type SchedulesRequest = {
   size: number;
   page: number;
