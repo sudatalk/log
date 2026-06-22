@@ -1,4 +1,7 @@
+"use client";
+
 import Emoji from "@/components/shared/Emoji";
+import { MOCK_USER_ID } from "@/constants/env";
 import {
   BG_SURFACE,
   BORDER,
@@ -12,6 +15,7 @@ import {
   ROUNDED,
   W_FULL,
 } from "@/constants/tailwind";
+import { useToggleContentLike } from "@/hooks/useToggleContentLike";
 import clsx from "clsx";
 import Link from "next/link";
 import BookTime from "./BookTime";
@@ -21,11 +25,14 @@ import BookDescription from "./BookDescription";
 import BookCardTitle from "./BookCardTitle";
 
 export type BookCardData = {
+  contentId?: number;
+  id?: number;
   title: string;
   author: string;
   description: string;
   coverImageUrl: string;
   averageRating: number | null;
+  liked?: boolean;
   likeCount: number;
   reviewCount: number;
   endedAt?: string;
@@ -45,9 +52,29 @@ const formatDate = (iso: string) => {
 };
 
 const BookCard = ({ book, href }: Props) => {
-  const { title, author, description, coverImageUrl, averageRating, likeCount, reviewCount, endedAt } =
-    book;
+  const {
+    title,
+    author,
+    description,
+    coverImageUrl,
+    averageRating,
+    liked = false,
+    likeCount,
+    reviewCount,
+    endedAt,
+  } = book;
+  const contentId = book.contentId ?? book.id;
   const dateInfo = endedAt ? formatDate(endedAt) : null;
+
+  const { mutate: toggleLike, isPending: isTogglingLike } = useToggleContentLike(MOCK_USER_ID);
+
+  const handleClickHeart = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (!contentId || isTogglingLike) return;
+
+    toggleLike(contentId);
+  };
 
   const article = (
     <article className={clsx(FLEX, ROUNDED, BORDER, BORDER_SOLID, BORDER_STRONG, "p-3.5", "gap-2.5", BG_SURFACE)}>
@@ -59,7 +86,12 @@ const BookCard = ({ book, href }: Props) => {
         </header>
         <BookDescription description={description} />
         <footer className={clsx(FLEX, W_FULL, ITEMS_CENTER, JUSTIFY_BETWEEN)}>
-          <Emoji heartCount={likeCount} messageCount={reviewCount} />
+          <Emoji
+            heartCount={likeCount}
+            isLiked={liked}
+            handleClickHeart={contentId ? handleClickHeart : undefined}
+            messageCount={reviewCount}
+          />
           {dateInfo && <BookTime date={dateInfo.date} dateTime={dateInfo.dateTime} />}
         </footer>
       </div>

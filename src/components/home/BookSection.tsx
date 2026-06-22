@@ -1,16 +1,24 @@
 "use client";
 
 import { BookDetail } from "@/components/home/BookDetail";
-import { useContentStats } from "@/hooks/useContentStats";
+import { MOCK_USER_ID } from "@/constants/env";
+import { useContentDetail } from "@/hooks/useContentDetail";
 import { useCurrentSchedules } from "@/hooks/useCurrentSchedules";
+import { useToggleContentLike } from "@/hooks/useToggleContentLike";
 import { CategoryType } from "@/types/api";
 
 export function BookSection() {
   const { data: schedules } = useCurrentSchedules();
   const book = schedules?.find((s) => s.categoryType === CategoryType.BOOK);
-  const { data: stats } = useContentStats(book?.contentId);
+  const { data: content } = useContentDetail(book?.contentId, MOCK_USER_ID);
+  const { mutate: toggleLike, isPending: isTogglingLike } = useToggleContentLike(MOCK_USER_ID);
 
-  if (!book || !stats) return null;
+  if (!book || !content) return null;
+
+  const handleClickHeart = () => {
+    if (isTogglingLike) return;
+    toggleLike(book.contentId);
+  };
 
   return (
     <BookDetail
@@ -18,9 +26,11 @@ export function BookSection() {
       title={book.title}
       author={book.author}
       description={book.description}
-      likeCount={stats.likeCount}
-      reviewCount={stats.reviewCount}
-      averageRating={stats.averageRating}
+      liked={content.liked}
+      likeCount={content.likeCount}
+      reviewCount={content.reviewCount}
+      averageRating={content.averageRating}
+      onClickHeart={handleClickHeart}
     />
   );
 }

@@ -3,6 +3,8 @@ import type {
   ContentReviewsRequest,
   ContentReviewsResponse,
   ContentStats,
+  LikeToggleResponse,
+  ScheduledContent,
   Schedule,
   SchedulesRequest,
   SchedulesResponse,
@@ -27,7 +29,7 @@ export async function getSchedules(params: SchedulesRequest): Promise<SchedulesR
   return res.json();
 }
 
-export async function getCurrentSchedules(): Promise<Schedule[]> {
+export async function getCurrentSchedules(): Promise<ScheduledContent[]> {
   const res = await fetch(`${API_BASE_URL}/schedules/current`);
   if (!res.ok) {
     throw new Error(`Failed to fetch /schedules/current: ${res.status} ${res.statusText}`);
@@ -86,6 +88,42 @@ export async function getContentReviews(
   });
   if (!res.ok) {
     throw new Error(`Failed to fetch /contents/${contentId}/reviews: ${res.status} ${res.statusText}`);
+  }
+  return res.json();
+}
+
+export async function toggleContentLike(
+  contentId: number,
+  userId: number,
+): Promise<LikeToggleResponse> {
+  const res = await fetch(`${API_BASE_URL}/contents/${contentId}/like`, {
+    method: "POST",
+    headers: {
+      "X-User-Id": String(userId),
+    },
+  });
+  if (!res.ok) {
+    throw new Error(
+      `Failed to toggle /contents/${contentId}/like: ${res.status} ${res.statusText}`,
+    );
+  }
+  return res.json();
+}
+
+export async function toggleReviewLike(
+  reviewId: number,
+  userId: number,
+): Promise<LikeToggleResponse> {
+  const res = await fetch(`${API_BASE_URL}/reviews/${reviewId}/like`, {
+    method: "POST",
+    headers: {
+      "X-User-Id": String(userId),
+    },
+  });
+  if (!res.ok) {
+    throw new Error(
+      `Failed to toggle /reviews/${reviewId}/like: ${res.status} ${res.statusText}`,
+    );
   }
   return res.json();
 }
