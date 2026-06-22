@@ -17,6 +17,19 @@ export type Schedule = {
   averageRating: number;
 };
 
+export type ScheduledContent = {
+  scheduleId: number;
+  contentId: number;
+  categoryType: CategoryType;
+  title: string;
+  description: string;
+  author: string;
+  coverImageUrl: string;
+  startedAt: string;
+  endedAt: string;
+  memo?: string;
+};
+
 export type ContentStats = {
   reviewCount: number;
   likeCount: number;
@@ -38,6 +51,11 @@ export type ContentDetail = {
   reviewCount: number;
   likeCount: number;
   averageRating: number | null;
+};
+
+export type LikeToggleResponse = {
+  liked: boolean;
+  likeCount: number;
 };
 
 export type ContentReviewsRequest = {

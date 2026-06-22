@@ -45,7 +45,12 @@ const Logs = () => {
         {isReviewsPending && <Loading />}
         {isReviewsError && <Error />}
         {reviews.map((review) => (
-          <LogCard key={review.reviewId} review={review} currentUserId={MOCK_USER_ID} />
+          <LogCard
+            key={review.reviewId}
+            review={review}
+            currentUserId={MOCK_USER_ID}
+            contentId={contentId}
+          />
         ))}
         {hasNextPage && <div ref={sentinelRef} aria-hidden />}
         {isFetchingNextPage && <Loading />}

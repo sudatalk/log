@@ -5,17 +5,21 @@ export function BookDetail({
   title,
   author,
   description,
+  liked,
   likeCount,
   reviewCount,
   averageRating,
+  onClickHeart,
 }: {
   coverImageUrl: string;
   title: string;
   author: string;
   description: string;
+  liked: boolean;
   likeCount: number;
   reviewCount: number;
   averageRating: number | null;
+  onClickHeart?: () => void;
 }) {
   return (
     <div className="flex flex-1 flex-col items-start gap-2 self-stretch">
@@ -27,9 +31,11 @@ export function BookDetail({
       />
 
       <BookStats
+        liked={liked}
         likeCount={likeCount}
         reviewCount={reviewCount}
         averageRating={averageRating}
+        onClickHeart={onClickHeart}
       />
 
       <div className="flex flex-col items-start gap-1.5 self-stretch">
