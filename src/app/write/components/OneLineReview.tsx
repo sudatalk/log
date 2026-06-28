@@ -11,6 +11,7 @@ import {
   REQUIRED,
   ROUNDED,
   TEXT_LG,
+  TEXT_SM,
 } from "@/constants/tailwind";
 import clsx from "clsx";
 
@@ -41,8 +42,9 @@ const OneLineReview = (props: Props) => {
       <p className={clsx(TEXT_LG, REQUIRED)}>한줄평</p>
       <Input
         value={oneLine}
+        maxLength={30}
         onChange={(v) => handleChangeOneLine(v.target.value)}
-        className={clsx("p-5", ROUNDED)}
+        className={clsx("p-5", ROUNDED, TEXT_SM)}
         placeholder="이 책을 한 문장으로 표현한다면 ?"
       />
     </div>
