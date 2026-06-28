@@ -54,7 +54,7 @@ const Recommend = (props: Props) => {
             value={recommend}
             onChange={(e) => handleChangeRecommend(e.target.value)}
             placeholder="추천 질문에 답변을 작성해주세요"
-            className={clsx(ROUNDED)}
+            className={clsx(ROUNDED, FONT_SEMIBOLD, TEXT_SM)}
             style={{ minHeight: 80 }}
           />
         </div>

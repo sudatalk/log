@@ -30,7 +30,14 @@ const book = {
 };
 
 const ReviewWritePage = () => {
-  const { review, handleChangeOneLine, handleChangeStar, handleChangeRecommend } = useReview();
+  const {
+    review,
+    handleChangeOneLine,
+    handleChangeStar,
+    handleChangeRecommend,
+    handleChangeImpressiveSentence,
+    handleChangeImpressiveImpression,
+  } = useReview();
 
   return (
     <div className={clsx(FULL, FLEX, BG_BASE, FLEX_COL, H_FULL)}>
@@ -48,7 +55,12 @@ const ReviewWritePage = () => {
           <StarReview star={review.star} handleChangeStar={handleChangeStar} />
           <div className={clsx(FLEX, GAP_3, FLEX_COL)}>
             <Recommend recommend={review.recommend} handleChangeRecommend={handleChangeRecommend} />
-            <Impressive />
+            <Impressive
+              sentence={review.impressive.sentence}
+              impression={review.impressive.impression}
+              handleChangeImpressiveSentence={handleChangeImpressiveSentence}
+              handleChangeImpressiveImpression={handleChangeImpressiveImpression}
+            />
             <Free />
           </div>
         </div>

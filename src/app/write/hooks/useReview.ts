@@ -4,9 +4,9 @@ type Review = {
   oneLine: string;
   star: number;
   recommend: string;
-  impressive?: {
-    sentence?: string;
-    impression?: string;
+  impressive: {
+    sentence: string;
+    impression: string;
   };
   free?: string;
 };
@@ -15,6 +15,10 @@ const DEFAULT_VALUE = {
   oneLine: "",
   star: 0,
   recommend: "",
+  impressive: {
+    sentence: "",
+    impression: "",
+  },
 };
 
 const useReview = () => {
@@ -43,7 +47,34 @@ const useReview = () => {
     }));
   };
 
-  return { review, handleChangeOneLine, handleChangeStar, handleChangeRecommend };
+  const handleChangeImpressiveSentence = (value: string) => {
+    setReview((prev) => ({
+      ...prev,
+      impressive: {
+        ...prev.impressive,
+        sentence: value,
+      },
+    }));
+  };
+
+  const handleChangeImpressiveImpression = (value: string) => {
+    setReview((prev) => ({
+      ...prev,
+      impressive: {
+        ...prev.impressive,
+        impression: value,
+      },
+    }));
+  };
+
+  return {
+    review,
+    handleChangeOneLine,
+    handleChangeStar,
+    handleChangeRecommend,
+    handleChangeImpressiveSentence,
+    handleChangeImpressiveImpression,
+  };
 };
 
 export default useReview;
