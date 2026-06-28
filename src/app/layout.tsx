@@ -30,7 +30,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${pretendard.variable} ${notoSerifKR.variable} h-full antialiased`}>
-      <body className="min-h-full flex flex-col">
+      <body className="min-h-full flex flex-col w-full h-full">
         <KakaoSDKChecker>
           <QueryProvider>{children}</QueryProvider>
         </KakaoSDKChecker>
