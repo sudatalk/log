@@ -25,6 +25,8 @@ const DEFAULT_VALUE = {
 const useReview = () => {
   const [review, setReview] = useState<Review>(DEFAULT_VALUE);
 
+  const isRequired = !review.oneLine || !review.star;
+
   const handleChangeOneLine = (value: string) => {
     setReview((prev) => ({
       ...prev,
@@ -81,6 +83,8 @@ const useReview = () => {
     handleChangeImpressiveSentence,
     handleChangeImpressiveImpression,
     handleChangeFree,
+
+    isRequired,
   };
 };
 

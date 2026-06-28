@@ -8,6 +8,7 @@ import {
   FLEX_COL,
   FONT_MEDIUM,
   GAP_5,
+  REQUIRED,
   ROUNDED,
   TEXT_LG,
 } from "@/constants/tailwind";
@@ -38,7 +39,7 @@ const StarReview = (props: Props) => {
         FONT_MEDIUM,
       )}
     >
-      <p className={TEXT_LG}>별점을 선택해주세요</p>
+      <p className={clsx(TEXT_LG, REQUIRED)}>별점을 선택해주세요</p>
       <div className={clsx(FLEX, GAP_5)}>
         {Array.from({ length: 5 }).map((_, index) => {
           const currentIndex = index + 1;

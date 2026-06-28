@@ -38,6 +38,8 @@ const ReviewWritePage = () => {
     handleChangeImpressiveSentence,
     handleChangeImpressiveImpression,
     handleChangeFree,
+
+    isRequired,
   } = useReview();
 
   return (
@@ -65,7 +67,7 @@ const ReviewWritePage = () => {
             <Free free={review.free} handleChangeFree={handleChangeFree} />
           </div>
         </div>
-        <WriteReviewButton />
+        <WriteReviewButton disabled={isRequired} />
       </div>
     </div>
   );

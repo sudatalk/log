@@ -36,7 +36,7 @@ type Props = {
 const Impressive = (props: Props) => {
   const { sentence, impression, handleChangeImpressiveSentence, handleChangeImpressiveImpression } = props;
 
-  const { isOpen, handleToggle } = useDisclosure(true);
+  const { isOpen, handleToggle } = useDisclosure();
 
   return (
     <div className={clsx(FLEX, FLEX_COL, ROUNDED, BORDER, BORDER_SOLID, BORDER_STRONG, "p-3.5", GAP_2, BG_SURFACE)}>

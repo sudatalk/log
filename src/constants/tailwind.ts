@@ -85,3 +85,5 @@ export const OBJECT_COVER = "object-cover";
 export const BG_BLACK = "bg-black";
 
 export const BG_WHITE = "bg-white";
+
+export const REQUIRED = "after:ml-1 after:text-red-500 after:content-['*']";

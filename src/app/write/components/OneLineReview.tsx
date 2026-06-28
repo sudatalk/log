@@ -8,6 +8,7 @@ import {
   FLEX,
   FLEX_COL,
   FONT_MEDIUM,
+  REQUIRED,
   ROUNDED,
   TEXT_LG,
 } from "@/constants/tailwind";
@@ -37,7 +38,7 @@ const OneLineReview = (props: Props) => {
         FONT_MEDIUM,
       )}
     >
-      <p className={TEXT_LG}>한줄평</p>
+      <p className={clsx(TEXT_LG, REQUIRED)}>한줄평</p>
       <Input
         value={oneLine}
         onChange={(v) => handleChangeOneLine(v.target.value)}
