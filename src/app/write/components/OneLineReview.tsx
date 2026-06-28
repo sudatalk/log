@@ -1,6 +1,7 @@
 import { Input } from "@/components/ui/input";
 import {
   BG_SURFACE,
+  BG_WHITE,
   BORDER,
   BORDER_ACCENT,
   BORDER_SOLID,
@@ -44,7 +45,7 @@ const OneLineReview = (props: Props) => {
         value={oneLine}
         maxLength={30}
         onChange={(v) => handleChangeOneLine(v.target.value)}
-        className={clsx("p-5", ROUNDED, TEXT_SM)}
+        className={clsx("p-5", ROUNDED, TEXT_SM, BG_WHITE)}
         placeholder="이 책을 한 문장으로 표현한다면 ?"
       />
     </div>
