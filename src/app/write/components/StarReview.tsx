@@ -14,7 +14,14 @@ import {
 import clsx from "clsx";
 import { Star } from "lucide-react";
 
-const StarReview = () => {
+type Props = {
+  star: number;
+  handleChangeStar: (value: number) => void;
+};
+
+const StarReview = (props: Props) => {
+  const { star, handleChangeStar } = props;
+
   return (
     <div
       className={clsx(
@@ -33,11 +40,17 @@ const StarReview = () => {
     >
       <p className={TEXT_LG}>별점을 선택해주세요</p>
       <div className={clsx(FLEX, GAP_5)}>
-        <Star size={33} strokeWidth={1.5} />
-        <Star size={33} strokeWidth={1.5} />
-        <Star size={33} strokeWidth={1.5} />
-        <Star size={33} strokeWidth={1.5} />
-        <Star size={33} strokeWidth={1.5} />
+        {Array.from({ length: 5 }).map((_, index) => {
+          const currentIndex = index + 1;
+
+          const isChecked = currentIndex <= star;
+
+          const strokeWidth = isChecked ? 0 : 1.5;
+
+          const fill = isChecked ? "yellow" : "white";
+
+          return <Star key={index} strokeWidth={strokeWidth} fill={fill} onClick={() => handleChangeStar(index + 1)} />;
+        })}
       </div>
     </div>
   );
