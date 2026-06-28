@@ -3,7 +3,7 @@ import { useState } from "react";
 type Review = {
   oneLine: string;
   star: number;
-  recommend?: string;
+  recommend: string;
   impressive?: {
     sentence?: string;
     impression?: string;
@@ -14,6 +14,7 @@ type Review = {
 const DEFAULT_VALUE = {
   oneLine: "",
   star: 0,
+  recommend: "",
 };
 
 const useReview = () => {
@@ -35,7 +36,14 @@ const useReview = () => {
     }));
   };
 
-  return { review, handleChangeOneLine, handleChangeStar };
+  const handleChangeRecommend = (value: string) => {
+    setReview((prev) => ({
+      ...prev,
+      recommend: value,
+    }));
+  };
+
+  return { review, handleChangeOneLine, handleChangeStar, handleChangeRecommend };
 };
 
 export default useReview;
