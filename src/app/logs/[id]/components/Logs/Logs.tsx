@@ -3,7 +3,6 @@
 import BookCard from "@/app/books/components/Books/BookCard/BookCard";
 import Error from "@/components/Error";
 import Loading from "@/components/Loading";
-import { MOCK_USER_ID } from "@/constants/env";
 import { FLEX, FLEX_COL, W_FULL } from "@/constants/tailwind";
 import { useContentDetail } from "@/hooks/useContentDetail";
 import { useContentReviews } from "@/hooks/useContentReviews";
@@ -15,11 +14,7 @@ import LogCard from "./LogCard";
 const Logs = () => {
   const params = useParams<{ id: string }>();
   const contentId = Number(params.id);
-  const {
-    data: content,
-    isPending: isContentPending,
-    isError: isContentError,
-  } = useContentDetail(contentId, MOCK_USER_ID);
+  const { data: content, isPending: isContentPending, isError: isContentError } = useContentDetail(contentId);
   const {
     reviews,
     fetchNextPage,
@@ -27,7 +22,7 @@ const Logs = () => {
     isFetchingNextPage,
     isPending: isReviewsPending,
     isError: isReviewsError,
-  } = useContentReviews(contentId, MOCK_USER_ID);
+  } = useContentReviews(contentId);
 
   const sentinelRef = useInfiniteScroll({
     onIntersect: () => {
@@ -45,12 +40,7 @@ const Logs = () => {
         {isReviewsPending && <Loading />}
         {isReviewsError && <Error />}
         {reviews.map((review) => (
-          <LogCard
-            key={review.reviewId}
-            review={review}
-            currentUserId={MOCK_USER_ID}
-            contentId={contentId}
-          />
+          <LogCard key={review.reviewId} review={review} contentId={contentId} />
         ))}
         {hasNextPage && <div ref={sentinelRef} aria-hidden />}
         {isFetchingNextPage && <Loading />}

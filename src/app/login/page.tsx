@@ -1,6 +1,16 @@
 "use client";
 
-import { BG_BASE, CENTER, FLEX, FLEX_2, FLEX_8, FLEX_COL, ITEMS_CENTER, MIN_H_DVH, W_FULL } from "@/constants/tailwind";
+import {
+  BG_BASE,
+  CENTER,
+  FLEX,
+  FLEX_2,
+  FLEX_8,
+  FLEX_COL,
+  ITEMS_CENTER,
+  MIN_H_DVH,
+  W_FULL,
+} from "@/constants/tailwind";
 import clsx from "clsx";
 import Image from "next/image";
 import KakaoLoginButton from "./components/KakaoLoginButton";
@@ -11,6 +21,7 @@ import { UserStatus } from "@/types/api";
 import { useRouter } from "next/navigation";
 import { Spinner } from "@/components/ui/spinner";
 import { REDIRECT_URL_KEY } from "@/constants/router";
+import axios from "axios";
 
 const LoginPage = () => {
   const router = useRouter();
@@ -39,7 +50,14 @@ const LoginPage = () => {
 
             const userResponse = await getCheckUser({ appUserId: +appUserId });
 
-            if (!userResponse.registered || userResponse.status === UserStatus.WITHDRAW) return;
+            if (
+              !userResponse.registered ||
+              userResponse.status === UserStatus.WITHDRAW
+            )
+              return;
+
+            axios.defaults.headers.common["X-User-Id"] =
+              userResponse.userId.toString();
 
             router.replace(redirectUrl);
           }

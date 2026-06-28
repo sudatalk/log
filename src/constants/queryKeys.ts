@@ -4,11 +4,8 @@ export const queryKeys = {
     current: ["schedules", "current"] as const,
   },
   contents: {
-    stats: (contentId: number | undefined) =>
-      ["contents", contentId, "stats"] as const,
-    detail: (contentId: number | undefined, userId: number | undefined) =>
-      ["contents", contentId, "detail", userId] as const,
-    reviews: (contentId: number | undefined, userId: number | undefined) =>
-      ["contents", contentId, "reviews", userId] as const,
+    stats: (contentId: number | undefined) => ["contents", contentId, "stats"] as const,
+    detail: (contentId: number | undefined) => ["contents", contentId, "detail"] as const,
+    reviews: (contentId: number | undefined) => ["contents", contentId, "reviews"] as const,
   },
 } as const;

@@ -5,15 +5,12 @@ import { InfiniteData, useInfiniteQuery } from "@tanstack/react-query";
 
 const PAGE_SIZE = 20;
 
-export function contentReviewsQueryOptions(
-  contentId: number | undefined,
-  userId: number | undefined,
-) {
+export function contentReviewsQueryOptions(contentId: number | undefined) {
   return {
-    queryKey: queryKeys.contents.reviews(contentId, userId),
+    queryKey: queryKeys.contents.reviews(contentId),
     initialPageParam: 0,
     queryFn: ({ pageParam }: { pageParam: number }) =>
-      getContentReviews(contentId!, { size: PAGE_SIZE, page: pageParam }, userId),
+      getContentReviews(contentId!, { size: PAGE_SIZE, page: pageParam }),
     getNextPageParam: (lastPage: ContentReviewsResponse) => {
       const nextPage = lastPage.number + 1;
       return nextPage < lastPage.totalPages ? nextPage : undefined;
@@ -22,17 +19,14 @@ export function contentReviewsQueryOptions(
   };
 }
 
-export function useContentReviews(
-  contentId: number | undefined,
-  userId?: number,
-) {
+export function useContentReviews(contentId: number | undefined) {
   const query = useInfiniteQuery<
     ContentReviewsResponse,
     Error,
     InfiniteData<ContentReviewsResponse, number>,
     ReturnType<typeof queryKeys.contents.reviews>,
     number
-  >(contentReviewsQueryOptions(contentId, userId));
+  >(contentReviewsQueryOptions(contentId));
 
   const reviews = query.data?.pages.flatMap((page) => page.content) ?? [];
 

@@ -20,6 +20,7 @@ import AgreementModal from "./components/AgreementModal/AgreementModal";
 import useRegister from "./hooks/useRegister";
 import { useRouter, useSearchParams } from "next/navigation";
 import { REDIRECT_URL_KEY } from "@/constants/router";
+import axios from "axios";
 
 const RegisterPage = () => {
   const router = useRouter();
@@ -57,12 +58,14 @@ const RegisterPage = () => {
 
         // TODO : 프로필 사진 추가
 
-        await mutateAsync({
+        const response = await mutateAsync({
           appUserId: +appUserId,
           nickname,
           email,
           agreedTermsIds: [],
         });
+
+        axios.defaults.headers.common["X-User-Id"] = response.id;
 
         router.replace(redirectUrl || "/");
       } catch {
