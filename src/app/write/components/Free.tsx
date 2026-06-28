@@ -1,18 +1,14 @@
-import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import {
-  BG_BASE,
   BG_SURFACE,
   BG_WHITE,
   BORDER,
-  BORDER_ACCENT,
   BORDER_SOLID,
   BORDER_STRONG,
   CENTER,
   FLEX,
   FLEX_8,
   FLEX_COL,
-  FONT_MEDIUM,
   FONT_SEMIBOLD,
   GAP_1,
   GAP_2,

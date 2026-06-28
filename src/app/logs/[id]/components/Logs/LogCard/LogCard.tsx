@@ -23,6 +23,7 @@ import Description from "./Description";
 import LogBadge from "./LogBadge";
 import LogCardHeader from "./LogCardHeader";
 import { CardType } from "./types/card";
+import useGetUserId from "@/hooks/useGetUserId";
 
 const LOG_BADGE = (selectedType: string) => [
   {
@@ -68,16 +69,14 @@ const getAvailableTypes = (review: ReviewListItem) => {
 
 type Props = {
   review: ReviewListItem;
-  currentUserId: number;
   contentId: number;
 };
 
-const LogCard = ({ review, currentUserId, contentId }: Props) => {
-  const isMyReview = review.userId === currentUserId;
-  const { mutate: toggleLike, isPending: isTogglingLike } = useToggleReviewLike(
-    contentId,
-    currentUserId,
-  );
+const LogCard = ({ review, contentId }: Props) => {
+  const { userId } = useGetUserId();
+
+  const isMyReview = review.userId === userId;
+  const { mutate: toggleLike, isPending: isTogglingLike } = useToggleReviewLike(contentId);
   const availableTypes = useMemo(() => getAvailableTypes(review), [review]);
   const [selectedType, setSelectedType] = useState(availableTypes[0] ?? CardType.ONE_LINE);
   const badges = LOG_BADGE(selectedType).filter((badge) => availableTypes.includes(badge.type));

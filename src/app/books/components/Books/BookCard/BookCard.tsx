@@ -1,7 +1,6 @@
 "use client";
 
 import Emoji from "@/components/shared/Emoji";
-import { MOCK_USER_ID } from "@/constants/env";
 import {
   BG_SURFACE,
   BORDER,
@@ -66,7 +65,7 @@ const BookCard = ({ book, href }: Props) => {
   const contentId = book.contentId ?? book.id;
   const dateInfo = endedAt ? formatDate(endedAt) : null;
 
-  const { mutate: toggleLike, isPending: isTogglingLike } = useToggleContentLike(MOCK_USER_ID);
+  const { mutate: toggleLike, isPending: isTogglingLike } = useToggleContentLike();
 
   const handleClickHeart = (e: React.MouseEvent) => {
     e.preventDefault();

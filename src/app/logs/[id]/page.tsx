@@ -1,7 +1,6 @@
 import { BottomNav } from "@/components/BottomNav";
 import { Header } from "@/components/Header";
 import { QueryHydrator } from "@/components/QueryHydrator";
-import { MOCK_USER_ID } from "@/constants/env";
 import { BG_BASE, FLEX, FLEX_COL, FULL } from "@/constants/tailwind";
 import { contentDetailQueryOptions } from "@/hooks/useContentDetail";
 import { getQueryClient } from "@/lib/queryClient";
@@ -19,7 +18,7 @@ export default async function LogsPage({ params }: Props) {
   const queryClient = getQueryClient();
 
   if (!Number.isNaN(contentId)) {
-    await queryClient.prefetchQuery(contentDetailQueryOptions(contentId, MOCK_USER_ID));
+    await queryClient.prefetchQuery(contentDetailQueryOptions(contentId));
   }
 
   return (
