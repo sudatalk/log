@@ -83,3 +83,5 @@ export const BORDER_SOLID = "border-solid";
 export const OBJECT_COVER = "object-cover";
 
 export const BG_BLACK = "bg-black";
+
+export const BG_WHITE = "bg-white";

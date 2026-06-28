@@ -8,7 +8,7 @@ type Review = {
     sentence: string;
     impression: string;
   };
-  free?: string;
+  free: string;
 };
 
 const DEFAULT_VALUE = {
@@ -19,12 +19,11 @@ const DEFAULT_VALUE = {
     sentence: "",
     impression: "",
   },
+  free: "",
 };
 
 const useReview = () => {
   const [review, setReview] = useState<Review>(DEFAULT_VALUE);
-
-  console.log("review : ", review);
 
   const handleChangeOneLine = (value: string) => {
     setReview((prev) => ({
@@ -67,6 +66,13 @@ const useReview = () => {
     }));
   };
 
+  const handleChangeFree = (value: string) => {
+    setReview((prev) => ({
+      ...prev,
+      free: value,
+    }));
+  };
+
   return {
     review,
     handleChangeOneLine,
@@ -74,6 +80,7 @@ const useReview = () => {
     handleChangeRecommend,
     handleChangeImpressiveSentence,
     handleChangeImpressiveImpression,
+    handleChangeFree,
   };
 };
 

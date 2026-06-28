@@ -3,6 +3,7 @@ import { Textarea } from "@/components/ui/textarea";
 import {
   BG_BASE,
   BG_SURFACE,
+  BG_WHITE,
   BORDER,
   BORDER_ACCENT,
   BORDER_SOLID,
@@ -59,7 +60,7 @@ const Impressive = (props: Props) => {
             value={impression}
             onChange={(e) => handleChangeImpressiveImpression(e.target.value)}
             placeholder="이 문장이 인상깊었던 이유를 설명해주세요"
-            className={clsx(ROUNDED, FONT_SEMIBOLD, TEXT_SM)}
+            className={clsx(ROUNDED, FONT_SEMIBOLD, TEXT_SM, BG_WHITE)}
             style={{ minHeight: 80 }}
           />
         </div>

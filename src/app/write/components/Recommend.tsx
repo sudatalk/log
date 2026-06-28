@@ -3,6 +3,7 @@ import { Textarea } from "@/components/ui/textarea";
 import {
   BG_BASE,
   BG_SURFACE,
+  BG_WHITE,
   BORDER,
   BORDER_ACCENT,
   BORDER_SOLID,
@@ -54,7 +55,7 @@ const Recommend = (props: Props) => {
             value={recommend}
             onChange={(e) => handleChangeRecommend(e.target.value)}
             placeholder="추천 질문에 답변을 작성해주세요"
-            className={clsx(ROUNDED, FONT_SEMIBOLD, TEXT_SM)}
+            className={clsx(ROUNDED, FONT_SEMIBOLD, TEXT_SM, BG_WHITE)}
             style={{ minHeight: 80 }}
           />
         </div>
