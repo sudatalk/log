@@ -131,6 +131,18 @@ export async function toggleReviewLike(
   return res.json();
 }
 
+export async function deleteReview(reviewId: number, userId: number): Promise<void> {
+  const res = await fetch(`${API_BASE_URL}/reviews/${reviewId}`, {
+    method: "DELETE",
+    headers: {
+      "X-User-Id": String(userId),
+    },
+  });
+  if (!res.ok) {
+    throw new Error(`Failed to delete /reviews/${reviewId}: ${res.status} ${res.statusText}`);
+  }
+}
+
 export async function getReviewComments(
   reviewId: number,
   params: ReviewCommentsRequest,
