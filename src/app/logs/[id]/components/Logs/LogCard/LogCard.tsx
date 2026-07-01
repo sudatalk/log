@@ -1,7 +1,6 @@
 "use client";
 
 import Emoji from "@/components/shared/Emoji";
-import { Button } from "@/components/ui/button";
 import {
   BG_SURFACE,
   BORDER,
@@ -9,7 +8,6 @@ import {
   BORDER_STRONG,
   FLEX,
   FLEX_COL,
-  FONT_SEMIBOLD,
   ITEMS_CENTER,
   JUSTIFY_BETWEEN,
   ROUNDED,
@@ -22,6 +20,8 @@ import { useToggleReviewLike } from "@/hooks/useToggleReviewLike";
 import Description from "./Description";
 import LogBadge from "./LogBadge";
 import LogCardHeader from "./LogCardHeader";
+import LogCardMenu from "./LogCardMenu";
+import Rating from "./Rating";
 import ReviewCommentSheet from "./ReviewCommentSheet";
 import { CardType } from "./types/card";
 
@@ -116,23 +116,36 @@ const LogCard = ({ review, currentUserId, contentId }: Props) => {
           "p-2.5",
         )}
       >
-      <LogCardHeader
-        nickname={review.nickname}
-        profileImageUrl={review.profileImageUrl}
-        createdAt={review.createdAt}
-        rating={review.rating}
-      />
-      {badges.length > 0 && (
-        <div className={clsx(FLEX, ITEMS_CENTER, "gap-[5px]")}>
-          {badges.map((badge) => (
-            <LogBadge key={badge.label} {...badge} onClickBadge={handleClickBadge} />
-          ))}
-        </div>
-      )}
+        <LogCardHeader
+          nickname={review.nickname}
+          profileImageUrl={review.profileImageUrl}
+          createdAt={review.createdAt}
+          action={
+            <LogCardMenu
+              reviewId={review.reviewId}
+              contentId={contentId}
+              userId={currentUserId}
+              isMyReview={isMyReview}
+            />
+          }
+        />
+        {(badges.length > 0 || review.rating > 0) && (
+          <div className={clsx(FLEX, W_FULL, ITEMS_CENTER, JUSTIFY_BETWEEN, "gap-2.5")}>
+            {badges.length > 0 ? (
+              <div className={clsx(FLEX, ITEMS_CENTER, "gap-[5px]")}>
+                {badges.map((badge) => (
+                  <LogBadge key={badge.label} {...badge} onClickBadge={handleClickBadge} />
+                ))}
+              </div>
+            ) : (
+              <div />
+            )}
+            <Rating value={review.rating} />
+          </div>
+        )}
 
-      {availableTypes.includes(selectedType) && <Description type={selectedType} review={review} />}
+        {availableTypes.includes(selectedType) && <Description type={selectedType} review={review} />}
 
-      <div className={clsx(FLEX, ITEMS_CENTER, JUSTIFY_BETWEEN)}>
         <Emoji
           heartCount={review.likeCount}
           isLiked={review.isLiked}
@@ -140,12 +153,6 @@ const LogCard = ({ review, currentUserId, contentId }: Props) => {
           messageCount={review.commentCount}
           handleClickMessage={handleClickMessage}
         />
-        {isMyReview && (
-          <Button className={clsx("px-5 h-8", FONT_SEMIBOLD)} size="sm">
-            수정
-          </Button>
-        )}
-      </div>
       </div>
 
       <ReviewCommentSheet

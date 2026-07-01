@@ -12,7 +12,6 @@ import {
 import { formatReviewDate } from "@/lib/date";
 import clsx from "clsx";
 import { useState } from "react";
-import Rating from "./Rating";
 
 type ProfileAvatarProps = {
   nickname: string;
@@ -51,10 +50,10 @@ type Props = {
   nickname: string;
   profileImageUrl: string;
   createdAt: string;
-  rating: number;
+  action?: React.ReactNode;
 };
 
-const LogCardHeader = ({ nickname, profileImageUrl, createdAt, rating }: Props) => {
+const LogCardHeader = ({ nickname, profileImageUrl, createdAt, action }: Props) => {
   const date = formatReviewDate(createdAt);
   const dateTime = createdAt.slice(0, 10);
 
@@ -69,7 +68,7 @@ const LogCardHeader = ({ nickname, profileImageUrl, createdAt, rating }: Props) 
           </time>
         </div>
       </div>
-      <Rating value={rating} />
+      {action}
     </div>
   );
 };
