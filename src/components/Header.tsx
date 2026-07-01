@@ -1,13 +1,23 @@
-import { ChevronLeft } from "lucide-react";
+"use client";
+
 import { Logo } from "@/components/Logo";
+import { ChevronLeft } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 export function Header() {
+  const router = useRouter();
+
   return (
     <header className="sticky top-0 z-10 bg-surface">
       <div className="mx-auto flex w-full items-center">
-        <div className="flex h-10 w-[43px] items-center justify-center">
+        <button
+          type="button"
+          className="flex h-10 w-[43px] items-center justify-center"
+          onClick={() => router.back()}
+          aria-label="뒤로 가기"
+        >
           <ChevronLeft className="size-6 text-ink-secondary" />
-        </div>
+        </button>
         <div className="flex flex-1 items-center justify-center px-2 py-2">
           <Logo />
         </div>

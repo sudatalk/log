@@ -34,7 +34,8 @@ export type BookCardData = {
   averageRating: number | null;
   liked?: boolean;
   likeCount: number;
-  reviewCount: number;
+  commentCount?: number;
+  reviewCount?: number;
   endedAt?: string;
 };
 
@@ -60,9 +61,11 @@ const BookCard = ({ book, href }: Props) => {
     averageRating,
     liked = false,
     likeCount,
+    commentCount,
     reviewCount,
     endedAt,
   } = book;
+  const messageCount = commentCount ?? reviewCount ?? 0;
   const contentId = book.contentId ?? book.id;
   const dateInfo = endedAt ? formatDate(endedAt) : null;
 
@@ -90,7 +93,7 @@ const BookCard = ({ book, href }: Props) => {
             heartCount={likeCount}
             isLiked={liked}
             handleClickHeart={contentId ? handleClickHeart : undefined}
-            messageCount={reviewCount}
+            messageCount={messageCount}
           />
           {dateInfo && <BookTime date={dateInfo.date} dateTime={dateInfo.dateTime} />}
         </footer>

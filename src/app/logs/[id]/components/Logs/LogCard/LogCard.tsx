@@ -22,6 +22,7 @@ import { useToggleReviewLike } from "@/hooks/useToggleReviewLike";
 import Description from "./Description";
 import LogBadge from "./LogBadge";
 import LogCardHeader from "./LogCardHeader";
+import ReviewCommentSheet from "./ReviewCommentSheet";
 import { CardType } from "./types/card";
 
 const LOG_BADGE = (selectedType: string) => [
@@ -80,6 +81,7 @@ const LogCard = ({ review, currentUserId, contentId }: Props) => {
   );
   const availableTypes = useMemo(() => getAvailableTypes(review), [review]);
   const [selectedType, setSelectedType] = useState(availableTypes[0] ?? CardType.ONE_LINE);
+  const [isCommentSheetOpen, setIsCommentSheetOpen] = useState(false);
   const badges = LOG_BADGE(selectedType).filter((badge) => availableTypes.includes(badge.type));
 
   const handleClickBadge = (value: string) => {
@@ -93,21 +95,27 @@ const LogCard = ({ review, currentUserId, contentId }: Props) => {
     toggleLike(review.reviewId);
   };
 
+  const handleClickMessage = (e: React.MouseEvent) => {
+    e.preventDefault();
+    setIsCommentSheetOpen(true);
+  };
+
   return (
-    <div
-      className={clsx(
-        FLEX,
-        FLEX_COL,
-        W_FULL,
-        BG_SURFACE,
-        ROUNDED,
-        BORDER,
-        BORDER_SOLID,
-        BORDER_STRONG,
-        "gap-2.5",
-        "p-2.5",
-      )}
-    >
+    <>
+      <div
+        className={clsx(
+          FLEX,
+          FLEX_COL,
+          W_FULL,
+          BG_SURFACE,
+          ROUNDED,
+          BORDER,
+          BORDER_SOLID,
+          BORDER_STRONG,
+          "gap-2.5",
+          "p-2.5",
+        )}
+      >
       <LogCardHeader
         nickname={review.nickname}
         profileImageUrl={review.profileImageUrl}
@@ -130,6 +138,7 @@ const LogCard = ({ review, currentUserId, contentId }: Props) => {
           isLiked={review.isLiked}
           handleClickHeart={handleClickHeart}
           messageCount={review.commentCount}
+          handleClickMessage={handleClickMessage}
         />
         {isMyReview && (
           <Button className={clsx("px-5 h-8", FONT_SEMIBOLD)} size="sm">
@@ -137,7 +146,16 @@ const LogCard = ({ review, currentUserId, contentId }: Props) => {
           </Button>
         )}
       </div>
-    </div>
+      </div>
+
+      <ReviewCommentSheet
+        reviewId={review.reviewId}
+        contentId={contentId}
+        userId={currentUserId}
+        isOpen={isCommentSheetOpen}
+        onClose={() => setIsCommentSheetOpen(false)}
+      />
+    </>
   );
 };
 
