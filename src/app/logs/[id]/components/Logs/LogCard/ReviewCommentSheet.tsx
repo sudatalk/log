@@ -8,7 +8,7 @@ import { formatReviewDate } from "@/lib/date";
 import type { ReviewComment } from "@/types/api";
 import clsx from "clsx";
 import { ArrowUp } from "lucide-react";
-import { FormEvent, useState } from "react";
+import { FormEvent, useLayoutEffect, useRef, useState } from "react";
 import { Sheet } from "react-modal-sheet";
 
 const SHEET_HEIGHT = 375;
@@ -89,6 +89,8 @@ type Props = {
 
 const ReviewCommentSheet = ({ reviewId, contentId, userId, isOpen, onClose }: Props) => {
   const [inputValue, setInputValue] = useState("");
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const shouldScrollToTopRef = useRef(false);
   const {
     comments,
     fetchNextPage,
@@ -109,13 +111,26 @@ const ReviewCommentSheet = ({ reviewId, contentId, userId, isOpen, onClose }: Pr
     enabled: hasNextPage && !isFetchingNextPage,
   });
 
+  useLayoutEffect(() => {
+    if (!shouldScrollToTopRef.current) return;
+
+    const container = scrollContainerRef.current;
+    if (!container) return;
+
+    container.scrollTop = 0;
+    shouldScrollToTopRef.current = false;
+  }, [comments]);
+
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
     const trimmed = inputValue.trim();
     if (!trimmed || isSubmitting) return;
 
     createComment(trimmed, {
-      onSuccess: () => setInputValue(""),
+      onSuccess: () => {
+        setInputValue("");
+        shouldScrollToTopRef.current = true;
+      },
     });
   };
 
@@ -138,6 +153,7 @@ const ReviewCommentSheet = ({ reviewId, contentId, userId, isOpen, onClose }: Pr
         <Sheet.Content disableDrag unstyled className="min-h-0 flex-1 overflow-hidden">
           <div className={clsx(FLEX, FLEX_COL, "gap-4 px-2 pb-5")}>
             <div
+              ref={scrollContainerRef}
               className={clsx(
                 FLEX,
                 FLEX_COL,

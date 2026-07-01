@@ -13,7 +13,7 @@ export type Schedule = {
   startedAt: string;
   endedAt: string;
   likeCount: number;
-  reviewCount: number;
+  commentCount: number;
   averageRating: number;
 };
 
