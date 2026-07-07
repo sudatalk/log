@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { CENTER, FLEX, FLEX_1, GAP_5, ROUNDED, TEXT_XL, W_FULL } from "@/constants/tailwind";
+import { CENTER, FLEX, GAP_5, ROUNDED, TEXT_XL, W_FULL } from "@/constants/tailwind";
 import clsx from "clsx";
 
 type Props = {

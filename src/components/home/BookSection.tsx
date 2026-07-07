@@ -1,7 +1,6 @@
 "use client";
 
 import { BookDetail } from "@/components/home/BookDetail";
-import { MOCK_USER_ID } from "@/constants/env";
 import { useContentDetail } from "@/hooks/useContentDetail";
 import { useCurrentSchedules } from "@/hooks/useCurrentSchedules";
 import { useToggleContentLike } from "@/hooks/useToggleContentLike";
@@ -10,8 +9,8 @@ import { CategoryType } from "@/types/api";
 export function BookSection() {
   const { data: schedules } = useCurrentSchedules();
   const book = schedules?.find((s) => s.categoryType === CategoryType.BOOK);
-  const { data: content } = useContentDetail(book?.contentId, MOCK_USER_ID);
-  const { mutate: toggleLike, isPending: isTogglingLike } = useToggleContentLike(MOCK_USER_ID);
+  const { data: content } = useContentDetail(book?.contentId);
+  const { mutate: toggleLike, isPending: isTogglingLike } = useToggleContentLike();
 
   if (!book || !content) return null;
 
