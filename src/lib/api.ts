@@ -4,6 +4,10 @@ import type {
   ContentReviewsResponse,
   ContentStats,
   LikeToggleResponse,
+  ReviewComment,
+  ReviewCommentCreateRequest,
+  ReviewCommentsRequest,
+  ReviewCommentsResponse,
   ScheduledContent,
   SchedulesRequest,
   SchedulesResponse,
@@ -119,6 +123,56 @@ export async function toggleReviewLike(reviewId: number): Promise<LikeToggleResp
   }
 
   return res.data;
+}
+
+export async function deleteReview(reviewId: number, userId: number): Promise<void> {
+  const res = await fetch(`${API_BASE_URL}/reviews/${reviewId}`, {
+    method: "DELETE",
+    headers: {
+      "X-User-Id": String(userId),
+    },
+  });
+  if (!res.ok) {
+    throw new Error(`Failed to delete /reviews/${reviewId}: ${res.status} ${res.statusText}`);
+  }
+}
+
+export async function getReviewComments(
+  reviewId: number,
+  params: ReviewCommentsRequest,
+): Promise<ReviewCommentsResponse> {
+  const query = new URLSearchParams({
+    page: String(params.page),
+    size: String(params.size),
+  });
+  const res = await fetch(`${API_BASE_URL}/reviews/${reviewId}/comments?${query}`);
+  if (!res.ok) {
+    throw new Error(
+      `Failed to fetch /reviews/${reviewId}/comments: ${res.status} ${res.statusText}`,
+    );
+  }
+  return res.json();
+}
+
+export async function createReviewComment(
+  reviewId: number,
+  userId: number,
+  data: ReviewCommentCreateRequest,
+): Promise<ReviewComment> {
+  const res = await fetch(`${API_BASE_URL}/reviews/${reviewId}/comments`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "X-User-Id": String(userId),
+    },
+    body: JSON.stringify(data),
+  });
+  if (!res.ok) {
+    throw new Error(
+      `Failed to create /reviews/${reviewId}/comments: ${res.status} ${res.statusText}`,
+    );
+  }
+  return res.json();
 }
 
 export async function postSignUpUser(data: UserSignUpRequest): Promise<UserSignUpResponse> {
