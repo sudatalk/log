@@ -2,7 +2,7 @@ import { useState } from "react";
 
 const useRegisterForm = () => {
   const [nickname, setNickname] = useState("");
-  const [selected, setSelected] = useState(0);
+  const [selected, setSelected] = useState<number>();
 
   return {
     nickname,

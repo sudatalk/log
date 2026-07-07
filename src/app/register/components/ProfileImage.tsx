@@ -4,7 +4,7 @@ import { PROFILE_IMAGE_LIST } from "../constants/profiles";
 import { useId } from "react";
 
 type Props = {
-  selected: number;
+  selected?: number;
   setSelected: (index: number) => void;
 };
 

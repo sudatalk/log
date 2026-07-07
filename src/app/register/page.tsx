@@ -38,7 +38,7 @@ const RegisterPage = () => {
 
   const { nickname, setNickname, selected, setSelected } = useRegisterForm();
 
-  const disabled = isPending || !nickname.trim();
+  const disabled = isPending || !nickname.trim() || !selected;
 
   const handleOpenAgreementModal = () => {
     setIsOpen(true);
