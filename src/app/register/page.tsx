@@ -1,26 +1,30 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { Field, FieldDescription, FieldLabel } from "@/components/ui/field";
-import { Input } from "@/components/ui/input";
+
 import {
   BG_BASE,
   EMBER_ICON,
   FLEX,
   FLEX_1,
   FLEX_COL,
+  GAP_5,
   H_FULL,
   JUSTIFY_BETWEEN,
   MIN_H_DVH,
   W_FULL,
 } from "@/constants/tailwind";
 import clsx from "clsx";
-import { useId, useState } from "react";
+import { useState } from "react";
 import AgreementModal from "./components/AgreementModal/AgreementModal";
 import useRegister from "./hooks/useRegister";
 import { useRouter, useSearchParams } from "next/navigation";
 import { REDIRECT_URL_KEY } from "@/constants/router";
 import axios from "axios";
+import ProfileImage from "./components/ProfileImage";
+import Nickname from "./components/Nickname";
+import useRegisterForm from "./hooks/useRegisterForm";
+import { PROFILE_IMAGE_LIST } from "./constants/profiles";
 
 const RegisterPage = () => {
   const router = useRouter();
@@ -32,11 +36,9 @@ const RegisterPage = () => {
 
   const [isOpen, setIsOpen] = useState(false);
 
-  const [nickname, setNickname] = useState("");
+  const { nickname, setNickname, selected, setSelected } = useRegisterForm();
 
-  const nicknameId = useId();
-
-  const disabled = isPending || !nickname.trim();
+  const disabled = isPending || !nickname.trim() || !selected;
 
   const handleOpenAgreementModal = () => {
     setIsOpen(true);
@@ -56,12 +58,11 @@ const RegisterPage = () => {
       try {
         if (!appUserId) throw new Error("invalid appUserId");
 
-        // TODO : 프로필 사진 추가
-
         const response = await mutateAsync({
           appUserId: +appUserId,
           nickname,
           email,
+          profileImageUrl: PROFILE_IMAGE_LIST[selected],
           agreedTermsIds: [],
         });
 
@@ -78,21 +79,11 @@ const RegisterPage = () => {
   return (
     <>
       <div className={clsx(W_FULL, MIN_H_DVH, BG_BASE, FLEX, FLEX_COL, "p-4")}>
-        <div className={clsx(FLEX, FLEX_COL, JUSTIFY_BETWEEN, H_FULL, FLEX_1)}>
-          <Field>
-            <FieldLabel htmlFor={nicknameId}>
-              닉네임<span className="text-destructive">*</span>
-            </FieldLabel>
-            <Input
-              id={nicknameId}
-              type="text"
-              value={nickname}
-              onChange={(event) => setNickname(event.target.value)}
-              placeholder="닉네임을 입력해주세요"
-              style={{ backgroundColor: "white", height: 40 }}
-            />
-            <FieldDescription>앱 내에서 사용할 닉네임을 알려주세요</FieldDescription>
-          </Field>
+        <div className={clsx(FLEX, FLEX_COL, JUSTIFY_BETWEEN, H_FULL)}>
+          <div className={clsx(FLEX, FLEX_COL, H_FULL, FLEX_1, GAP_5)}>
+            <Nickname nickname={nickname} setNickname={setNickname} />
+            <ProfileImage selected={selected} setSelected={setSelected} />
+          </div>
           <Button
             type="submit"
             size="lg"
@@ -105,7 +96,11 @@ const RegisterPage = () => {
           </Button>
         </div>
       </div>
-      <AgreementModal isOpen={isOpen} setIsOpen={setIsOpen} handleSubmit={handleSubmit} />
+      <AgreementModal
+        isOpen={isOpen}
+        setIsOpen={setIsOpen}
+        handleSubmit={handleSubmit}
+      />
     </>
   );
 };
