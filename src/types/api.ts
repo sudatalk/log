@@ -205,3 +205,27 @@ export type UserSignUpResponse = {
   appUserId: number;
   nickname?: string;
 };
+
+export type UserMeResponse = {
+  id?: number;
+  appUserId?: number;
+  nickname?: string;
+  email?: string;
+  profileImageUlr?: string;
+  status?: UserStatus;
+};
+
+export type Term = {
+  id?: number;
+  type?: TermType;
+  version?: number;
+  content?: string;
+  required?: boolean;
+  sequence?: number;
+};
+
+enum TermType {
+  AGE = "AGE",
+  PRIVACY = "PRIVACY",
+  SERVICE = "SERVICE",
+}
