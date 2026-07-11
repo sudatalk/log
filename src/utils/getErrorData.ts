@@ -25,9 +25,9 @@ export const getErrorData = (error: unknown) => {
 
         const { code, message } = data;
 
-        if (!code || !message) return DEFAULT_ERROR_MESSAGE;
+        if (!code || !message) return DEFAULT_ERROR_DATA;
 
-        return { code: data.code, message: data.message }
+        return { code, message }
     }
 
     return DEFAULT_ERROR_DATA;

@@ -78,8 +78,6 @@ const RegisterPage = () => {
       } catch (error) {
         const { code, message } = getErrorData(error);
 
-        console.log('code  : ', code)
-
         if (code === DUPLICATE_USER_ERROR_CODE) {
           toast(message);
 
