@@ -11,7 +11,7 @@ type Props = {
   enabled?: boolean;
 };
 
-const useUserMe = (props: Props) => {
+const useUserMe = (props: Props = {}) => {
   return useQuery({
     queryKey: userMeQueryKey,
     queryFn: userMeQueryFn,
