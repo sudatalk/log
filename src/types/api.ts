@@ -224,7 +224,7 @@ export type Term = {
   sequence?: number;
 };
 
-enum TermType {
+export enum TermType {
   AGE = "AGE",
   PRIVACY = "PRIVACY",
   SERVICE = "SERVICE",

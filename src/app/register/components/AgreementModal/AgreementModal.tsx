@@ -1,5 +1,6 @@
 import { Sheet } from "react-modal-sheet";
 import AgreementModalContainer from "./AgreementModalContainer";
+import useTerms from "../../hooks/useTerms";
 
 type Props = {
   isOpen: boolean;
@@ -9,6 +10,8 @@ type Props = {
 
 const AgreementModal = (props: Props) => {
   const { isOpen, setIsOpen, handleSubmit } = props;
+
+  const { data } = useTerms();
 
   const handleClickButton = () => {
     setIsOpen(false);
@@ -21,7 +24,7 @@ const AgreementModal = (props: Props) => {
       <Sheet.Container>
         <Sheet.Header />
         <Sheet.Content>
-          <AgreementModalContainer onSubmit={handleClickButton} />
+          <AgreementModalContainer onSubmit={handleClickButton} terms={data} />
         </Sheet.Content>
       </Sheet.Container>
       <Sheet.Backdrop onClick={() => setIsOpen(false)} />

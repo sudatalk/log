@@ -6,33 +6,36 @@ import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { EMBER_ICON, FLEX, FLEX_COL, W_FULL } from "@/constants/tailwind";
 import clsx from "clsx";
 import { type FormEvent, useState } from "react";
-
-const AGREEMENT_KEYS = ["OVER_14_AGE", "PRIVATE_AGREEMENT", "USABLE_AGREEMENT"] as const;
-
-const AGREEMENT_DESCRIPTION_LIST = {
-  OVER_14_AGE: "[필수] 만 14세 이상 회원입니다",
-  PRIVATE_AGREEMENT: "[필수] 개인정보 수집 및 이용 동의",
-  USABLE_AGREEMENT: "[필수] 이용약관 동의",
-};
-
-type AgreementKey = (typeof AGREEMENT_KEYS)[number];
-
-type AgreementState = Record<AgreementKey, boolean>;
-
-const INITIAL_AGREEMENT_STATE: AgreementState = {
-  OVER_14_AGE: false,
-  PRIVATE_AGREEMENT: false,
-  USABLE_AGREEMENT: false,
-};
+import { Term, TermType } from "@/types/api";
 
 type Props = {
-  onSubmit?: (agreementCheckList: AgreementState) => void;
+  onSubmit?: (agreementCheckList: Record<TermType, boolean>) => void;
+  terms?: Term[];
 };
 
-const AgreementModalContainer = ({ onSubmit }: Props) => {
-  const [agreementCheckList, setAgreementCheckList] = useState<AgreementState>(INITIAL_AGREEMENT_STATE);
+const isTermType = (value: string): value is TermType => {
+  return Object.values(TermType).some((type) => type === value);
+};
 
-  const handleCheckedChange = (key: AgreementKey, checked: boolean) => {
+const getInitialState = (terms?: Term[]): Record<TermType, boolean> => {
+  const INITIAL_STATE = {} as Record<TermType, boolean>;
+
+  if (!terms) return INITIAL_STATE;
+
+  return terms.reduce((acc, term) => {
+    if (!term.type) return acc;
+
+    acc[term.type] = false;
+    return acc;
+  }, INITIAL_STATE);
+};
+
+const AgreementModalContainer = ({ onSubmit, terms }: Props) => {
+  const [agreementCheckList, setAgreementCheckList] = useState(
+    getInitialState(terms),
+  );
+
+  const handleCheckedChange = (key: TermType, checked: boolean) => {
     setAgreementCheckList((prev) => ({
       ...prev,
       [key]: checked,
@@ -42,7 +45,7 @@ const AgreementModalContainer = ({ onSubmit }: Props) => {
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    if (!AGREEMENT_KEYS.every((key) => agreementCheckList[key])) {
+    if (!Object.values(agreementCheckList).every((value) => value)) {
       return;
     }
 
@@ -50,22 +53,36 @@ const AgreementModalContainer = ({ onSubmit }: Props) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className={clsx(FLEX, FLEX_COL, W_FULL, "gap-4", "p-4")}>
+    <form
+      onSubmit={handleSubmit}
+      className={clsx(FLEX, FLEX_COL, W_FULL, "gap-4", "p-4")}
+    >
       <FieldGroup>
-        {AGREEMENT_KEYS.map((key) => {
+        {Object.keys(agreementCheckList).map((value) => {
+          const key = isTermType(value) ? value : undefined;
+
+          if (!key) return <></>;
+
           const checkboxId = `agreement-checkbox-${key}`;
+
+          const isChecked = agreementCheckList[key];
 
           return (
             <Field key={key} orientation="horizontal">
               <Checkbox
                 id={checkboxId}
                 name={checkboxId}
-                checked={agreementCheckList[key]}
+                checked={isChecked}
                 onCheckedChange={(checked) => handleCheckedChange(key, checked)}
-                style={{ height: 25, width: 25, borderRadius: 50, fontSize: 20 }}
+                style={{
+                  height: 25,
+                  width: 25,
+                  borderRadius: 50,
+                  fontSize: 20,
+                }}
               />
               <FieldLabel htmlFor={checkboxId} style={{ fontSize: 14 }}>
-                {AGREEMENT_DESCRIPTION_LIST[key]}
+                {terms?.find((term) => term.type === key)?.content}
               </FieldLabel>
             </Field>
           );
@@ -76,7 +93,7 @@ const AgreementModalContainer = ({ onSubmit }: Props) => {
         size="lg"
         className={clsx(EMBER_ICON, W_FULL)}
         style={{ height: 40 }}
-        disabled={!AGREEMENT_KEYS.every((key) => agreementCheckList[key])}
+        disabled={!Object.values(agreementCheckList).every((value) => value)}
       >
         입장하기
       </Button>
