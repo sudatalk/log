@@ -4,7 +4,13 @@ import { getRoute, REDIRECT_URL_KEY } from "@/constants/router";
 import useGetUserId from "@/hooks/useGetUserId";
 import { useRouter } from "next/navigation";
 
-export function ReviewCTA({ daysLeft }: { daysLeft: number }) {
+export function ReviewCTA({
+  bookId,
+  daysLeft,
+}: {
+  bookId?: number;
+  daysLeft: number;
+}) {
   const router = useRouter();
 
   const { userId, isLoading } = useGetUserId();
@@ -17,7 +23,9 @@ export function ReviewCTA({ daysLeft }: { daysLeft: number }) {
       return;
     }
 
-    router.push(getRoute.write());
+    if (!bookId) return;
+
+    router.push(getRoute.write({ bookId }));
   };
 
   return (

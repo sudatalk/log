@@ -229,3 +229,67 @@ export enum TermType {
   PRIVACY = "PRIVACY",
   SERVICE = "SERVICE",
 }
+export type ReviewContentsRequest = {
+  shortComment?: string;
+  rating?: string;
+  comment?: string;
+  quotes?: Quote[];
+  questionAnswers?: QuestionAnswer[];
+};
+
+type Quote = {
+  quote?: string;
+  reason?: string;
+};
+
+type QuestionAnswer = {
+  question?: string;
+  answer?: string;
+};
+
+export type ReviewSubmitResponse = {
+  reviewId?: number;
+  status: ReviewSubmitStatus;
+};
+
+export enum ReviewSubmitStatus {
+  PUBLISHED = "PUBLISHED",
+  DRAFT = "DRAFT",
+  DELETED = "DELETED",
+}
+
+export type ReviewWritePageResponse = {
+  conetent?: {
+    id?: number;
+    title?: string;
+    author?: string;
+    coverImageUrl?: string;
+    description?: string;
+  };
+  deadlineAt?: string;
+  draftData?: {
+    reviewId?: number;
+    shortComment?: string;
+    rating?: string;
+    comment?: string;
+    quotes?: Quote[];
+    answer?: QuestionAnswer[];
+  };
+};
+
+export type ReviewDetailResponse = {
+  reviewId?: number;
+  userId?: number;
+  nickname?: string;
+  profileImageUrl?: string;
+  contentId?: number;
+  comment?: string;
+  shortComment?: string;
+  rating?: string;
+  likeCount?: number;
+  commentCount?: number;
+  quotes?: Quote[];
+  questions?: QuestionAnswer[];
+  createdAt?: string;
+  liked?: boolean;
+};

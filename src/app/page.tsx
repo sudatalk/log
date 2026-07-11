@@ -24,7 +24,7 @@ export default async function HomePage() {
 
         <main className="mx-auto flex w-full flex-1 flex-col items-center gap-3 p-3">
           <BookSection />
-          <ReviewCTA daysLeft={daysLeft} />
+          <ReviewCTA bookId={book?.contentId} daysLeft={daysLeft} />
         </main>
 
         <BottomNav />
