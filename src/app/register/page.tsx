@@ -25,6 +25,7 @@ import ProfileImage from "./components/ProfileImage";
 import Nickname from "./components/Nickname";
 import useRegisterForm from "./hooks/useRegisterForm";
 import { PROFILE_IMAGE_LIST } from "./constants/profiles";
+import useTerms from "./hooks/useTerms";
 
 const RegisterPage = () => {
   const router = useRouter();
@@ -44,6 +45,8 @@ const RegisterPage = () => {
     setIsOpen(true);
   };
 
+  const { data } = useTerms();
+
   const handleSubmit = async () => {
     if (disabled) return;
 
@@ -52,8 +55,7 @@ const RegisterPage = () => {
     if ("user" in statusInfo) {
       const { user } = statusInfo;
       const { id: appUserId, kakao_account } = user || {};
-      const { email, profile } = kakao_account || {};
-      const { nickname } = profile || {};
+      const { email } = kakao_account || {};
 
       try {
         if (!appUserId) throw new Error("invalid appUserId");
@@ -63,7 +65,7 @@ const RegisterPage = () => {
           nickname,
           email,
           profileImageUrl: PROFILE_IMAGE_LIST[selected],
-          agreedTermsIds: [],
+          agreedTermsIds: data?.map(value => value.id!) || [],
         });
 
         axios.defaults.headers.common["X-User-Id"] = response.id;
