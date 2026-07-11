@@ -3,19 +3,19 @@ import { BookSection } from "@/components/home/BookSection";
 import { ReviewCTA } from "@/components/ReviewCTA";
 import { BottomNav } from "@/components/BottomNav";
 import { QueryHydrator } from "@/components/QueryHydrator";
-import { contentDetailQueryOptions } from "@/hooks/useContentDetail";
 import { currentSchedulesQueryOptions } from "@/hooks/useCurrentSchedules";
 import { calculateDaysLeft } from "@/lib/date";
 import { getQueryClient } from "@/lib/queryClient";
 
 export default async function HomePage() {
   const queryClient = getQueryClient();
-  const schedules = await queryClient.fetchQuery(currentSchedulesQueryOptions());
+  const schedules = await queryClient.fetchQuery(
+    currentSchedulesQueryOptions(),
+  );
+
   const book = schedules?.[0];
   const daysLeft = calculateDaysLeft(book?.endedAt);
-  if (book) {
-    await queryClient.prefetchQuery(contentDetailQueryOptions(book.contentId));
-  }
+
   // TODO: 책 못가져왔을 때 보여줄 화면
   return (
     <QueryHydrator>

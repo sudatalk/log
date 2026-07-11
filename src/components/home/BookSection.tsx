@@ -10,9 +10,10 @@ export function BookSection() {
   const { data: schedules } = useCurrentSchedules();
   const book = schedules?.find((s) => s.categoryType === CategoryType.BOOK);
   const { data: content } = useContentDetail(book?.contentId);
-  const { mutate: toggleLike, isPending: isTogglingLike } = useToggleContentLike();
+  const { mutate: toggleLike, isPending: isTogglingLike } =
+    useToggleContentLike();
 
-  if (!book || !content) return null;
+  if (!book) return null;
 
   const handleClickHeart = () => {
     if (isTogglingLike) return;
@@ -25,10 +26,7 @@ export function BookSection() {
       title={book.title}
       author={book.author}
       description={book.description}
-      liked={content.liked}
-      likeCount={content.likeCount}
-      reviewCount={content.reviewCount}
-      averageRating={content.averageRating}
+      content={content}
       onClickHeart={handleClickHeart}
     />
   );

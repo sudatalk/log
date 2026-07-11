@@ -1,9 +1,12 @@
 "use client";
 
+import { getRoute, REDIRECT_URL_KEY } from "@/constants/router";
+import useGetUserId from "@/hooks/useGetUserId";
+import { isActive } from "@/utils/isActive";
 import { Home, Library, PenLine } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 type NavItem = { icon: LucideIcon; href?: string };
 
@@ -13,17 +16,27 @@ const navItems: NavItem[] = [
   { icon: PenLine },
 ];
 
-const isActive = (pathname: string, href?: string) => {
-  if (!href) return false;
-  if (href === "/") return pathname === "/";
-  if (href === "/books") {
-    return pathname === href || pathname.startsWith(`${href}/`) || pathname.startsWith("/logs/");
-  }
-  return pathname === href || pathname.startsWith(`${href}/`);
-};
-
 export function BottomNav() {
+  const router = useRouter();
+
+  const { userId, isLoading } = useGetUserId();
+
+  const isLogined = userId && !isLoading;
+
   const pathname = usePathname();
+
+  const hnadleNavClick = (value: string) => {
+    if (isActive(pathname, value)) {
+      return;
+    }
+
+    if (!isLogined) {
+      router.push(getRoute.login({ REDIRECT_URL_KEY: value }));
+      return;
+    }
+
+    router.push(value);
+  };
 
   return (
     <nav className="sticky bottom-0 z-10 bg-surface">
@@ -36,7 +49,16 @@ export function BottomNav() {
           const content = <Icon className="size-6 text-nav" />;
 
           return href ? (
-            <Link key={i} href={href} className={className} aria-current={active ? "page" : undefined}>
+            <Link
+              key={i}
+              href={href}
+              className={className}
+              aria-current={active ? "page" : undefined}
+              onClick={(e) => {
+                e.preventDefault();
+                hnadleNavClick(href);
+              }}
+            >
               {content}
             </Link>
           ) : (
