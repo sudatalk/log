@@ -28,6 +28,8 @@ export const ITEMS_END = "items-end";
 
 export const JUSTIFY_BETWEEN = "justify-between";
 
+export const JUSTIFY_AROUND = "justify-around";
+
 export const JUSTIFY_END = "justify-end";
 
 export const CENTER = "items-center justify-center";
@@ -35,6 +37,16 @@ export const CENTER = "items-center justify-center";
 export const FLEX_9 = "flex-9";
 
 export const FLEX_8 = "flex-8";
+
+export const FLEX_7 = "flex-7";
+
+export const FLEX_6 = "flex-6";
+
+export const FLEX_5 = "flex-5";
+
+export const FLEX_4 = "flex-4";
+
+export const FLEX_3 = "flex-3";
 
 export const FLEX_2 = "flex-2";
 

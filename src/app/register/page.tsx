@@ -19,12 +19,17 @@ import { useState } from "react";
 import AgreementModal from "./components/AgreementModal/AgreementModal";
 import useRegister from "./hooks/useRegister";
 import { useRouter, useSearchParams } from "next/navigation";
-import { REDIRECT_URL_KEY } from "@/constants/router";
+import { getRoute, REDIRECT_URL_KEY } from "@/constants/router";
 import axios from "axios";
 import ProfileImage from "./components/ProfileImage";
 import Nickname from "./components/Nickname";
 import useRegisterForm from "./hooks/useRegisterForm";
 import { PROFILE_IMAGE_LIST } from "./constants/profiles";
+import useTerms from "./hooks/useTerms";
+import { getErrorData } from "@/utils/getErrorData";
+import { toast } from "sonner";
+
+const DUPLICATE_USER_ERROR_CODE = "DUPLICATE_USER"
 
 const RegisterPage = () => {
   const router = useRouter();
@@ -44,6 +49,8 @@ const RegisterPage = () => {
     setIsOpen(true);
   };
 
+  const { data } = useTerms();
+
   const handleSubmit = async () => {
     if (disabled) return;
 
@@ -52,8 +59,7 @@ const RegisterPage = () => {
     if ("user" in statusInfo) {
       const { user } = statusInfo;
       const { id: appUserId, kakao_account } = user || {};
-      const { email, profile } = kakao_account || {};
-      const { nickname } = profile || {};
+      const { email } = kakao_account || {};
 
       try {
         if (!appUserId) throw new Error("invalid appUserId");
@@ -63,15 +69,23 @@ const RegisterPage = () => {
           nickname,
           email,
           profileImageUrl: PROFILE_IMAGE_LIST[selected],
-          agreedTermsIds: [],
+          agreedTermsIds: data?.map(value => value.id!) || [],
         });
 
         axios.defaults.headers.common["X-User-Id"] = response.id;
 
         router.replace(redirectUrl || "/");
-      } catch {
-        // TODO : 에러 처리
-        // TODO : 이미 가입된 유저의 재가입 오류 처리
+      } catch (error) {
+        const { code, message } = getErrorData(error);
+
+        if (code === DUPLICATE_USER_ERROR_CODE) {
+          toast(message);
+
+          router.replace(getRoute.login());
+          return;
+        }
+
+        toast(message)
       }
     }
   };
