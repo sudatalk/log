@@ -21,6 +21,8 @@ import {
 import useDisclosure from "@/hooks/useDisclosure";
 import clsx from "clsx";
 import { ChevronDown, ChevronUp } from "lucide-react";
+import { useSearchParams } from "next/navigation";
+import { REVIEW_ID_SEARCH_PARAMS_KEY } from "../hooks/useReview";
 
 type Props = {
   free: string;
@@ -30,15 +32,33 @@ type Props = {
 const Free = (props: Props) => {
   const { free, handleChangeFree } = props;
 
-  const { isOpen, handleToggle } = useDisclosure();
+  const searchParams = useSearchParams();
+
+  const isModify = !!searchParams.get(REVIEW_ID_SEARCH_PARAMS_KEY);
+
+  const { isOpen, handleToggle } = useDisclosure(!!isModify);
 
   return (
-    <div className={clsx(FLEX, FLEX_COL, ROUNDED, BORDER, BORDER_SOLID, BORDER_STRONG, "p-3.5", GAP_2, BG_SURFACE)}>
+    <div
+      className={clsx(
+        FLEX,
+        FLEX_COL,
+        ROUNDED,
+        BORDER,
+        BORDER_SOLID,
+        BORDER_STRONG,
+        "p-3.5",
+        GAP_2,
+        BG_SURFACE,
+      )}
+    >
       <div className={clsx(FLEX, CENTER, W_FULL, GAP_2)} onClick={handleToggle}>
         <img src="/svg/free-question-badge.svg" />
         <div className={clsx(FLEX, FLEX_COL, FLEX_8, GAP_1)}>
           <p className={clsx(FONT_SEMIBOLD)}>자유롭게 작성하기</p>
-          <p className={clsx(TEXT_XS, TEXT_GRAY)}>자유로운 형식으로 리뷰를 작성해보세요</p>
+          <p className={clsx(TEXT_XS, TEXT_GRAY)}>
+            자유로운 형식으로 리뷰를 작성해보세요
+          </p>
         </div>
         {isOpen ? <ChevronDown /> : <ChevronUp />}
       </div>

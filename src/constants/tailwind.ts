@@ -16,11 +16,15 @@ export const ABSOLUTE = "absolute";
 
 export const RELATIVE = "relative";
 
+export const STICKY = "sticky";
+
 export const FLEX = "flex";
 
 export const FLEX_COL = "flex-col";
 
 export const OVERFLOW_HIDDEN = "overflow-hidden";
+
+export const OVERFLOW_AUTO = "overflow-auto";
 
 export const ITEMS_CENTER = "items-center";
 
