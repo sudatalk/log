@@ -8,6 +8,7 @@ function makeQueryClient() {
         staleTime: 60 * 1000,
         retry: false,
         refetchOnWindowFocus: false,
+        refetchOnMount: false,
       },
     },
   });
