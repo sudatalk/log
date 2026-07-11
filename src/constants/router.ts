@@ -9,6 +9,10 @@ export const getRoute = {
   write: (searchParams?: SearchParams) => {
     return getPathWithParams(`/write`, searchParams);
   },
+
+  profile: (searchParams?: SearchParams) => {
+    return getPathWithParams(`/profile`, searchParams);
+  },
 };
 
 const getPathWithParams = (path: string, params?: Record<string, string>) => {
