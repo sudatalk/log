@@ -4,6 +4,7 @@ import { Noto_Serif_KR } from "next/font/google";
 import { QueryProvider } from "@/components/QueryProvider";
 import "./globals.css";
 import KakaoSDKChecker from "@/components/KakaoSDKChecker";
+import { Toaster } from "@/components/ui/sonner"
 
 const pretendard = localFont({
   src: "../fonts/PretendardVariable.woff2",
@@ -36,7 +37,7 @@ export default function RootLayout({
       <body className="min-h-full bg-gray-100 w-full h-full">
         <div className="mx-auto min-h-screen w-full max-w-[430px] bg-white shadow-lg h-full flex flex-col">
           <KakaoSDKChecker>
-            <QueryProvider>{children}</QueryProvider>
+            <QueryProvider>{children} <Toaster /></QueryProvider>
           </KakaoSDKChecker>
         </div>
       </body>
