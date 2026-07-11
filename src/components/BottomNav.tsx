@@ -13,7 +13,7 @@ type NavItem = { icon: LucideIcon; href?: string };
 const navItems: NavItem[] = [
   { icon: Home, href: "/" },
   { icon: Library, href: "/books" },
-  { icon: PenLine },
+  { icon: PenLine, href: "/my-reviews" },
 ];
 
 export function BottomNav() {

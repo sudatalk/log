@@ -71,10 +71,22 @@ const getAvailableTypes = (review: ReviewListItem) => {
 type Props = {
   review: ReviewListItem;
   contentId: number;
+  header?: React.ReactNode;
+  footerAction?: React.ReactNode;
+  showRatingInBadgeRow?: boolean;
+  interactive?: boolean;
 };
 
-const LogCard = ({ review, contentId }: Props) => {
+const LogCard = ({
+  review,
+  contentId,
+  header,
+  footerAction,
+  showRatingInBadgeRow = true,
+  interactive = true,
+}: Props) => {
   const { userId } = useGetUserId();
+  const currentUserId = Number(userId);
 
   const isMyReview = review.userId === userId;
   const { mutate: toggleLike, isPending: isTogglingLike } = useToggleReviewLike(contentId);
@@ -87,17 +99,23 @@ const LogCard = ({ review, contentId }: Props) => {
     setSelectedType(value);
   };
 
-  const handleClickHeart = (e: React.MouseEvent) => {
-    e.preventDefault();
-    if (isTogglingLike) return;
+  const handleClickHeart = interactive
+    ? (e: React.MouseEvent) => {
+        e.preventDefault();
+        if (isTogglingLike) return;
 
-    toggleLike(review.reviewId);
-  };
+        toggleLike(review.reviewId);
+      }
+    : undefined;
 
-  const handleClickMessage = (e: React.MouseEvent) => {
-    e.preventDefault();
-    setIsCommentSheetOpen(true);
-  };
+  const handleClickMessage = interactive
+    ? (e: React.MouseEvent) => {
+        e.preventDefault();
+        setIsCommentSheetOpen(true);
+      }
+    : undefined;
+
+  const showBadgeRow = badges.length > 0 || (showRatingInBadgeRow && review.rating > 0);
 
   return (
     <>
@@ -115,20 +133,22 @@ const LogCard = ({ review, contentId }: Props) => {
           "p-2.5",
         )}
       >
-        <LogCardHeader
-          nickname={review.nickname}
-          profileImageUrl={review.profileImageUrl}
-          createdAt={review.createdAt}
-          action={
-            <LogCardMenu
-              reviewId={review.reviewId}
-              contentId={contentId}
-              userId={currentUserId}
-              isMyReview={isMyReview}
-            />
-          }
-        />
-        {(badges.length > 0 || review.rating > 0) && (
+        {header ?? (
+          <LogCardHeader
+            nickname={review.nickname}
+            profileImageUrl={review.profileImageUrl}
+            createdAt={review.createdAt}
+            action={
+              <LogCardMenu
+                reviewId={review.reviewId}
+                contentId={contentId}
+                userId={currentUserId}
+                isMyReview={isMyReview}
+              />
+            }
+          />
+        )}
+        {showBadgeRow && (
           <div className={clsx(FLEX, W_FULL, ITEMS_CENTER, JUSTIFY_BETWEEN, "gap-2.5")}>
             {badges.length > 0 ? (
               <div className={clsx(FLEX, ITEMS_CENTER, "gap-[5px]")}>
@@ -139,28 +159,33 @@ const LogCard = ({ review, contentId }: Props) => {
             ) : (
               <div />
             )}
-            <Rating value={review.rating} />
+            {showRatingInBadgeRow && <Rating value={review.rating} />}
           </div>
         )}
 
         {availableTypes.includes(selectedType) && <Description type={selectedType} review={review} />}
 
-        <Emoji
-          heartCount={review.likeCount}
-          isLiked={review.isLiked}
-          handleClickHeart={handleClickHeart}
-          messageCount={review.commentCount}
-          handleClickMessage={handleClickMessage}
-        />
+        <div className={clsx(FLEX, ITEMS_CENTER, footerAction && JUSTIFY_BETWEEN)}>
+          <Emoji
+            heartCount={review.likeCount}
+            isLiked={review.isLiked}
+            handleClickHeart={handleClickHeart}
+            messageCount={review.commentCount}
+            handleClickMessage={handleClickMessage}
+          />
+          {footerAction}
+        </div>
       </div>
 
-      <ReviewCommentSheet
-        reviewId={review.reviewId}
-        contentId={contentId}
-        userId={currentUserId}
-        isOpen={isCommentSheetOpen}
-        onClose={() => setIsCommentSheetOpen(false)}
-      />
+      {interactive && (
+        <ReviewCommentSheet
+          reviewId={review.reviewId}
+          contentId={contentId}
+          userId={currentUserId}
+          isOpen={isCommentSheetOpen}
+          onClose={() => setIsCommentSheetOpen(false)}
+        />
+      )}
     </>
   );
 };
