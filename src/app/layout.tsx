@@ -33,10 +33,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="kr" className={`${pretendard.variable} ${notoSerifKR.variable} h-full antialiased`}>
-      <body className="min-h-full flex flex-col w-full h-full">
-        <KakaoSDKChecker>
-          <QueryProvider>{children}</QueryProvider>
-        </KakaoSDKChecker>
+      <body className="min-h-full bg-gray-100 w-full h-full">
+        <div className="mx-auto min-h-screen w-full max-w-[430px] bg-white shadow-lg h-full flex flex-col">
+          <KakaoSDKChecker>
+            <QueryProvider>{children}</QueryProvider>
+          </KakaoSDKChecker>
+        </div>
       </body>
     </html>
   );
