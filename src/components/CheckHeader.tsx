@@ -3,9 +3,11 @@
 import { getCheckUser } from "@/lib/api";
 import { UserStatus } from "@/types/api";
 import axios from "axios";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
-const CheckHeader = () => {
+const CheckHeader = ({ children }: { children: React.ReactNode }) => {
+  const [isLoading, setIsLoading] = useState(true);
+
   useEffect(() => {
     (async () => {
       try {
@@ -28,10 +30,12 @@ const CheckHeader = () => {
         }
       } catch {
         return;
+      } finally {
+        setIsLoading(false);
       }
     })();
   }, []);
 
-  return <></>;
+  return <>{!isLoading && children}</>;
 };
 export default CheckHeader;
