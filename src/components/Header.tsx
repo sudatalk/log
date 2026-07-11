@@ -1,9 +1,10 @@
 "use client";
 
 import { Logo } from "@/components/Logo";
-import { REDIRECT_URL_KEY } from "@/constants/router";
+import { getRoute, REDIRECT_URL_KEY } from "@/constants/router";
 import useGetUserId from "@/hooks/useGetUserId";
-import { ChevronLeft } from "lucide-react";
+import useUserMe from "@/hooks/useUserMe";
+import { ChevronLeft, UserRound } from "lucide-react";
 import { useRouter } from "next/navigation";
 
 export function Header() {
@@ -13,14 +14,20 @@ export function Header() {
 
   const isLogined = !!userId && !isLoading;
 
+  const { data } = useUserMe({ enabled: isLogined });
+
   const hnadleClickProfile = () => {
     if (!isLogined) {
       router.push(
-        `/login?${REDIRECT_URL_KEY}=${encodeURIComponent("/profile")}`,
+        getRoute.login({
+          [REDIRECT_URL_KEY]: getRoute.profile(),
+        }),
       );
+
+      return;
     }
 
-    // TOOD : 마이 페이지로 이동
+    router.push(getRoute.profile());
   };
 
   return (
@@ -37,15 +44,19 @@ export function Header() {
         <div className="flex flex-1 items-center justify-center px-2 py-2">
           <Logo />
         </div>
-        <div className="flex h-10 w-[43px] items-center justify-center">
-          <div
-            className="flex size-6 cursor-pointer items-center justify-center rounded-full bg-[#333333]"
-            onClick={hnadleClickProfile}
-          >
-            <span className="text-[10px] font-semibold leading-3 text-[#FEFEFF]">
-              JO
-            </span>
-          </div>
+        <div
+          className="flex h-10 w-[43px] items-center justify-center"
+          onClick={hnadleClickProfile}
+        >
+          {isLogined ? (
+            <img
+              className="flex size-6 cursor-pointer items-center justify-center rounded-full bg-[#333333]"
+              src={data?.profileImageUrl}
+              alt="프로필"
+            />
+          ) : (
+            <UserRound />
+          )}
         </div>
       </div>
     </header>

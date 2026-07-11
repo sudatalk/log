@@ -211,7 +211,7 @@ export type UserMeResponse = {
   appUserId?: number;
   nickname?: string;
   email?: string;
-  profileImageUlr?: string;
+  profileImageUrl?: string;
   status?: UserStatus;
 };
 
