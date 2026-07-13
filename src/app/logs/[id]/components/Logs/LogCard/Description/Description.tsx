@@ -1,6 +1,7 @@
 import { FLEX, W_FULL } from "@/constants/tailwind";
-import type { ReviewListItem } from "@/types/api";
+import type { ReviewQuestionItem } from "@/types/api";
 import clsx from "clsx";
+import type { ReviewContent } from "../logCardUtils";
 import { CardType } from "../types/card";
 import Free from "./Free";
 import Impressive from "./Impressive";
@@ -9,7 +10,10 @@ import Recommend from "./Recommend";
 
 type Props = {
   type: string;
-  review: ReviewListItem;
+  review: ReviewContent & {
+    questions: ReviewQuestionItem[];
+    quotes: Array<{ id: number; quote: string }>;
+  };
 };
 
 const Description = ({ type, review }: Props) => {
@@ -18,7 +22,7 @@ const Description = ({ type, review }: Props) => {
       {type === CardType.ONE_LINE && <OneLine shortComment={review.shortComment} />}
       {type === CardType.RECOMMEND && <Recommend questions={review.questions} />}
       {type === CardType.IMPRESSIVE && <Impressive quotes={review.quotes} />}
-      {type === CardType.FREE && <Free comment={review.comment} />}
+      {type === CardType.FREE && review.comment && <Free comment={review.comment} />}
     </div>
   );
 };

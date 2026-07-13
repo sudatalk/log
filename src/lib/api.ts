@@ -3,7 +3,9 @@ import type {
   ContentReviewsRequest,
   ContentReviewsResponse,
   ContentStats,
+  DraftReviewResponse,
   LikeToggleResponse,
+  MyReviewResponse,
   ReviewComment,
   ReviewCommentCreateRequest,
   ReviewCommentsRequest,
@@ -315,6 +317,26 @@ export async function getTerms(): Promise<Term[]> {
   if (!res.data) {
     throw new Error(`Failed to fetch /terms: ${res.status} ${res.statusText}`);
   }
+  return res.data;
+}
+
+export async function getDraftReviews(): Promise<DraftReviewResponse[]> {
+  const res = await axios.get(`${API_BASE_URL}/reviews/drafts`);
+
+  if (!res.data) {
+    throw new Error(`Failed to fetch /reviews/drafts: ${res.status} ${res.statusText}`);
+  }
+
+  return res.data;
+}
+
+export async function getMyReviews(): Promise<MyReviewResponse[]> {
+  const res = await axios.get(`${API_BASE_URL}/reviews/my`);
+
+  if (!res.data) {
+    throw new Error(`Failed to fetch /reviews/my: ${res.status} ${res.statusText}`);
+  }
+
   return res.data;
 }
 
