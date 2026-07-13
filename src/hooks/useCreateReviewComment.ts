@@ -14,7 +14,7 @@ export function useCreateReviewComment(
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: queryKeys.reviews.comments(reviewId) });
       queryClient.invalidateQueries({
-        queryKey: queryKeys.contents.reviews(contentId, userId),
+        queryKey: queryKeys.contents.reviews(contentId),
       });
     },
   });

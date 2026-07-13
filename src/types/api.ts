@@ -258,6 +258,44 @@ export enum ReviewSubmitStatus {
   DELETED = "DELETED",
 }
 
+export type DraftReviewResponse = {
+  reviewId: number;
+  contentId: number;
+  title: string;
+  author: string;
+  coverImageUrl: string;
+  savedAt: string;
+  reviewDeadline: string | null;
+};
+
+export type MyReviewQuoteItem = {
+  id: number;
+  quote: string;
+  reason: string | null;
+};
+
+export type MyReviewQuestionItem = {
+  id: number;
+  question: string;
+  sequence: number;
+  answer: string;
+};
+
+export type MyReviewResponse = {
+  reviewId: number;
+  contentId: number;
+  contentTitle: string;
+  contentAuthor: string;
+  contentCoverImageUrl: string;
+  shortComment: string;
+  rating: number;
+  likeCount: number;
+  commentCount: number;
+  quotes: MyReviewQuoteItem[];
+  questions: MyReviewQuestionItem[];
+  createdAt: string;
+};
+
 export type ReviewWritePageResponse = {
   conetent?: {
     id?: number;

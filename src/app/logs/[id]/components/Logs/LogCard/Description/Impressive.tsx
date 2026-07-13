@@ -1,10 +1,12 @@
 import { Textarea } from "@/components/ui/textarea";
 import { FLEX, FLEX_COL, FONT_MEDIUM, OVERFLOW_HIDDEN, ROUNDED, TEXT_SM, W_FULL } from "@/constants/tailwind";
-import type { ReviewQuoteItem } from "@/types/api";
 import clsx from "clsx";
 
 type Props = {
-  quotes: ReviewQuoteItem[];
+  quotes: Array<{
+    id: number;
+    quote: string;
+  }>;
 };
 
 const Impressive = ({ quotes }: Props) => {

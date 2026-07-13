@@ -10,5 +10,7 @@ export const queryKeys = {
   },
   reviews: {
     comments: (reviewId: number | undefined) => ["reviews", reviewId, "comments"] as const,
+    drafts: ["reviews", "drafts"] as const,
+    my: ["reviews", "my"] as const,
   },
 } as const;
