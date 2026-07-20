@@ -12,7 +12,7 @@ type Props = {
   type: string;
   review: ReviewContent & {
     questions: ReviewQuestionItem[];
-    quotes: Array<{ id: number; quote: string }>;
+    quotes: Array<{ id: number; quote: string; reason?: string | null }>;
   };
 };
 

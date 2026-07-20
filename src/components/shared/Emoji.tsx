@@ -1,6 +1,6 @@
 import { FLEX, FONT_SEMIBOLD, ITEMS_CENTER, ITEMS_END, TEXT_XS } from "@/constants/tailwind";
 import clsx from "clsx";
-import { Heart, MessageCircle } from "lucide-react";
+import { Heart, MessageCircle, type LucideIcon } from "lucide-react";
 
 type Props = {
   heartCount: number;
@@ -9,10 +9,20 @@ type Props = {
 
   messageCount: number;
   handleClickMessage?: (e: React.MouseEvent) => void;
+  /** 기본은 댓글(MessageCircle). 리뷰 수 등에는 PenLine 등을 넘기면 됨 */
+  MessageIcon?: LucideIcon;
 };
 
 const Emoji = (props: Props) => {
-  const { heartCount, isLiked = false, handleClickHeart, messageCount, handleClickMessage } = props;
+  const {
+    heartCount,
+    isLiked = false,
+    handleClickHeart,
+    messageCount,
+    handleClickMessage,
+    MessageIcon = MessageCircle,
+  } = props;
+
   return (
     <div className={clsx(FLEX, ITEMS_CENTER, "gap-[5px]")}>
       <div className={clsx(FLEX, "gap-[5px]", handleClickHeart && "cursor-pointer")}>
@@ -27,7 +37,7 @@ const Emoji = (props: Props) => {
         <div className={clsx(FLEX, TEXT_XS, ITEMS_END, FONT_SEMIBOLD)}>{heartCount || 0}</div>
       </div>
       <div className={clsx(FLEX, "gap-[5px]", handleClickMessage && "cursor-pointer")}>
-        <MessageCircle
+        <MessageIcon
           size={14}
           strokeWidth={2}
           onClick={handleClickMessage}

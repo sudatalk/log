@@ -16,6 +16,7 @@ import {
 } from "@/constants/tailwind";
 import { useToggleContentLike } from "@/hooks/useToggleContentLike";
 import clsx from "clsx";
+import { PenLine } from "lucide-react";
 import Link from "next/link";
 import BookTime from "./BookTime";
 import Rating from "@/app/logs/[id]/components/Logs/LogCard/Rating";
@@ -93,6 +94,7 @@ const BookCard = ({ book, href }: Props) => {
             isLiked={liked}
             handleClickHeart={contentId ? handleClickHeart : undefined}
             messageCount={messageCount}
+            MessageIcon={PenLine}
           />
           {dateInfo && <BookTime date={dateInfo.date} dateTime={dateInfo.dateTime} />}
         </footer>
