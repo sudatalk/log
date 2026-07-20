@@ -66,6 +66,7 @@ export type ContentReviewsRequest = {
 export type ReviewQuoteItem = {
   id: number;
   quote: string;
+  reason?: string | null;
   sequence: number;
 };
 
