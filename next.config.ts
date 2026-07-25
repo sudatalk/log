@@ -9,6 +9,7 @@ const nextConfig: NextConfig = {
       },
     ];
   },
+  // allowedDevOrigins 추가 필요
 };
 
 export default nextConfig;
