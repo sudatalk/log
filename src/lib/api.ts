@@ -153,6 +153,39 @@ export async function toggleContentLike(
   return res.data;
 }
 
+export async function getContentLikeStatus(
+  contentId: number,
+): Promise<LikeToggleResponse> {
+  const res = await axios.get(`${API_BASE_URL}/contents/${contentId}/like`);
+
+  if (!res.data) {
+    throw new Error(
+      `Failed to fetch /contents/${contentId}/like: ${res.status} ${res.statusText}`,
+    );
+  }
+
+  return res.data;
+}
+
+export async function getContentLikes(
+  contentIds: number[],
+): Promise<Record<string, boolean>> {
+  if (contentIds.length === 0) return {};
+
+  const query = new URLSearchParams();
+  contentIds.forEach((id) => query.append("contentIds", String(id)));
+
+  const res = await axios.get(`${API_BASE_URL}/contents/likes?${query}`);
+
+  if (!res.data) {
+    throw new Error(
+      `Failed to fetch /contents/likes: ${res.status} ${res.statusText}`,
+    );
+  }
+
+  return res.data.likes ?? {};
+}
+
 export async function toggleReviewLike(
   reviewId: number,
 ): Promise<LikeToggleResponse> {
@@ -182,6 +215,10 @@ export async function deleteReview(
       `Failed to delete /reviews/${reviewId}: ${res.status} ${res.statusText}`,
     );
   }
+}
+
+export async function deleteReviewComment(commentId: number): Promise<void> {
+  await axios.delete(`${API_BASE_URL}/reviews/comments/${commentId}`);
 }
 
 export async function getReviewComments(
