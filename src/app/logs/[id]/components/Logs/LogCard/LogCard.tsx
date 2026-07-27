@@ -46,6 +46,7 @@ const LogCard = ({ review, contentId }: Props) => {
     <>
       <LogCardShell>
         <LogCardHeader
+          userId={review.userId}
           nickname={review.nickname}
           profileImageUrl={review.profileImageUrl}
           createdAt={review.createdAt}

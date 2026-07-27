@@ -20,6 +20,7 @@ import type {
   Term,
   UserCheckResponse,
   UserMeResponse,
+  UserReviewResponse,
   UserSignUpRequest,
   UserSignUpResponse,
 } from "@/types/api";
@@ -372,6 +373,18 @@ export async function getMyReviews(): Promise<MyReviewResponse[]> {
 
   if (!res.data) {
     throw new Error(`Failed to fetch /reviews/my: ${res.status} ${res.statusText}`);
+  }
+
+  return res.data;
+}
+
+export async function getUserReviews(userId: number): Promise<UserReviewResponse[]> {
+  const res = await axios.get(`${API_BASE_URL}/reviews/users/${userId}`);
+
+  if (!res.data) {
+    throw new Error(
+      `Failed to fetch /reviews/users/${userId}: ${res.status} ${res.statusText}`,
+    );
   }
 
   return res.data;

@@ -290,6 +290,22 @@ export type MyReviewResponse = {
   contentCoverImageUrl: string;
   shortComment: string;
   rating: number;
+  isLiked: boolean;
+  likeCount: number;
+  commentCount: number;
+  quotes: MyReviewQuoteItem[];
+  questions: MyReviewQuestionItem[];
+  createdAt: string;
+};
+
+export type UserReviewResponse = {
+  reviewId: number;
+  contentId: number;
+  contentTitle: string;
+  contentAuthor: string;
+  contentCoverImageUrl: string;
+  shortComment: string;
+  rating: number;
   likeCount: number;
   commentCount: number;
   quotes: MyReviewQuoteItem[];

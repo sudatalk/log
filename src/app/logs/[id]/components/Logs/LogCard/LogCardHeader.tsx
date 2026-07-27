@@ -9,8 +9,10 @@ import {
   TEXT_SM,
   TEXT_XS,
 } from "@/constants/tailwind";
+import { getRoute } from "@/constants/router";
 import { formatReviewDate } from "@/lib/date";
 import clsx from "clsx";
+import Link from "next/link";
 import { useState } from "react";
 
 type ProfileAvatarProps = {
@@ -47,19 +49,23 @@ const ProfileAvatar = ({ nickname, profileImageUrl }: ProfileAvatarProps) => {
 };
 
 type Props = {
+  userId: number;
   nickname: string;
   profileImageUrl: string;
   createdAt: string;
   action?: React.ReactNode;
 };
 
-const LogCardHeader = ({ nickname, profileImageUrl, createdAt, action }: Props) => {
+const LogCardHeader = ({ userId, nickname, profileImageUrl, createdAt, action }: Props) => {
   const date = formatReviewDate(createdAt);
   const dateTime = createdAt.slice(0, 10);
 
   return (
     <div className={clsx(FLEX, ITEMS_CENTER, JUSTIFY_BETWEEN)}>
-      <div className={clsx(FLEX, ITEMS_CENTER, "gap-2.5")}>
+      <Link
+        href={getRoute.userReviews(userId, { nickname })}
+        className={clsx(FLEX, ITEMS_CENTER, "gap-2.5")}
+      >
         <ProfileAvatar nickname={nickname} profileImageUrl={profileImageUrl} />
         <div className={clsx(FLEX, FLEX_COL, GAP_1)}>
           <div className={TEXT_SM}>{nickname}</div>
@@ -67,7 +73,7 @@ const LogCardHeader = ({ nickname, profileImageUrl, createdAt, action }: Props) 
             {date}
           </time>
         </div>
-      </div>
+      </Link>
       {action}
     </div>
   );
