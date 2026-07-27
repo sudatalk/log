@@ -9,7 +9,13 @@ export function useToggleContentLike() {
     mutationFn: (contentId: number) => toggleContentLike(contentId),
     onSuccess: (_data, contentId) => {
       queryClient.invalidateQueries({
-        queryKey: queryKeys.contents.detail(contentId),
+        queryKey: queryKeys.contents.like(contentId),
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["contents", "likes"],
+      });
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.schedules.all,
       });
     },
   });
