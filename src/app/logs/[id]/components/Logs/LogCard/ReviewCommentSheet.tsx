@@ -2,6 +2,7 @@
 
 import { CENTER, FLEX, FLEX_COL } from "@/constants/tailwind";
 import { useCreateReviewComment } from "@/hooks/useCreateReviewComment";
+import { useDeleteReviewComment } from "@/hooks/useDeleteReviewComment";
 import { useInfiniteScroll } from "@/hooks/useInfiniteScroll";
 import { useReviewComments } from "@/hooks/useReviewComments";
 import { formatReviewDate } from "@/lib/date";
@@ -50,9 +51,12 @@ const CommentAvatar = ({ nickname, profileImageUrl }: CommentAvatarProps) => {
 
 type CommentItemProps = {
   comment: ReviewComment;
+  canDelete: boolean;
+  isDeleting: boolean;
+  onDelete: (commentId: number) => void;
 };
 
-const CommentItem = ({ comment }: CommentItemProps) => {
+const CommentItem = ({ comment, canDelete, isDeleting, onDelete }: CommentItemProps) => {
   const date = formatReviewDate(comment.createdAt);
   const dateTime = comment.createdAt.slice(0, 10);
 
@@ -70,6 +74,16 @@ const CommentItem = ({ comment }: CommentItemProps) => {
           >
             {date}
           </time>
+          {canDelete && (
+            <button
+              type="button"
+              className="text-[10px] font-medium leading-[14px] text-[#737373] underline underline-offset-2 disabled:opacity-40"
+              disabled={isDeleting}
+              onClick={() => onDelete(comment.commentId)}
+            >
+              삭제
+            </button>
+          )}
         </div>
         <p className="whitespace-pre-wrap text-[13px] font-normal leading-4 text-black">
           {comment.content}
@@ -103,6 +117,10 @@ const ReviewCommentSheet = ({ reviewId, contentId, userId, isOpen, onClose }: Pr
     userId,
     contentId,
   );
+  const { mutate: deleteComment, isPending: isDeleting } = useDeleteReviewComment(
+    reviewId,
+    contentId,
+  );
 
   const sentinelRef = useInfiniteScroll({
     onIntersect: () => {
@@ -132,6 +150,11 @@ const ReviewCommentSheet = ({ reviewId, contentId, userId, isOpen, onClose }: Pr
         shouldScrollToTopRef.current = true;
       },
     });
+  };
+
+  const handleDelete = (commentId: number) => {
+    if (isDeleting) return;
+    deleteComment(commentId);
   };
 
   return (
@@ -171,7 +194,13 @@ const ReviewCommentSheet = ({ reviewId, contentId, userId, isOpen, onClose }: Pr
                 </p>
               )}
               {comments.map((comment) => (
-                <CommentItem key={comment.commentId} comment={comment} />
+                <CommentItem
+                  key={comment.commentId}
+                  comment={comment}
+                  canDelete={comment.userId === userId}
+                  isDeleting={isDeleting}
+                  onDelete={handleDelete}
+                />
               ))}
               {hasNextPage && <div ref={sentinelRef} aria-hidden />}
             </div>

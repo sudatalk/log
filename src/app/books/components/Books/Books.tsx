@@ -5,11 +5,18 @@ import clsx from "clsx";
 import BookCard from "./BookCard";
 import Loading from "../../../../components/Loading";
 import Error from "../../../../components/Error";
+import { useContentLikes } from "@/hooks/useContentLikes";
 import { useSchedules } from "@/hooks/useSchedules";
 import { useInfiniteScroll } from "@/hooks/useInfiniteScroll";
+import { useMemo } from "react";
 
 const Books = () => {
   const { schedules, fetchNextPage, hasNextPage, isFetchingNextPage, isPending, isError } = useSchedules();
+  const contentIds = useMemo(
+    () => schedules.map((schedule) => schedule.contentId),
+    [schedules],
+  );
+  const { data: likesMap } = useContentLikes(contentIds);
 
   const sentinelRef = useInfiniteScroll({
     onIntersect: () => {
@@ -27,7 +34,10 @@ const Books = () => {
         {schedules.map((schedule) => (
           <BookCard
             key={schedule.scheduleId}
-            book={schedule}
+            book={{
+              ...schedule,
+              liked: likesMap ? (likesMap[String(schedule.contentId)] ?? false) : undefined,
+            }}
             href={`/logs/${schedule.contentId}`}
           />
         ))}

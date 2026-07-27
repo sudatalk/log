@@ -9,7 +9,7 @@ type Props = {
 
   messageCount: number;
   handleClickMessage?: (e: React.MouseEvent) => void;
-  /** 기본은 댓글(MessageCircle). 리뷰 수 등에는 PenLine 등을 넘기면 됨 */
+  /** 기본은 댓글(MessageCircle). 리뷰 수 등에는 Pen 등을 넘기면 됨 */
   MessageIcon?: LucideIcon;
 };
 
