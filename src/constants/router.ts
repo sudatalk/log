@@ -13,6 +13,9 @@ export const getRoute = {
   profile: (searchParams?: SearchParams) => {
     return getPathWithParams(`/profile`, searchParams);
   },
+  userReviews: (userId: string | number, searchParams?: SearchParams) => {
+    return getPathWithParams(`/users/${userId}/reviews`, searchParams);
+  },
 };
 
 const getPathWithParams = (path: string, params?: SearchParams) => {
