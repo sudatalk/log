@@ -15,7 +15,16 @@ import clsx from "clsx";
 
 const ProfileInfo = () => {
   return (
-    <div className={clsx(FLEX, FLEX_1, BG_SURFACE, ROUNDED, JUSTIFY_AROUND)}>
+    <div
+      className={clsx(
+        FLEX,
+        FLEX_1,
+        BG_SURFACE,
+        ROUNDED,
+        JUSTIFY_AROUND,
+        "h-[80px]",
+      )}
+    >
       <div className={clsx(FLEX, CENTER, FLEX_COL)}>
         <p className={clsx(TEXT_XL, FONT_SEMIBOLD)}>9</p>
         <p className={clsx(TEXT_SM, TEXT_GRAY)}>읽은 책</p>

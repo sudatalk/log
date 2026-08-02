@@ -10,10 +10,15 @@ import {
   FLEX_COL,
   GAP_5,
   H_FULL,
+  JUSTIFY_AROUND,
   P_3,
+  TEXT_GRAY,
+  TEXT_XS,
   W_FULL,
 } from "@/constants/tailwind";
 import ProfileInfo from "./components/ProfileInfo";
+import { Separator } from "@/components/ui/separator";
+import ProfileFooter from "./components/ProfileFooter";
 
 const ProfilePage = () => {
   return (
@@ -25,6 +30,8 @@ const ProfilePage = () => {
         <ProfileInfo />
         <ProfileNav />
         <ProfileBestReview />
+        <Separator />
+        <ProfileFooter />
       </main>
     </div>
   );
