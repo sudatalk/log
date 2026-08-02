@@ -28,10 +28,13 @@ import { PROFILE_IMAGE_LIST } from "./constants/profiles";
 import useTerms from "./hooks/useTerms";
 import { getErrorData } from "@/utils/getErrorData";
 import { toast } from "sonner";
+import useUserMe from "@/hooks/useUserMe";
 
 const DUPLICATE_USER_ERROR_CODE = "DUPLICATE_USER"
 
 const RegisterPage = () => {
+  const { } = useUserMe();
+
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -43,7 +46,7 @@ const RegisterPage = () => {
 
   const { nickname, setNickname, selected, setSelected } = useRegisterForm();
 
-  const disabled = isPending || !nickname.trim() || !selected;
+  const disabled = isPending || !nickname.trim() || (typeof selected === "undefined");
 
   const handleOpenAgreementModal = () => {
     setIsOpen(true);
