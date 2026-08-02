@@ -14,6 +14,8 @@ import {
 import clsx from "clsx";
 import { Bell, Library, PenLine, Settings } from "lucide-react";
 import { useRouter } from "next/navigation";
+import SettingSheet from "./SettingSheet";
+import useDisclosure from "@/hooks/useDisclosure";
 
 enum RouteKey {
   MY_REVIEWS = "MY_REVIEWS",
@@ -52,6 +54,8 @@ const menus = [
 const ProfileNav = () => {
   const router = useRouter();
 
+  const settingDisclousre = useDisclosure();
+
   const handleClick = (routeKey: RouteKey) => {
     switch (routeKey) {
       case RouteKey.MY_REVIEWS:
@@ -64,35 +68,42 @@ const ProfileNav = () => {
         // TODO: 알림 페이지로 이동
         break;
       case RouteKey.SETTINGS:
-        // TODO: 설정 페이지로 이동
+        settingDisclousre.handleOpen();
         break;
     }
   };
 
   return (
-    <div className={clsx(FLEX, FLEX_1, GAP_2)}>
-      {menus.map(({ icon: Icon, label, bgColor, routeKey }) => (
-        <button
-          key={label}
-          className={clsx(
-            FLEX,
-            FLEX_1,
-            FLEX_COL,
-            GAP_1,
-            CENTER,
-            bgColor,
-            ROUNDED,
-            P_1,
-          )}
-          onClick={() => handleClick(routeKey)}
-        >
-          <div className={clsx(P_3, ROUNDED)}>
-            <Icon />
-          </div>
-          <p className={clsx(TEXT_SM)}>{label}</p>
-        </button>
-      ))}
-    </div>
+    <>
+      <div className={clsx(FLEX, FLEX_1, GAP_2)}>
+        {menus.map(({ icon: Icon, label, bgColor, routeKey }) => (
+          <button
+            key={label}
+            className={clsx(
+              FLEX,
+              FLEX_1,
+              FLEX_COL,
+              GAP_1,
+              CENTER,
+              bgColor,
+              ROUNDED,
+              P_1,
+            )}
+            onClick={() => handleClick(routeKey)}
+          >
+            <div className={clsx(P_3, ROUNDED)}>
+              <Icon />
+            </div>
+            <p className={clsx(TEXT_SM)}>{label}</p>
+          </button>
+        ))}
+      </div>
+
+      <SettingSheet
+        isOpen={settingDisclousre.isOpen}
+        onClose={settingDisclousre.handleClose}
+      />
+    </>
   );
 };
 

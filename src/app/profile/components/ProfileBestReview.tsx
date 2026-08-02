@@ -12,6 +12,7 @@ import {
   GAP_5,
   H_FULL,
   OVERFLOW_AUTO,
+  TEXT_SM,
 } from "@/constants/tailwind";
 import { useMyReviews } from "@/hooks/useMyReviews";
 import clsx from "clsx";
@@ -25,7 +26,7 @@ const ProfileBestReview = () => {
   return (
     <div className={clsx(FLEX, FLEX_6, FLEX_COL, GAP_5, H_FULL)}>
       <div className={clsx(FLEX, GAP_3)}>
-        <div className="shrink-0">베스트 리뷰</div>
+        <div className={clsx("shrink-0", TEXT_SM)}>베스트 리뷰</div>
         <div className={clsx(FLEX, CENTER, FLEX_1)}>
           <Separator />
         </div>
