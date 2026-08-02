@@ -14,15 +14,25 @@ import type { MyReviewResponse } from "@/types/api";
 import Link from "next/link";
 import { useState } from "react";
 
-type Props = {
-  review: MyReviewResponse;
+type Options = {
+  hideButton: boolean;
 };
 
-const MyLogCard = ({ review }: Props) => {
+type Props = {
+  review: MyReviewResponse;
+  options?: Options;
+};
+
+const MyLogCard = ({ review, options }: Props) => {
+  const { hideButton } = options || {};
+
   const { userId } = useGetUserId();
   const currentUserId = Number(userId);
-  const { availableTypes, selectedType, badges, handleClickBadge } = useCardTypeSelection(review);
-  const { mutate: toggleLike, isPending: isTogglingLike } = useToggleReviewLike(review.contentId);
+  const { availableTypes, selectedType, badges, handleClickBadge } =
+    useCardTypeSelection(review);
+  const { mutate: toggleLike, isPending: isTogglingLike } = useToggleReviewLike(
+    review.contentId,
+  );
   const [isCommentSheetOpen, setIsCommentSheetOpen] = useState(false);
 
   const handleClickHeart = (e: React.MouseEvent) => {
@@ -48,7 +58,9 @@ const MyLogCard = ({ review }: Props) => {
 
         <LogBadgeRow badges={badges} onClickBadge={handleClickBadge} />
 
-        {availableTypes.includes(selectedType) && <Description type={selectedType} review={review} />}
+        {availableTypes.includes(selectedType) && (
+          <Description type={selectedType} review={review} />
+        )}
 
         <LogCardFooter
           heartCount={review.likeCount}
@@ -57,12 +69,21 @@ const MyLogCard = ({ review }: Props) => {
           messageCount={review.commentCount}
           handleClickMessage={handleClickMessage}
           action={
-            <Link
-              href={getRoute.write({ bookId: review.contentId, reviewId: review.reviewId })}
-              className="flex h-6 shrink-0 items-center rounded bg-[#D4894A] px-3.5 text-xs font-medium text-[#FEFEFF]"
-            >
-              수정
-            </Link>
+            <>
+              {hideButton ? (
+                <></>
+              ) : (
+                <Link
+                  href={getRoute.write({
+                    bookId: review.contentId,
+                    reviewId: review.reviewId,
+                  })}
+                  className="flex h-6 shrink-0 items-center rounded bg-[#D4894A] px-3.5 text-xs font-medium text-[#FEFEFF]"
+                >
+                  수정
+                </Link>
+              )}
+            </>
           }
         />
       </LogCardShell>

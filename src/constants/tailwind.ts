@@ -2,6 +2,10 @@ export const BG_BASE = "bg-[#F7F1E6]";
 
 export const BG_SURFACE = "bg-[#FDFAF4]";
 
+export const BG_ELEVATED = "bg-[#EDE4D4]";
+
+export const BG_PRESSED = "bg-[#DED4C0]";
+
 export const EMBER_ICON = "bg-[#D4894A]";
 
 export const FULL = "w-full h-full";
@@ -35,6 +39,8 @@ export const JUSTIFY_BETWEEN = "justify-between";
 export const JUSTIFY_AROUND = "justify-around";
 
 export const JUSTIFY_END = "justify-end";
+
+export const JUSTIFY_CENTER = "justify-center";
 
 export const CENTER = "items-center justify-center";
 
