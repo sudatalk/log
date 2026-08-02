@@ -29,6 +29,7 @@ import useTerms from "./hooks/useTerms";
 import { getErrorData } from "@/utils/getErrorData";
 import { toast } from "sonner";
 import useModify from "./hooks/useModify";
+import { Header } from "@/components/Header";
 
 const DUPLICATE_USER_ERROR_CODE = "DUPLICATE_USER"
 
@@ -109,8 +110,9 @@ const RegisterPage = () => {
 
   return (
     <>
-      <div className={clsx(W_FULL, MIN_H_DVH, BG_BASE, FLEX, FLEX_COL, "p-4")}>
-        <div className={clsx(FLEX, FLEX_COL, JUSTIFY_BETWEEN, H_FULL)}>
+      <div className={clsx(W_FULL, MIN_H_DVH, BG_BASE, FLEX, FLEX_COL,)}>
+        {isModify && <Header />}
+        <div className={clsx(FLEX, FLEX_COL, JUSTIFY_BETWEEN, H_FULL, "p-4")}>
           <div className={clsx(FLEX, FLEX_COL, H_FULL, FLEX_1, GAP_5)}>
             <Nickname nickname={nickname} setNickname={setNickname} />
             <ProfileImage selected={selected} setSelected={setSelected} />
