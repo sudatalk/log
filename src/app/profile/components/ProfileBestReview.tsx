@@ -19,8 +19,6 @@ const ProfileBestReview = () => {
     ?.toSorted((a, b) => b.likeCount - a.likeCount)
     .slice(0, 3);
 
-  console.log("bestReivewList : ", bestReivewList);
-
   return (
     <div className={clsx(FLEX, FLEX_6, FLEX_COL, GAP_5)}>
       <div className={clsx(FLEX, GAP_3)}>
