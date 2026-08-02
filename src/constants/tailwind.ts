@@ -62,6 +62,8 @@ export const FLEX_2 = "flex-2";
 
 export const FLEX_1 = "flex-1";
 
+export const P_1 = "p-1";
+
 export const P_3 = "p-3";
 
 export const GAP_1 = "gap-1";

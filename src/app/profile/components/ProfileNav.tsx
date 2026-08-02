@@ -4,7 +4,9 @@ import {
   FLEX,
   FLEX_1,
   FLEX_COL,
+  GAP_1,
   GAP_2,
+  P_1,
   P_3,
   ROUNDED,
   TEXT_SM,
@@ -76,10 +78,11 @@ const ProfileNav = () => {
             FLEX,
             FLEX_1,
             FLEX_COL,
-            GAP_2,
+            GAP_1,
             CENTER,
             bgColor,
             ROUNDED,
+            P_1,
           )}
           onClick={() => handleClick(routeKey)}
         >
