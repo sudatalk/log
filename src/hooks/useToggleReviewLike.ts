@@ -11,6 +11,12 @@ export function useToggleReviewLike(contentId: number) {
       queryClient.invalidateQueries({
         queryKey: queryKeys.contents.reviews(contentId),
       });
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.reviews.my,
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["reviews", "users"],
+      });
     },
   });
 }

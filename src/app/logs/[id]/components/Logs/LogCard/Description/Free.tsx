@@ -13,7 +13,7 @@ const Free = ({ comment }: Props) => {
         className={clsx(FONT_MEDIUM, TEXT_SM)}
         value={comment}
         disabled
-        style={{ opacity: 1, backgroundColor: "white" }}
+        style={{ opacity: 1, backgroundColor: "#15803d33" }}
       />
     </div>
   );

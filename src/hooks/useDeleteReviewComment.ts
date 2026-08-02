@@ -1,20 +1,19 @@
 import { queryKeys } from "@/constants/queryKeys";
-import { createReviewComment } from "@/lib/api";
+import { deleteReviewComment } from "@/lib/api";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-export function useCreateReviewComment(
-  reviewId: number,
-  userId: number,
-  contentId: number,
-) {
+export function useDeleteReviewComment(reviewId: number, contentId: number) {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (content: string) => createReviewComment(reviewId, userId, { content }),
+    mutationFn: (commentId: number) => deleteReviewComment(commentId),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: queryKeys.reviews.comments(reviewId) });
       queryClient.invalidateQueries({
         queryKey: queryKeys.contents.reviews(contentId),
+      });
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.reviews.my,
       });
     },
   });

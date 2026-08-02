@@ -1,21 +1,19 @@
 import BookImage from "@/app/books/components/Books/BookCard/BookImage";
+import { getRoute } from "@/constants/router";
 import { FLEX, FLEX_COL, FLEX_1, ITEMS_CENTER, JUSTIFY_BETWEEN, W_FULL } from "@/constants/tailwind";
+import { calculateDaysLeft, formatReviewDate } from "@/lib/date";
+import type { DraftReviewResponse } from "@/types/api";
 import clsx from "clsx";
-
-export type DraftReviewCardData = {
-  title: string;
-  author: string;
-  coverImageUrl: string;
-  savedAt: string;
-  daysLeft?: number;
-};
+import Link from "next/link";
 
 type Props = {
-  draft: DraftReviewCardData;
+  draft: DraftReviewResponse;
 };
 
 const DraftReviewCard = ({ draft }: Props) => {
-  const { title, author, coverImageUrl, savedAt, daysLeft } = draft;
+  const { title, author, coverImageUrl, savedAt, reviewDeadline, contentId } = draft;
+  const daysLeft = reviewDeadline ? calculateDaysLeft(reviewDeadline) : undefined;
+  const savedDate = formatReviewDate(savedAt);
 
   return (
     <article
@@ -28,7 +26,7 @@ const DraftReviewCard = ({ draft }: Props) => {
     >
       <div className="relative shrink-0">
         <BookImage imageSrc={coverImageUrl} />
-        {daysLeft !== undefined && (
+        {daysLeft !== undefined && daysLeft > 0 && (
           <span
             className={clsx(
               "absolute right-1 top-1 flex items-center justify-end",
@@ -47,13 +45,15 @@ const DraftReviewCard = ({ draft }: Props) => {
           <p className="w-full text-[11px] leading-[13px] tracking-[0.2px] text-ink">{author}</p>
         </div>
         <div className={clsx(FLEX, W_FULL, ITEMS_CENTER, JUSTIFY_BETWEEN, "h-6")}>
-          <time className="text-[10px] leading-4 text-ink">{savedAt} 저장</time>
-          <button
-            type="button"
-            className="h-6 shrink-0 rounded bg-[#1F1F1F] px-3.5 text-xs font-medium leading-[14px] text-[#FEFEFF]"
+          <time className="text-[10px] leading-4 text-ink" dateTime={savedAt.slice(0, 10)}>
+            {savedDate} 저장
+          </time>
+          <Link
+            href={getRoute.write({ bookId: contentId })}
+            className="flex h-6 shrink-0 items-center rounded bg-[#1F1F1F] px-3.5 text-xs font-medium leading-[14px] text-[#FEFEFF]"
           >
             수정
-          </button>
+          </Link>
         </div>
       </div>
     </article>

@@ -1,4 +1,4 @@
-import { Heart, MessageCircle, Star } from "lucide-react";
+import { Heart, PenLine, Star } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 
 function Stat({ icon: Icon, value }: { icon: LucideIcon; value: string | number }) {
@@ -37,7 +37,7 @@ export function BookStats({
         />
         <span className="text-xs font-medium tracking-[0.2px] text-ink-muted">{likeCount}</span>
       </span>
-      <Stat icon={MessageCircle} value={reviewCount} />
+      <Stat icon={PenLine} value={reviewCount} />
       {averageRating && <Stat icon={Star} value={averageRating} />}
     </div>
   );

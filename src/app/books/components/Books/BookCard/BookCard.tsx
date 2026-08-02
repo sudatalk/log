@@ -14,8 +14,10 @@ import {
   ROUNDED,
   W_FULL,
 } from "@/constants/tailwind";
+import { useContentLikeStatus } from "@/hooks/useContentLikes";
 import { useToggleContentLike } from "@/hooks/useToggleContentLike";
 import clsx from "clsx";
+import { Pen } from "lucide-react";
 import Link from "next/link";
 import BookTime from "./BookTime";
 import Rating from "@/app/logs/[id]/components/Logs/LogCard/Rating";
@@ -58,7 +60,7 @@ const BookCard = ({ book, href }: Props) => {
     description,
     coverImageUrl,
     averageRating,
-    liked = false,
+    liked,
     likeCount,
     commentCount,
     reviewCount,
@@ -68,7 +70,12 @@ const BookCard = ({ book, href }: Props) => {
   const contentId = book.contentId ?? book.id;
   const dateInfo = endedAt ? formatDate(endedAt) : null;
 
+  const shouldFetchLikeStatus = liked === undefined;
+  const { data: likeStatus } = useContentLikeStatus(contentId, shouldFetchLikeStatus);
   const { mutate: toggleLike, isPending: isTogglingLike } = useToggleContentLike();
+
+  const isLiked = likeStatus?.liked ?? liked ?? false;
+  const heartCount = likeStatus?.likeCount ?? likeCount;
 
   const handleClickHeart = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -89,10 +96,11 @@ const BookCard = ({ book, href }: Props) => {
         <BookDescription description={description} />
         <footer className={clsx(FLEX, W_FULL, ITEMS_CENTER, JUSTIFY_BETWEEN)}>
           <Emoji
-            heartCount={likeCount}
-            isLiked={liked}
+            heartCount={heartCount}
+            isLiked={isLiked}
             handleClickHeart={contentId ? handleClickHeart : undefined}
             messageCount={messageCount}
+            MessageIcon={Pen}
           />
           {dateInfo && <BookTime date={dateInfo.date} dateTime={dateInfo.dateTime} />}
         </footer>

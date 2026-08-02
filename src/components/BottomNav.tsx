@@ -30,6 +30,8 @@ export function BottomNav() {
       return;
     }
 
+
+
     if (!isLogined) {
       router.push(getRoute.login({ [REDIRECT_URL_KEY]: value }));
       return;

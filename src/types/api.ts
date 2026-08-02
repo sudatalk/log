@@ -66,6 +66,7 @@ export type ContentReviewsRequest = {
 export type ReviewQuoteItem = {
   id: number;
   quote: string;
+  reason?: string | null;
   sequence: number;
 };
 
@@ -229,3 +230,121 @@ export enum TermType {
   PRIVACY = "PRIVACY",
   SERVICE = "SERVICE",
 }
+export type ReviewContentsRequest = {
+  shortComment?: string;
+  rating?: string;
+  comment?: string;
+  quotes?: Quote[];
+  questionAnswers?: QuestionAnswer[];
+};
+
+type Quote = {
+  quote?: string;
+  reason?: string;
+};
+
+type QuestionAnswer = {
+  question?: string;
+  answer?: string;
+};
+
+export type ReviewSubmitResponse = {
+  reviewId?: number;
+  status: ReviewSubmitStatus;
+};
+
+export enum ReviewSubmitStatus {
+  PUBLISHED = "PUBLISHED",
+  DRAFT = "DRAFT",
+  DELETED = "DELETED",
+}
+
+export type DraftReviewResponse = {
+  reviewId: number;
+  contentId: number;
+  title: string;
+  author: string;
+  coverImageUrl: string;
+  savedAt: string;
+  reviewDeadline: string | null;
+};
+
+export type MyReviewQuoteItem = {
+  id: number;
+  quote: string;
+  reason: string | null;
+};
+
+export type MyReviewQuestionItem = {
+  id: number;
+  question: string;
+  sequence: number;
+  answer: string;
+};
+
+export type MyReviewResponse = {
+  reviewId: number;
+  contentId: number;
+  contentTitle: string;
+  contentAuthor: string;
+  contentCoverImageUrl: string;
+  shortComment: string;
+  rating: number;
+  isLiked: boolean;
+  likeCount: number;
+  commentCount: number;
+  quotes: MyReviewQuoteItem[];
+  questions: MyReviewQuestionItem[];
+  createdAt: string;
+};
+
+export type UserReviewResponse = {
+  reviewId: number;
+  contentId: number;
+  contentTitle: string;
+  contentAuthor: string;
+  contentCoverImageUrl: string;
+  shortComment: string;
+  rating: number;
+  likeCount: number;
+  commentCount: number;
+  quotes: MyReviewQuoteItem[];
+  questions: MyReviewQuestionItem[];
+  createdAt: string;
+};
+
+export type ReviewWritePageResponse = {
+  conetent?: {
+    id?: number;
+    title?: string;
+    author?: string;
+    coverImageUrl?: string;
+    description?: string;
+  };
+  deadlineAt?: string;
+  draftData?: {
+    reviewId?: number;
+    shortComment?: string;
+    rating?: string;
+    comment?: string;
+    quotes?: Quote[];
+    answer?: QuestionAnswer[];
+  };
+};
+
+export type ReviewDetailResponse = {
+  reviewId?: number;
+  userId?: number;
+  nickname?: string;
+  profileImageUrl?: string;
+  contentId?: number;
+  comment?: string;
+  shortComment?: string;
+  rating?: string;
+  likeCount?: number;
+  commentCount?: number;
+  quotes?: Quote[];
+  questions?: QuestionAnswer[];
+  createdAt?: string;
+  liked?: boolean;
+};

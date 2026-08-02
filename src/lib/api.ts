@@ -3,17 +3,24 @@ import type {
   ContentReviewsRequest,
   ContentReviewsResponse,
   ContentStats,
+  DraftReviewResponse,
   LikeToggleResponse,
+  MyReviewResponse,
   ReviewComment,
   ReviewCommentCreateRequest,
   ReviewCommentsRequest,
   ReviewCommentsResponse,
+  ReviewContentsRequest,
+  ReviewDetailResponse,
+  ReviewSubmitResponse,
+  ReviewWritePageResponse,
   ScheduledContent,
   SchedulesRequest,
   SchedulesResponse,
   Term,
   UserCheckResponse,
   UserMeResponse,
+  UserReviewResponse,
   UserSignUpRequest,
   UserSignUpResponse,
 } from "@/types/api";
@@ -147,6 +154,39 @@ export async function toggleContentLike(
   return res.data;
 }
 
+export async function getContentLikeStatus(
+  contentId: number,
+): Promise<LikeToggleResponse> {
+  const res = await axios.get(`${API_BASE_URL}/contents/${contentId}/like`);
+
+  if (!res.data) {
+    throw new Error(
+      `Failed to fetch /contents/${contentId}/like: ${res.status} ${res.statusText}`,
+    );
+  }
+
+  return res.data;
+}
+
+export async function getContentLikes(
+  contentIds: number[],
+): Promise<Record<string, boolean>> {
+  if (contentIds.length === 0) return {};
+
+  const query = new URLSearchParams();
+  contentIds.forEach((id) => query.append("contentIds", String(id)));
+
+  const res = await axios.get(`${API_BASE_URL}/contents/likes?${query}`);
+
+  if (!res.data) {
+    throw new Error(
+      `Failed to fetch /contents/likes: ${res.status} ${res.statusText}`,
+    );
+  }
+
+  return res.data.likes ?? {};
+}
+
 export async function toggleReviewLike(
   reviewId: number,
 ): Promise<LikeToggleResponse> {
@@ -176,6 +216,10 @@ export async function deleteReview(
       `Failed to delete /reviews/${reviewId}: ${res.status} ${res.statusText}`,
     );
   }
+}
+
+export async function deleteReviewComment(commentId: number): Promise<void> {
+  await axios.delete(`${API_BASE_URL}/reviews/comments/${commentId}`);
 }
 
 export async function getReviewComments(
@@ -236,6 +280,66 @@ export async function postSignUpUser(
   return res.data;
 }
 
+export async function reviewContents(params: {
+  contentId: number;
+  data: ReviewContentsRequest;
+}): Promise<ReviewSubmitResponse> {
+  const res = await axios.put(
+    `${API_BASE_URL}/reviews/contents/${params.contentId}/publish`,
+    params.data,
+    {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    },
+  );
+
+  if (!res.data) {
+    throw new Error(
+      `Failed to fetch /reviews/contents/${params.contentId}: ${res.status} ${res.statusText}`,
+    );
+  }
+
+  return res.data;
+}
+
+export async function draftReviewContents(params: {
+  contentId: number;
+  data: ReviewContentsRequest;
+}): Promise<ReviewSubmitResponse> {
+  const res = await axios.put(
+    `${API_BASE_URL}/reviews/contents/${params.contentId}/draft`,
+    params.data,
+    {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    },
+  );
+
+  if (!res.data) {
+    throw new Error(
+      `Failed to fetch /reviews/contents/${params.contentId}: ${res.status} ${res.statusText}`,
+    );
+  }
+
+  return res.data;
+}
+
+export async function getReviewContents(
+  contentId: number,
+): Promise<ReviewWritePageResponse> {
+  const res = await axios.get(`${API_BASE_URL}/reviews/contents/${contentId}`);
+
+  if (!res.data) {
+    throw new Error(
+      `Failed to fetch /reviews/contents/${contentId}: ${res.status} ${res.statusText}`,
+    );
+  }
+
+  return res.data;
+}
+
 export async function getUserMe(): Promise<UserMeResponse> {
   const res = await axios.get(`${API_BASE_URL}/users/me`);
   if (!res.data) {
@@ -250,6 +354,50 @@ export async function getTerms(): Promise<Term[]> {
   const res = await axios.get(`${API_BASE_URL}/terms`);
   if (!res.data) {
     throw new Error(`Failed to fetch /terms: ${res.status} ${res.statusText}`);
+  }
+  return res.data;
+}
+
+export async function getDraftReviews(): Promise<DraftReviewResponse[]> {
+  const res = await axios.get(`${API_BASE_URL}/reviews/drafts`);
+
+  if (!res.data) {
+    throw new Error(`Failed to fetch /reviews/drafts: ${res.status} ${res.statusText}`);
+  }
+
+  return res.data;
+}
+
+export async function getMyReviews(): Promise<MyReviewResponse[]> {
+  const res = await axios.get(`${API_BASE_URL}/reviews/my`);
+
+  if (!res.data) {
+    throw new Error(`Failed to fetch /reviews/my: ${res.status} ${res.statusText}`);
+  }
+
+  return res.data;
+}
+
+export async function getUserReviews(userId: number): Promise<UserReviewResponse[]> {
+  const res = await axios.get(`${API_BASE_URL}/reviews/users/${userId}`);
+
+  if (!res.data) {
+    throw new Error(
+      `Failed to fetch /reviews/users/${userId}: ${res.status} ${res.statusText}`,
+    );
+  }
+
+  return res.data;
+}
+
+export async function getReviewById(
+  reviewId: string,
+): Promise<ReviewDetailResponse> {
+  const res = await axios.get(`${API_BASE_URL}/reviews/${reviewId}`);
+  if (!res.data) {
+    throw new Error(
+      `Failed to fetch /reviews/${reviewId}: ${res.status} ${res.statusText}`,
+    );
   }
   return res.data;
 }

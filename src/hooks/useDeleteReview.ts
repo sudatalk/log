@@ -9,10 +9,10 @@ export function useDeleteReview(contentId: number, userId: number) {
     mutationFn: (reviewId: number) => deleteReview(reviewId, userId),
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: queryKeys.contents.reviews(contentId, userId),
+        queryKey: queryKeys.contents.reviews(contentId),
       });
       queryClient.invalidateQueries({
-        queryKey: queryKeys.contents.detail(contentId, userId),
+        queryKey: queryKeys.contents.detail(contentId),
       });
     },
   });
