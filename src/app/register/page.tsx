@@ -28,6 +28,7 @@ import { PROFILE_IMAGE_LIST } from "./constants/profiles";
 import useTerms from "./hooks/useTerms";
 import { getErrorData } from "@/utils/getErrorData";
 import { toast } from "sonner";
+import useModify from "./hooks/useModify";
 
 const DUPLICATE_USER_ERROR_CODE = "DUPLICATE_USER"
 
@@ -39,11 +40,14 @@ const RegisterPage = () => {
 
   const redirectUrl = searchParams.get(REDIRECT_URL_KEY);
 
-  const { mutateAsync, isPending } = useRegister();
+  const { mutateAsync: registerMutateAsync, isPending: isRegisterPending } = useRegister();
+  const { mutateAsync: modifyMutateAsync, isPending: isModifyPending } = useModify();
 
   const [isOpen, setIsOpen] = useState(false);
 
-  const { nickname, setNickname, selected, setSelected } = useRegisterForm();
+  const { nickname, setNickname, selected, setSelected, isModify } = useRegisterForm();
+
+  const isPending = isRegisterPending || isModifyPending;
 
   const disabled = isPending || !nickname.trim() || (typeof selected === "undefined");
 
@@ -66,7 +70,7 @@ const RegisterPage = () => {
       try {
         if (!appUserId) throw new Error("invalid appUserId");
 
-        const response = await mutateAsync({
+        const response = await registerMutateAsync({
           appUserId: +appUserId,
           nickname,
           email,
@@ -92,6 +96,17 @@ const RegisterPage = () => {
     }
   };
 
+  const handleModify = async () => {
+    if (disabled) return;
+
+    await modifyMutateAsync({
+      nickname,
+      profileImageUrl: PROFILE_IMAGE_LIST[selected]
+    })
+
+    router.replace(redirectUrl || "/");
+  }
+
   return (
     <>
       <div className={clsx(W_FULL, MIN_H_DVH, BG_BASE, FLEX, FLEX_COL, "p-4")}>
@@ -103,12 +118,12 @@ const RegisterPage = () => {
           <Button
             type="submit"
             size="lg"
-            className={clsx(EMBER_ICON)}
+            className={clsx(EMBER_ICON, isModify && "bg-[#FFA500]")}
             style={{ height: 40 }}
             disabled={disabled}
-            onClick={handleOpenAgreementModal}
+            onClick={isModify ? handleModify : handleOpenAgreementModal}
           >
-            입장하기
+            {isModify ? '수정하기' : '입장하기'}
           </Button>
         </div>
       </div>

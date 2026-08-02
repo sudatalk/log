@@ -1,12 +1,15 @@
 import useUserMe from "@/hooks/useUserMe";
 import { useEffect, useState } from "react";
 import { PROFILE_IMAGE_LIST } from "../constants/profiles";
+import { UserStatus } from "@/types/api";
 
 const useRegisterForm = () => {
   const { data, isLoading } = useUserMe();
 
   const [nickname, setNickname] = useState("");
   const [selected, setSelected] = useState<number>();
+
+  const isModify = data?.status === UserStatus.JOIN
 
   useEffect(() => {
     if (isLoading || !data) return;
@@ -26,6 +29,7 @@ const useRegisterForm = () => {
     setNickname,
     selected,
     setSelected,
+    isModify,
   };
 };
 
