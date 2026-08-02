@@ -31,7 +31,7 @@ export function BottomNav() {
     }
 
     if (!isLogined) {
-      router.push(getRoute.login({ REDIRECT_URL_KEY: value }));
+      router.push(getRoute.login({ [REDIRECT_URL_KEY]: value }));
       return;
     }
 
@@ -43,9 +43,8 @@ export function BottomNav() {
       <div className="mx-auto flex h-[70px] w-full items-start">
         {navItems.map(({ icon: Icon, href }, i) => {
           const active = isActive(pathname, href);
-          const className = `flex flex-1 items-center justify-center py-[23px] ${
-            active ? "border-t-2 border-amber-light" : ""
-          }`;
+          const className = `flex flex-1 items-center justify-center py-[23px] ${active ? "border-t-2 border-amber-light" : ""
+            }`;
           const content = <Icon className="size-6 text-nav" />;
 
           return href ? (

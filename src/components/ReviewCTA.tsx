@@ -13,7 +13,7 @@ export function ReviewCTA({ daysLeft }: { daysLeft: number }) {
 
   const hnadleClickReviewButton = () => {
     if (!isLogined) {
-      router.push(getRoute.login({ REDIRECT_URL_KEY: getRoute.write() }));
+      router.push(getRoute.login({ [REDIRECT_URL_KEY]: getRoute.write() }));
       return;
     }
 
