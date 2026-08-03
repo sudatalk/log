@@ -29,6 +29,7 @@ export function BookDetail({
 
       {content && (
         <BookStats
+          contentId={content.id}
           liked={content.liked}
           likeCount={content.likeCount}
           reviewCount={content.reviewCount}
