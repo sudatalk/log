@@ -5,7 +5,9 @@ import Error from "@/components/Error";
 import Loading from "@/components/Loading";
 import { FLEX, FLEX_COL, W_FULL } from "@/constants/tailwind";
 import { useContentDetail } from "@/hooks/useContentDetail";
+import { useContentLikes } from "@/hooks/useContentLikes";
 import { useContentReviews } from "@/hooks/useContentReviews";
+import useGetUserId from "@/hooks/useGetUserId";
 import { useInfiniteScroll } from "@/hooks/useInfiniteScroll";
 import clsx from "clsx";
 import { useParams } from "next/navigation";
@@ -14,7 +16,12 @@ import LogCard from "./LogCard";
 const Logs = () => {
   const params = useParams<{ id: string }>();
   const contentId = Number(params.id);
+  const { userId, isLoading: isUserLoading } = useGetUserId();
+  const isLogined = !!userId && !isUserLoading;
   const { data: content, isPending: isContentPending, isError: isContentError } = useContentDetail(contentId);
+  const { data: likesMap } = useContentLikes(
+    Number.isNaN(contentId) ? [] : [contentId],
+  );
   const {
     reviews,
     fetchNextPage,
@@ -31,11 +38,18 @@ const Logs = () => {
     enabled: hasNextPage && !isFetchingNextPage,
   });
 
+  const liked = likesMap ? (likesMap[String(contentId)] ?? false) : false;
+
   return (
     <div className={clsx(FLEX, FLEX_COL, "gap-2.5", "py-2.5", W_FULL)}>
       {isContentPending && <Loading />}
       {isContentError && <Error />}
-      {content && <BookCard book={content} />}
+      {content && (
+        <BookCard
+          book={{ ...content, liked }}
+          isLogined={isLogined}
+        />
+      )}
       <div className={clsx(FLEX, FLEX_COL, "gap-2.5")}>
         {isReviewsPending && <Loading />}
         {isReviewsError && <Error />}

@@ -14,11 +14,12 @@ import {
   ROUNDED,
   W_FULL,
 } from "@/constants/tailwind";
-import { useContentLikeStatus } from "@/hooks/useContentLikes";
+import { getRoute, REDIRECT_URL_KEY } from "@/constants/router";
 import { useToggleContentLike } from "@/hooks/useToggleContentLike";
 import clsx from "clsx";
 import { Pen } from "lucide-react";
 import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
 import BookTime from "./BookTime";
 import Rating from "@/app/logs/[id]/components/Logs/LogCard/Rating";
 import BookImage from "./BookImage";
@@ -43,6 +44,7 @@ export type BookCardData = {
 type Props = {
   book: BookCardData;
   href?: string;
+  isLogined: boolean;
 };
 
 const formatDate = (iso: string) => {
@@ -53,14 +55,14 @@ const formatDate = (iso: string) => {
   return { date: `${y}. ${m}. ${day}`, dateTime: `${y}-${m}-${day}` };
 };
 
-const BookCard = ({ book, href }: Props) => {
+const BookCard = ({ book, href, isLogined }: Props) => {
   const {
     title,
     author,
     description,
     coverImageUrl,
     averageRating,
-    liked,
+    liked = false,
     likeCount,
     commentCount,
     reviewCount,
@@ -70,17 +72,20 @@ const BookCard = ({ book, href }: Props) => {
   const contentId = book.contentId ?? book.id;
   const dateInfo = endedAt ? formatDate(endedAt) : null;
 
-  const shouldFetchLikeStatus = liked === undefined;
-  const { data: likeStatus } = useContentLikeStatus(contentId, shouldFetchLikeStatus);
+  const router = useRouter();
+  const pathname = usePathname();
   const { mutate: toggleLike, isPending: isTogglingLike } = useToggleContentLike();
-
-  const isLiked = likeStatus?.liked ?? liked ?? false;
-  const heartCount = likeStatus?.likeCount ?? likeCount;
 
   const handleClickHeart = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    if (!contentId || isTogglingLike) return;
+    if (!contentId) return;
+
+    if (!isLogined) {
+      router.push(getRoute.login({ [REDIRECT_URL_KEY]: pathname }));
+      return;
+    }
+    if (isTogglingLike) return;
 
     toggleLike(contentId);
   };
@@ -96,8 +101,8 @@ const BookCard = ({ book, href }: Props) => {
         <BookDescription description={description} />
         <footer className={clsx(FLEX, W_FULL, ITEMS_CENTER, JUSTIFY_BETWEEN)}>
           <Emoji
-            heartCount={heartCount}
-            isLiked={isLiked}
+            heartCount={likeCount}
+            isLiked={liked}
             handleClickHeart={contentId ? handleClickHeart : undefined}
             messageCount={messageCount}
             MessageIcon={Pen}
