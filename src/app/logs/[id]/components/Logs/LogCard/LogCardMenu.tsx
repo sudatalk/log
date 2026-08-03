@@ -1,6 +1,7 @@
 "use client";
 
 import ConfirmDialog from "@/components/shared/ConfirmDialog";
+import { getRoute } from "@/constants/router";
 import { useDeleteReview } from "@/hooks/useDeleteReview";
 import clsx from "clsx";
 import { MoreVertical } from "lucide-react";
@@ -47,7 +48,7 @@ const LogCardMenu = ({ reviewId, contentId, userId, isMyReview }: Props) => {
 
   const handleEdit = () => {
     closeMenu();
-    router.push(`/write/${reviewId}`);
+    router.push(getRoute.write({ bookId: contentId, reviewId }));
   };
 
   const handleReport = () => {
