@@ -162,8 +162,8 @@ const ReviewCommentSheet = ({ reviewId, contentId, userId, isOpen, onClose }: Pr
       <Sheet.Container
         unstyled
         className={clsx(
-          "flex flex-col rounded-t-[24px] border border-b-0 border-[#E6E6E6] bg-white",
-          "shadow-[0px_-3px_10px_rgba(38,38,38,0.2)]",
+          "mx-auto flex w-full max-w-[430px] flex-col rounded-t-[24px] border border-b-0 border-[#E6E6E6] bg-white",
+          "!left-0 !right-0 shadow-[0px_-3px_10px_rgba(38,38,38,0.2)]",
         )}
         style={{ height: SHEET_HEIGHT }}
       >
@@ -233,7 +233,10 @@ const ReviewCommentSheet = ({ reviewId, contentId, userId, isOpen, onClose }: Pr
           </div>
         </Sheet.Content>
       </Sheet.Container>
-      <Sheet.Backdrop className="!bg-black/40" onClick={onClose} />
+      <Sheet.Backdrop
+        className="!left-1/2 !right-auto !w-full !max-w-[430px] !-translate-x-1/2 !bg-black/40"
+        onClick={onClose}
+      />
     </Sheet>
   );
 };
