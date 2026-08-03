@@ -8,9 +8,12 @@ import Error from "../../../../components/Error";
 import { useContentLikes } from "@/hooks/useContentLikes";
 import { useSchedules } from "@/hooks/useSchedules";
 import { useInfiniteScroll } from "@/hooks/useInfiniteScroll";
+import useGetUserId from "@/hooks/useGetUserId";
 import { useMemo } from "react";
 
 const Books = () => {
+  const { userId, isLoading: isUserLoading } = useGetUserId();
+  const isLogined = !!userId && !isUserLoading;
   const { schedules, fetchNextPage, hasNextPage, isFetchingNextPage, isPending, isError } = useSchedules();
   const contentIds = useMemo(
     () => schedules.map((schedule) => schedule.contentId),
@@ -36,9 +39,12 @@ const Books = () => {
             key={schedule.scheduleId}
             book={{
               ...schedule,
-              liked: likesMap ? (likesMap[String(schedule.contentId)] ?? false) : undefined,
+              liked: likesMap
+                ? (likesMap[String(schedule.contentId)] ?? false)
+                : false,
             }}
             href={`/logs/${schedule.contentId}`}
+            isLogined={isLogined}
           />
         ))}
         {hasNextPage && <div ref={sentinelRef} aria-hidden />}
