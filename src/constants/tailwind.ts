@@ -2,6 +2,10 @@ export const BG_BASE = "bg-[#F7F1E6]";
 
 export const BG_SURFACE = "bg-[#FDFAF4]";
 
+export const BG_ELEVATED = "bg-[#EDE4D4]";
+
+export const BG_PRESSED = "bg-[#DED4C0]";
+
 export const EMBER_ICON = "bg-[#D4894A]";
 
 export const FULL = "w-full h-full";
@@ -36,6 +40,8 @@ export const JUSTIFY_AROUND = "justify-around";
 
 export const JUSTIFY_END = "justify-end";
 
+export const JUSTIFY_CENTER = "justify-center";
+
 export const CENTER = "items-center justify-center";
 
 export const FLEX_9 = "flex-9";
@@ -55,6 +61,8 @@ export const FLEX_3 = "flex-3";
 export const FLEX_2 = "flex-2";
 
 export const FLEX_1 = "flex-1";
+
+export const P_1 = "p-1";
 
 export const P_3 = "p-3";
 
