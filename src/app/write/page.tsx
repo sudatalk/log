@@ -89,7 +89,11 @@ const ReviewWritePage = () => {
       if (type === ReviewType.PUBLISH) {
         router.replace(getRoute.write({ bookId: book.id, reviewId: reviewId }));
 
-        toast("리뷰가 등록되었습니다.");
+        if (bookId) {
+          toast("리뷰가 수정되었습니다.");
+        } else {
+          toast("리뷰가 등록되었습니다.");
+        }
       } else {
         toast("리뷰가 임시저장되었습니다.");
       }
