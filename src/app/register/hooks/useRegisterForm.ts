@@ -4,25 +4,27 @@ import { PROFILE_IMAGE_LIST } from "../constants/profiles";
 import { UserStatus } from "@/types/api";
 
 const useRegisterForm = () => {
-  const { data, isLoading } = useUserMe();
+  const { data, isLoading, isFetchedAfterMount } = useUserMe();
 
   const [nickname, setNickname] = useState("");
   const [selected, setSelected] = useState<number>();
 
-  const isModify = data?.status === UserStatus.JOIN
+  const isModify = data?.status === UserStatus.JOIN;
 
   useEffect(() => {
-    if (isLoading || !data) return;
+    if (isLoading || !data || !isFetchedAfterMount) return;
 
     const { nickname, profileImageUrl } = data;
 
     // eslint-disable-next-line react-hooks/set-state-in-effect
-    setNickname(nickname || '');
+    setNickname(nickname || "");
 
-    const selectedIndex = PROFILE_IMAGE_LIST.findIndex(v => v === profileImageUrl)
+    const selectedIndex = PROFILE_IMAGE_LIST.findIndex(
+      (v) => v === profileImageUrl,
+    );
 
-    setSelected(selectedIndex === -1 ? undefined : selectedIndex)
-  }, [data, isLoading])
+    setSelected(selectedIndex === -1 ? undefined : selectedIndex);
+  }, [data, isLoading, isFetchedAfterMount]);
 
   return {
     nickname,
