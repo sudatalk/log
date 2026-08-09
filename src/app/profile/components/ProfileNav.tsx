@@ -13,7 +13,7 @@ import {
   TEXT_SM,
 } from "@/constants/tailwind";
 import clsx from "clsx";
-import { Bell, Library, PenLine, Settings } from "lucide-react";
+import { Library, PenLine, Settings } from "lucide-react";
 import { useRouter } from "next/navigation";
 import SettingSheet from "./SettingSheet";
 import useDisclosure from "@/hooks/useDisclosure";
