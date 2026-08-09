@@ -9,6 +9,7 @@ import {
   FLEX,
   FLEX_COL,
   FONT_MEDIUM,
+  FONT_SEMIBOLD,
   REQUIRED,
   ROUNDED,
   TEXT_LG,
@@ -45,7 +46,7 @@ const OneLineReview = (props: Props) => {
         value={oneLine}
         maxLength={30}
         onChange={(v) => handleChangeOneLine(v.target.value)}
-        className={clsx("p-5", ROUNDED, TEXT_SM, BG_WHITE)}
+        className={clsx("p-5", ROUNDED, TEXT_SM, BG_WHITE, FONT_SEMIBOLD)}
         placeholder="이 책을 한 문장으로 표현한다면 ?"
       />
     </div>

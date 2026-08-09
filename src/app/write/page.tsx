@@ -11,7 +11,6 @@ import {
   GAP_5,
   H_FULL,
   OVERFLOW_AUTO,
-  OVERFLOW_HIDDEN,
   P_3,
   W_FULL,
 } from "@/constants/tailwind";
@@ -87,7 +86,14 @@ const ReviewWritePage = () => {
 
       if (!reviewId) return;
 
-      router.replace(getRoute.write({ bookId: book.id, reviewId: reviewId }));
+      if (type === ReviewType.PUBLISH) {
+        router.replace(getRoute.write({ bookId: book.id, reviewId: reviewId }));
+
+        toast("리뷰가 등록되었습니다.");
+      } else {
+        toast("리뷰가 임시저장되었습니다.");
+      }
+
       return;
     } catch (error) {
       const { message } = getErrorData(error);

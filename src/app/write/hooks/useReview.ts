@@ -33,11 +33,11 @@ const useReview = () => {
 
   const [review, setReview] = useState<Review>(DEFAULT_VALUE);
 
-  const { data } = useGetReview({ reviewId });
+  const { data, isFetchedAfterMount } = useGetReview({ reviewId });
 
   useEffect(
     function setInitialReview() {
-      if (!data) return;
+      if (!data || !isFetchedAfterMount) return;
 
       // eslint-disable-next-line react-hooks/set-state-in-effect
       setReview({
@@ -51,7 +51,7 @@ const useReview = () => {
         recommend: data?.questions?.[0]?.answer || "",
       });
     },
-    [data],
+    [data, isFetchedAfterMount],
   );
 
   const isRequired = !review.oneLine || !review.star;

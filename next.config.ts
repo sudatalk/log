@@ -10,6 +10,7 @@ const nextConfig: NextConfig = {
     ];
   },
   // allowedDevOrigins 추가 필요
+  allowedDevOrigins: ["10.0.2.2"],
 };
 
 export default nextConfig;
