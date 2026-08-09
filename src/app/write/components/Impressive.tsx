@@ -23,6 +23,7 @@ import clsx from "clsx";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import { useSearchParams } from "next/navigation";
 import { REVIEW_ID_SEARCH_PARAMS_KEY } from "../hooks/useReview";
+import { WRITE_TEXTAREA_MAX_LENGTH } from "../constants/maxLength";
 
 type Props = {
   sentence: string;
@@ -76,6 +77,7 @@ const Impressive = (props: Props) => {
             onChange={(e) => handleChangeImpressiveSentence(e.target.value)}
             placeholder="책에서 인상깊었던 문장을 입력해주세요"
             className={clsx(ROUNDED, "bg-[#3B82F6]/20", FONT_SEMIBOLD, TEXT_SM)}
+            maxLength={WRITE_TEXTAREA_MAX_LENGTH}
           />
           <Textarea
             value={impression}
@@ -83,6 +85,7 @@ const Impressive = (props: Props) => {
             placeholder="이 문장이 인상깊었던 이유를 설명해주세요"
             className={clsx(ROUNDED, FONT_SEMIBOLD, TEXT_SM, BG_WHITE)}
             style={{ minHeight: 80 }}
+            maxLength={WRITE_TEXTAREA_MAX_LENGTH}
           />
         </div>
       )}

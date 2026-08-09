@@ -23,6 +23,7 @@ import clsx from "clsx";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import { REVIEW_ID_SEARCH_PARAMS_KEY } from "../hooks/useReview";
 import { useSearchParams } from "next/navigation";
+import { WRITE_TEXTAREA_MAX_LENGTH } from "../constants/maxLength";
 
 type Props = {
   recommend: string;
@@ -81,6 +82,7 @@ const Recommend = (props: Props) => {
             placeholder="추천 질문에 답변을 작성해주세요"
             className={clsx(ROUNDED, FONT_SEMIBOLD, TEXT_SM, BG_WHITE)}
             style={{ minHeight: 80 }}
+            maxLength={WRITE_TEXTAREA_MAX_LENGTH}
           />
         </div>
       )}

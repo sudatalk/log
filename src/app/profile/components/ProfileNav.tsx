@@ -4,6 +4,7 @@ import {
   FLEX,
   FLEX_1,
   FLEX_COL,
+  FONT_SEMIBOLD,
   GAP_1,
   GAP_2,
   P_1,
@@ -38,12 +39,6 @@ const menus = [
     routeKey: RouteKey.BOOKS,
   },
   {
-    icon: Bell,
-    label: "알림",
-    bgColor: "bg-yellow-50",
-    routeKey: RouteKey.NOTIFICATIONS,
-  },
-  {
     icon: Settings,
     label: "설정",
     bgColor: "bg-purple-50",
@@ -63,9 +58,6 @@ const ProfileNav = () => {
         break;
       case RouteKey.BOOKS:
         router.push(getRoute.books());
-        break;
-      case RouteKey.NOTIFICATIONS:
-        // TODO: 알림 페이지로 이동
         break;
       case RouteKey.SETTINGS:
         settingDisclousre.handleOpen();
@@ -92,9 +84,9 @@ const ProfileNav = () => {
             onClick={() => handleClick(routeKey)}
           >
             <div className={clsx(P_3, ROUNDED)}>
-              <Icon />
+              <Icon strokeWidth={1.5} />
             </div>
-            <p className={clsx(TEXT_SM)}>{label}</p>
+            <p className={clsx(TEXT_SM, FONT_SEMIBOLD)}>{label}</p>
           </button>
         ))}
       </div>

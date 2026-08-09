@@ -1,0 +1,3 @@
+export const ONE_LINE_MAX_LEGNTH = 30;
+
+export const WRITE_TEXTAREA_MAX_LENGTH = 3000;
