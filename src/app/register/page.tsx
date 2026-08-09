@@ -31,26 +31,28 @@ import { toast } from "sonner";
 import useModify from "./hooks/useModify";
 import { Header } from "@/components/Header";
 
-const DUPLICATE_USER_ERROR_CODE = "DUPLICATE_USER"
+const DUPLICATE_USER_ERROR_CODE = "DUPLICATE_USER";
 
 const RegisterPage = () => {
-
-
   const router = useRouter();
   const searchParams = useSearchParams();
 
   const redirectUrl = searchParams.get(REDIRECT_URL_KEY);
 
-  const { mutateAsync: registerMutateAsync, isPending: isRegisterPending } = useRegister();
-  const { mutateAsync: modifyMutateAsync, isPending: isModifyPending } = useModify();
+  const { mutateAsync: registerMutateAsync, isPending: isRegisterPending } =
+    useRegister();
+  const { mutateAsync: modifyMutateAsync, isPending: isModifyPending } =
+    useModify();
 
   const [isOpen, setIsOpen] = useState(false);
 
-  const { nickname, setNickname, selected, setSelected, isModify } = useRegisterForm();
+  const { nickname, setNickname, selected, setSelected, isModify } =
+    useRegisterForm();
 
   const isPending = isRegisterPending || isModifyPending;
 
-  const disabled = isPending || !nickname.trim() || (typeof selected === "undefined");
+  const disabled =
+    isPending || !nickname.trim() || typeof selected === "undefined";
 
   const handleOpenAgreementModal = () => {
     setIsOpen(true);
@@ -76,7 +78,7 @@ const RegisterPage = () => {
           nickname,
           email,
           profileImageUrl: PROFILE_IMAGE_LIST[selected],
-          agreedTermsIds: data?.map(value => value.id!) || [],
+          agreedTermsIds: data?.map((value) => value.id!) || [],
         });
 
         axios.defaults.headers.common["X-User-Id"] = response.id;
@@ -92,7 +94,7 @@ const RegisterPage = () => {
           return;
         }
 
-        toast(message)
+        toast(message);
       }
     }
   };
@@ -102,15 +104,17 @@ const RegisterPage = () => {
 
     await modifyMutateAsync({
       nickname,
-      profileImageUrl: PROFILE_IMAGE_LIST[selected]
-    })
+      profileImageUrl: PROFILE_IMAGE_LIST[selected],
+    });
 
     router.replace(redirectUrl || "/");
-  }
+
+    toast("프로필이 수정되었습니다.");
+  };
 
   return (
     <>
-      <div className={clsx(W_FULL, MIN_H_DVH, BG_BASE, FLEX, FLEX_COL,)}>
+      <div className={clsx(W_FULL, MIN_H_DVH, BG_BASE, FLEX, FLEX_COL)}>
         {isModify && <Header />}
         <div className={clsx(FLEX, FLEX_COL, JUSTIFY_BETWEEN, H_FULL, "p-4")}>
           <div className={clsx(FLEX, FLEX_COL, H_FULL, FLEX_1, GAP_5)}>
@@ -125,7 +129,7 @@ const RegisterPage = () => {
             disabled={disabled}
             onClick={isModify ? handleModify : handleOpenAgreementModal}
           >
-            {isModify ? '수정하기' : '입장하기'}
+            {isModify ? "수정하기" : "입장하기"}
           </Button>
         </div>
       </div>

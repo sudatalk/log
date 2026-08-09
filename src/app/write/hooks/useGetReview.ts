@@ -18,6 +18,7 @@ const useGetReview = (props: Props) => {
     queryKey: getReviewQueryKey(reviewId),
     queryFn: reviewId ? () => getReviewQueryFn(reviewId) : skipToken,
     enabled: !!reviewId,
+    refetchOnMount: true,
   });
 };
 

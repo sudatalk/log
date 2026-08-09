@@ -7,6 +7,8 @@ type Props = {
   setNickname: (nickname: string) => void;
 };
 
+const NICKNAME_MAX_LENGTH = 20;
+
 const Nickname = (props: Props) => {
   const { nickname, setNickname } = props;
 
@@ -24,6 +26,7 @@ const Nickname = (props: Props) => {
         onChange={(event) => setNickname(event.target.value)}
         placeholder="닉네임을 입력해주세요"
         style={{ backgroundColor: "white", height: 40 }}
+        maxLength={NICKNAME_MAX_LENGTH}
       />
       <FieldDescription>앱 내에서 사용할 닉네임을 알려주세요</FieldDescription>
     </Field>

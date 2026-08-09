@@ -56,18 +56,28 @@ type CommentItemProps = {
   onDelete: (commentId: number) => void;
 };
 
-const CommentItem = ({ comment, canDelete, isDeleting, onDelete }: CommentItemProps) => {
+const CommentItem = ({
+  comment,
+  canDelete,
+  isDeleting,
+  onDelete,
+}: CommentItemProps) => {
   const date = formatReviewDate(comment.createdAt);
   const dateTime = comment.createdAt.slice(0, 10);
 
   return (
     <div className={clsx(FLEX, "w-full items-start gap-[5px]")}>
       <div className={clsx("flex w-[30px] shrink-0 justify-center")}>
-        <CommentAvatar nickname={comment.nickname} profileImageUrl={comment.profileImageUrl} />
+        <CommentAvatar
+          nickname={comment.nickname}
+          profileImageUrl={comment.profileImageUrl}
+        />
       </div>
       <div className={clsx(FLEX, FLEX_COL, "min-w-0 flex-1 gap-[5px]")}>
         <div className={clsx(FLEX, "h-[14px] items-center gap-[5px]")}>
-          <span className="text-xs font-normal leading-[14px] text-black">{comment.nickname}</span>
+          <span className="text-xs font-normal leading-[14px] text-black">
+            {comment.nickname}
+          </span>
           <time
             className="text-[8px] font-normal leading-[10px] tracking-[0.2px] text-[rgba(60,60,67,0.6)]"
             dateTime={dateTime}
@@ -101,7 +111,13 @@ type Props = {
   onClose: () => void;
 };
 
-const ReviewCommentSheet = ({ reviewId, contentId, userId, isOpen, onClose }: Props) => {
+const ReviewCommentSheet = ({
+  reviewId,
+  contentId,
+  userId,
+  isOpen,
+  onClose,
+}: Props) => {
   const [inputValue, setInputValue] = useState("");
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const shouldScrollToTopRef = useRef(false);
@@ -112,15 +128,10 @@ const ReviewCommentSheet = ({ reviewId, contentId, userId, isOpen, onClose }: Pr
     isFetchingNextPage,
     isPending,
   } = useReviewComments(reviewId, isOpen);
-  const { mutate: createComment, isPending: isSubmitting } = useCreateReviewComment(
-    reviewId,
-    userId,
-    contentId,
-  );
-  const { mutate: deleteComment, isPending: isDeleting } = useDeleteReviewComment(
-    reviewId,
-    contentId,
-  );
+  const { mutate: createComment, isPending: isSubmitting } =
+    useCreateReviewComment(reviewId, userId, contentId);
+  const { mutate: deleteComment, isPending: isDeleting } =
+    useDeleteReviewComment(reviewId, contentId);
 
   const sentinelRef = useInfiniteScroll({
     onIntersect: () => {
@@ -158,7 +169,12 @@ const ReviewCommentSheet = ({ reviewId, contentId, userId, isOpen, onClose }: Pr
   };
 
   return (
-    <Sheet isOpen={isOpen} onClose={onClose} detent="content">
+    <Sheet
+      isOpen={isOpen}
+      onClose={onClose}
+      detent="content"
+      avoidKeyboard={false}
+    >
       <Sheet.Container
         unstyled
         className={clsx(
@@ -173,7 +189,11 @@ const ReviewCommentSheet = ({ reviewId, contentId, userId, isOpen, onClose }: Pr
           </div>
         </Sheet.Header>
 
-        <Sheet.Content disableDrag unstyled className="min-h-0 flex-1 overflow-hidden">
+        <Sheet.Content
+          disableDrag
+          unstyled
+          className="min-h-0 flex-1 overflow-hidden"
+        >
           <div className={clsx(FLEX, FLEX_COL, "gap-4 px-2 pb-5")}>
             <div
               ref={scrollContainerRef}
@@ -226,7 +246,11 @@ const ReviewCommentSheet = ({ reviewId, contentId, userId, isOpen, onClose }: Pr
                   disabled={!inputValue.trim() || isSubmitting}
                   aria-label="댓글 작성"
                 >
-                  <ArrowUp size={14} strokeWidth={2} className="text-[#414040]" />
+                  <ArrowUp
+                    size={14}
+                    strokeWidth={2}
+                    className="text-[#414040]"
+                  />
                 </button>
               </form>
             </div>

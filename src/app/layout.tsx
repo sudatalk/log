@@ -4,7 +4,9 @@ import { Noto_Serif_KR } from "next/font/google";
 import { QueryProvider } from "@/components/QueryProvider";
 import "./globals.css";
 import KakaoSDKChecker from "@/components/KakaoSDKChecker";
-import { Toaster } from "@/components/ui/sonner"
+import { Toaster } from "@/components/ui/sonner";
+import clsx from "clsx";
+import { BG_BASE, FLEX, FLEX_COL, FULL } from "@/constants/tailwind";
 
 const pretendard = localFont({
   src: "../fonts/PretendardVariable.woff2",
@@ -33,11 +35,24 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="kr" className={`${pretendard.variable} ${notoSerifKR.variable} h-full antialiased`}>
-      <body className="min-h-full bg-gray-100 w-full h-full">
-        <div className="mx-auto min-h-screen w-full max-w-[430px] bg-white shadow-lg h-full flex flex-col">
+    <html
+      lang="kr"
+      className={`${pretendard.variable} ${notoSerifKR.variable} h-full antialiased`}
+    >
+      <body className={clsx("min-h-full", FULL)}>
+        <div
+          className={clsx(
+            "mx-auto min-h-screen max-w-none lg:max-w-[430px]",
+            FULL,
+            FLEX,
+            FLEX_COL,
+            BG_BASE,
+          )}
+        >
           <KakaoSDKChecker>
-            <QueryProvider>{children} <Toaster /></QueryProvider>
+            <QueryProvider>
+              {children} <Toaster />
+            </QueryProvider>
           </KakaoSDKChecker>
         </div>
       </body>

@@ -10,10 +10,7 @@ import {
   FLEX_COL,
   GAP_5,
   H_FULL,
-  JUSTIFY_AROUND,
   P_3,
-  TEXT_GRAY,
-  TEXT_XS,
   W_FULL,
 } from "@/constants/tailwind";
 import ProfileInfo from "./components/ProfileInfo";

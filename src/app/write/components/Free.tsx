@@ -23,6 +23,7 @@ import clsx from "clsx";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import { useSearchParams } from "next/navigation";
 import { REVIEW_ID_SEARCH_PARAMS_KEY } from "../hooks/useReview";
+import { WRITE_TEXTAREA_MAX_LENGTH } from "../constants/maxLength";
 
 type Props = {
   free: string;
@@ -70,6 +71,7 @@ const Free = (props: Props) => {
             placeholder="책에 대한 생각을 자유롭게 작성해주세요"
             className={clsx(ROUNDED, FONT_SEMIBOLD, TEXT_SM, BG_WHITE)}
             style={{ minHeight: 80 }}
+            maxLength={WRITE_TEXTAREA_MAX_LENGTH}
           />
         </div>
       )}

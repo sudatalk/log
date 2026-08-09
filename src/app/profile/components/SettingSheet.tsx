@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { FLEX, FLEX_COL, JUSTIFY_END } from "@/constants/tailwind";
+import { FLEX, FLEX_COL } from "@/constants/tailwind";
 import axios from "axios";
 import clsx from "clsx";
 import { useRouter } from "next/navigation";
