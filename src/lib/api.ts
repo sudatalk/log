@@ -23,6 +23,7 @@ import type {
   UserReviewResponse,
   UserSignUpRequest,
   UserSignUpResponse,
+  UserUpdateRequest,
 } from "@/types/api";
 
 import axios from "axios";
@@ -280,6 +281,8 @@ export async function postSignUpUser(
   return res.data;
 }
 
+
+
 export async function reviewContents(params: {
   contentId: number;
   data: ReviewContentsRequest;
@@ -349,6 +352,18 @@ export async function getUserMe(): Promise<UserMeResponse> {
   }
   return res.data;
 }
+
+export async function patchUserMe(params: UserUpdateRequest): Promise<UserMeResponse> {
+  const res = await axios.patch(`${API_BASE_URL}/users/me`, params);
+  if (!res.data) {
+    throw new Error(
+      `Failed to fetch /users/me: ${res.status} ${res.statusText}`,
+    );
+  }
+  return res.data;
+}
+
+
 
 export async function getTerms(): Promise<Term[]> {
   const res = await axios.get(`${API_BASE_URL}/terms`);

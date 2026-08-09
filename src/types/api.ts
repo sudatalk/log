@@ -348,3 +348,8 @@ export type ReviewDetailResponse = {
   createdAt?: string;
   liked?: boolean;
 };
+
+export type UserUpdateRequest = {
+  nickname?: string;
+  profileImageUrl?: string;
+}

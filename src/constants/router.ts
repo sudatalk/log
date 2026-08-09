@@ -16,6 +16,18 @@ export const getRoute = {
   userReviews: (userId: string | number, searchParams?: SearchParams) => {
     return getPathWithParams(`/users/${userId}/reviews`, searchParams);
   },
+
+  register: (searchParams?: SearchParams) => {
+    return getPathWithParams(`/register`, searchParams);
+  },
+
+  myReviews: (searchParams?: SearchParams) => {
+    return getPathWithParams(`/my-reviews`, searchParams);
+  },
+
+  books: (searchParams?: SearchParams) => {
+    return getPathWithParams(`/books`, searchParams);
+  },
 };
 
 const getPathWithParams = (path: string, params?: SearchParams) => {
