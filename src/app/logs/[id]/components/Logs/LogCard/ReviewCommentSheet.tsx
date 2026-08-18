@@ -9,10 +9,13 @@ import { formatReviewDate } from "@/lib/date";
 import type { ReviewComment } from "@/types/api";
 import clsx from "clsx";
 import { ArrowUp } from "lucide-react";
-import { FormEvent, useLayoutEffect, useRef, useState } from "react";
+import { FormEvent, KeyboardEvent, useLayoutEffect, useRef, useState } from "react";
 import { Sheet } from "react-modal-sheet";
 
 const SHEET_HEIGHT = 375;
+const COMMENT_LINE_HEIGHT = 21;
+const COMMENT_MAX_LINES = 3;
+const COMMENT_MAX_HEIGHT = COMMENT_LINE_HEIGHT * COMMENT_MAX_LINES;
 
 type CommentAvatarProps = {
   nickname: string;
@@ -56,6 +59,45 @@ type CommentItemProps = {
   onDelete: (commentId: number) => void;
 };
 
+const CommentContent = ({ content }: { content: string }) => {
+  const [expanded, setExpanded] = useState(false);
+  const [isOverflowing, setIsOverflowing] = useState(false);
+  const textRef = useRef<HTMLParagraphElement>(null);
+
+  useLayoutEffect(() => {
+    if (expanded) return;
+
+    const el = textRef.current;
+    if (!el) return;
+
+    setIsOverflowing(el.scrollHeight > el.clientHeight + 1);
+  }, [content, expanded]);
+
+  return (
+    <div>
+      <p
+        ref={textRef}
+        className={clsx(
+          "whitespace-pre-wrap text-[13px] font-normal leading-4 text-black",
+          !expanded &&
+            "overflow-hidden [display:-webkit-box] [-webkit-box-orient:vertical] [-webkit-line-clamp:5]",
+        )}
+      >
+        {content}
+      </p>
+      {isOverflowing && (
+        <button
+          type="button"
+          className="mt-0.5 text-[10px] font-medium leading-[14px] text-[#737373] underline underline-offset-2"
+          onClick={() => setExpanded((prev) => !prev)}
+        >
+          {expanded ? "접기" : "더보기"}
+        </button>
+      )}
+    </div>
+  );
+};
+
 const CommentItem = ({
   comment,
   canDelete,
@@ -95,9 +137,7 @@ const CommentItem = ({
             </button>
           )}
         </div>
-        <p className="whitespace-pre-wrap text-[13px] font-normal leading-4 text-black">
-          {comment.content}
-        </p>
+        <CommentContent content={comment.content} />
       </div>
     </div>
   );
@@ -120,6 +160,7 @@ const ReviewCommentSheet = ({
 }: Props) => {
   const [inputValue, setInputValue] = useState("");
   const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
   const shouldScrollToTopRef = useRef(false);
   const {
     comments,
@@ -150,6 +191,14 @@ const ReviewCommentSheet = ({
     shouldScrollToTopRef.current = false;
   }, [comments]);
 
+  useLayoutEffect(() => {
+    const textarea = textareaRef.current;
+    if (!textarea) return;
+
+    textarea.style.height = "auto";
+    textarea.style.height = `${Math.min(textarea.scrollHeight, COMMENT_MAX_HEIGHT)}px`;
+  }, [inputValue]);
+
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
     const trimmed = inputValue.trim();
@@ -161,6 +210,12 @@ const ReviewCommentSheet = ({
         shouldScrollToTopRef.current = true;
       },
     });
+  };
+
+  const handleKeyDown = (e: KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.key !== "Enter" || e.shiftKey) return;
+    e.preventDefault();
+    e.currentTarget.form?.requestSubmit();
   };
 
   const handleDelete = (commentId: number) => {
@@ -194,13 +249,13 @@ const ReviewCommentSheet = ({
           unstyled
           className="min-h-0 flex-1 overflow-hidden"
         >
-          <div className={clsx(FLEX, FLEX_COL, "gap-4 px-2 pb-5")}>
+          <div className={clsx(FLEX, FLEX_COL, "h-full min-h-0 gap-4 px-2 pb-5")}>
             <div
               ref={scrollContainerRef}
               className={clsx(
                 FLEX,
                 FLEX_COL,
-                "h-[250px] w-full gap-5 overflow-y-auto px-2.5",
+                "min-h-0 w-full flex-1 gap-5 overflow-y-auto px-2.5",
               )}
             >
               {isPending && (
@@ -230,15 +285,18 @@ const ReviewCommentSheet = ({
               <form
                 className={clsx(
                   FLEX,
-                  "box-border h-9 w-full shrink-0 items-center gap-2 rounded-full border border-[#D3D3D3] px-4",
+                  "box-border min-h-9 w-full shrink-0 items-end gap-2 rounded-[18px] border border-[#D3D3D3] px-4 py-1.5",
                 )}
                 onSubmit={handleSubmit}
               >
-                <input
-                  className="min-w-0 flex-1 bg-transparent text-sm font-normal leading-[21px] text-black outline-none placeholder:text-[#737373]"
+                <textarea
+                  ref={textareaRef}
+                  rows={1}
+                  className="min-h-[21px] max-h-[63px] min-w-0 flex-1 resize-none overflow-y-auto bg-transparent text-sm font-normal leading-[21px] text-black outline-none placeholder:text-[#737373]"
                   placeholder="댓글을 입력하세요"
                   value={inputValue}
                   onChange={(e) => setInputValue(e.target.value)}
+                  onKeyDown={handleKeyDown}
                 />
                 <button
                   type="submit"
