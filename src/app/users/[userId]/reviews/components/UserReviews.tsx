@@ -10,6 +10,7 @@ import {
   TEXT_XL,
   W_FULL,
 } from "@/constants/tailwind";
+import useGetUserId from "@/hooks/useGetUserId";
 import { useUserReviews } from "@/hooks/useUserReviews";
 import clsx from "clsx";
 import { useSearchParams } from "next/navigation";
@@ -22,8 +23,10 @@ type Props = {
 const UserReviews = ({ userId }: Props) => {
   const searchParams = useSearchParams();
   const nickname = searchParams.get("nickname");
+  const { userId: currentUserId } = useGetUserId();
+  const isMine = currentUserId !== undefined && currentUserId === userId;
   const { reviews, isPending, isError } = useUserReviews(userId);
-  const title = nickname ? `${nickname}님의 리뷰` : "리뷰";
+  const title = isMine ? "나의 리뷰" : nickname ? `${nickname}님의 리뷰` : "리뷰";
 
   return (
     <div className={clsx(FLEX, FLEX_COL, W_FULL)}>
@@ -39,7 +42,9 @@ const UserReviews = ({ userId }: Props) => {
           )}
           {!isPending &&
             !isError &&
-            reviews.map((review) => <UserLogCard key={review.reviewId} review={review} />)}
+            reviews.map((review) => (
+              <UserLogCard key={review.reviewId} review={review} isMine={isMine} />
+            ))}
         </div>
       </section>
     </div>
