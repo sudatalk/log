@@ -306,6 +306,7 @@ export type UserReviewResponse = {
   contentCoverImageUrl: string;
   shortComment: string;
   rating: number;
+  isLiked: boolean;
   likeCount: number;
   commentCount: number;
   quotes: MyReviewQuoteItem[];

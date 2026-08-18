@@ -29,7 +29,7 @@ export function ReviewCTA({
   };
 
   return (
-    <div className="flex flex-col items-center gap-1 self-stretch">
+    <div className="flex flex-col items-center gap-1 self-stretch border-t border-[#DDDCDB] pt-3">
       <p className="text-[11px] font-light leading-[13px] text-ink-muted">
         리뷰 마감까지{" "}
         <span className="font-semibold text-ink">{daysLeft}일</span> 남았습니다

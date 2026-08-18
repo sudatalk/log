@@ -19,12 +19,16 @@ export default async function HomePage() {
   // TODO: 책 못가져왔을 때 보여줄 화면
   return (
     <QueryHydrator>
-      <div className="flex min-h-dvh w-full flex-col bg-surface">
+      <div className="flex h-dvh min-h-0 w-full flex-col bg-surface">
         <Header />
 
-        <main className="mx-auto flex w-full flex-1 flex-col items-center gap-3 p-3">
-          <BookSection />
-          <ReviewCTA bookId={book?.contentId} daysLeft={daysLeft} />
+        <main className="mx-auto flex min-h-0 w-full flex-1 flex-col">
+          <div className="min-h-0 flex-1 overflow-y-auto p-3">
+            <BookSection />
+          </div>
+          <div className="sticky bottom-0 z-[5] shrink-0 bg-surface px-3 pb-3">
+            <ReviewCTA bookId={book?.contentId} daysLeft={daysLeft} />
+          </div>
         </main>
 
         <BottomNav />

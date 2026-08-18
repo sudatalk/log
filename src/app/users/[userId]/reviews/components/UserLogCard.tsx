@@ -7,16 +7,19 @@ import LogCardFooter from "@/app/logs/[id]/components/Logs/LogCard/LogCardFooter
 import LogCardShell from "@/app/logs/[id]/components/Logs/LogCard/LogCardShell";
 import ReviewCommentSheet from "@/app/logs/[id]/components/Logs/LogCard/ReviewCommentSheet";
 import { useCardTypeSelection } from "@/app/logs/[id]/components/Logs/LogCard/useCardTypeSelection";
+import { getRoute } from "@/constants/router";
 import useGetUserId from "@/hooks/useGetUserId";
 import { useToggleReviewLike } from "@/hooks/useToggleReviewLike";
 import type { UserReviewResponse } from "@/types/api";
+import Link from "next/link";
 import { useState } from "react";
 
 type Props = {
   review: UserReviewResponse;
+  isMine?: boolean;
 };
 
-const UserLogCard = ({ review }: Props) => {
+const UserLogCard = ({ review, isMine = false }: Props) => {
   const { userId } = useGetUserId();
   const currentUserId = Number(userId);
   const { availableTypes, selectedType, badges, handleClickBadge } = useCardTypeSelection(review);
@@ -50,9 +53,23 @@ const UserLogCard = ({ review }: Props) => {
 
         <LogCardFooter
           heartCount={review.likeCount}
+          isLiked={review.isLiked}
           handleClickHeart={handleClickHeart}
           messageCount={review.commentCount}
           handleClickMessage={handleClickMessage}
+          action={
+            isMine ? (
+              <Link
+                href={getRoute.write({
+                  bookId: review.contentId,
+                  reviewId: review.reviewId,
+                })}
+                className="flex h-6 shrink-0 items-center rounded bg-[#D4894A] px-3.5 text-xs font-medium text-[#FEFEFF]"
+              >
+                수정
+              </Link>
+            ) : undefined
+          }
         />
       </LogCardShell>
 

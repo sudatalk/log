@@ -19,7 +19,7 @@ export function BookDetail({
   onClickHeart?: () => void;
 }) {
   return (
-    <div className="flex flex-1 flex-col items-start gap-2 self-stretch">
+    <div className="flex min-w-0 flex-1 flex-col items-start gap-2 self-stretch">
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
         src={coverImageUrl}
@@ -47,7 +47,7 @@ export function BookDetail({
         </p>
       </div>
 
-      <p className="self-stretch text-xs font-light leading-[160%] text-ink-muted">
+      <p className="min-w-0 self-stretch break-words text-xs font-light leading-[160%] text-ink-muted">
         {description}
       </p>
     </div>
