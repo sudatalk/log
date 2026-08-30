@@ -1,17 +1,17 @@
+"use client"
+
 import { Header } from "@/components/Header";
 import { BookSection } from "@/components/home/BookSection";
 import { ReviewCTA } from "@/components/ReviewCTA";
 import { BottomNav } from "@/components/BottomNav";
 import { QueryHydrator } from "@/components/QueryHydrator";
-import { currentSchedulesQueryOptions } from "@/hooks/useCurrentSchedules";
+import { useCurrentSchedules } from "@/hooks/useCurrentSchedules";
 import { calculateDaysLeft } from "@/lib/date";
-import { getQueryClient } from "@/lib/queryClient";
 
-export default async function HomePage() {
-  const queryClient = getQueryClient();
-  const schedules = await queryClient.fetchQuery(
-    currentSchedulesQueryOptions(),
-  );
+export default function HomePage() {
+  const {data:schedules} = useCurrentSchedules();
+
+  
 
   const book = schedules?.[0];
   const daysLeft = calculateDaysLeft(book?.endedAt);
