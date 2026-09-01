@@ -1,16 +1,26 @@
 "use client";
 
 import { CENTER, FLEX, FLEX_COL } from "@/constants/tailwind";
+import { getRoute, REDIRECT_URL_KEY } from "@/constants/router";
 import { useCreateReviewComment } from "@/hooks/useCreateReviewComment";
 import { useDeleteReviewComment } from "@/hooks/useDeleteReviewComment";
 import { useInfiniteScroll } from "@/hooks/useInfiniteScroll";
+import { useReportComment } from "@/hooks/useReportComment";
 import { useReviewComments } from "@/hooks/useReviewComments";
 import { formatReviewDate } from "@/lib/date";
-import type { ReviewComment } from "@/types/api";
+import type { ReportReason, ReviewComment } from "@/types/api";
 import clsx from "clsx";
 import { ArrowUp } from "lucide-react";
-import { FormEvent, KeyboardEvent, useLayoutEffect, useRef, useState } from "react";
+import { usePathname, useRouter } from "next/navigation";
+import {
+  FormEvent,
+  KeyboardEvent,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from "react";
 import { Sheet } from "react-modal-sheet";
+import ReportDialog from "./ReportDialog";
 
 const SHEET_HEIGHT = 375;
 const COMMENT_LINE_HEIGHT = 21;
@@ -55,8 +65,10 @@ const CommentAvatar = ({ nickname, profileImageUrl }: CommentAvatarProps) => {
 type CommentItemProps = {
   comment: ReviewComment;
   canDelete: boolean;
+  canReport: boolean;
   isDeleting: boolean;
   onDelete: (commentId: number) => void;
+  onReport: (commentId: number) => void;
 };
 
 const CommentContent = ({ content }: { content: string }) => {
@@ -101,8 +113,10 @@ const CommentContent = ({ content }: { content: string }) => {
 const CommentItem = ({
   comment,
   canDelete,
+  canReport,
   isDeleting,
   onDelete,
+  onReport,
 }: CommentItemProps) => {
   const date = formatReviewDate(comment.createdAt);
   const dateTime = comment.createdAt.slice(0, 10);
@@ -136,6 +150,15 @@ const CommentItem = ({
               삭제
             </button>
           )}
+          {canReport && (
+            <button
+              type="button"
+              className="text-[10px] font-medium leading-[14px] text-[#737373] underline underline-offset-2"
+              onClick={() => onReport(comment.commentId)}
+            >
+              신고
+            </button>
+          )}
         </div>
         <CommentContent content={comment.content} />
       </div>
@@ -158,7 +181,10 @@ const ReviewCommentSheet = ({
   isOpen,
   onClose,
 }: Props) => {
+  const router = useRouter();
+  const pathname = usePathname();
   const [inputValue, setInputValue] = useState("");
+  const [reportCommentId, setReportCommentId] = useState<number | null>(null);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const shouldScrollToTopRef = useRef(false);
@@ -173,6 +199,7 @@ const ReviewCommentSheet = ({
     useCreateReviewComment(reviewId, userId, contentId);
   const { mutate: deleteComment, isPending: isDeleting } =
     useDeleteReviewComment(reviewId, contentId);
+  const { mutate: reportComment, isPending: isReporting } = useReportComment();
 
   const sentinelRef = useInfiniteScroll({
     onIntersect: () => {
@@ -223,103 +250,140 @@ const ReviewCommentSheet = ({
     deleteComment(commentId);
   };
 
+  const handleReport = (commentId: number) => {
+    if (!userId || Number.isNaN(userId)) {
+      router.push(getRoute.login({ [REDIRECT_URL_KEY]: pathname }));
+      return;
+    }
+    onClose();
+    setReportCommentId(commentId);
+  };
+
+  const handleConfirmReport = (reason: ReportReason) => {
+    if (reportCommentId === null) return;
+
+    reportComment(
+      { commentId: reportCommentId, reason },
+      {
+        onSettled: () => setReportCommentId(null),
+      },
+    );
+  };
+
+  const isLoggedIn = !!userId && !Number.isNaN(userId);
+
   return (
-    <Sheet
-      isOpen={isOpen}
-      onClose={onClose}
-      detent="content"
-      avoidKeyboard={false}
-    >
-      <Sheet.Container
-        unstyled
-        className={clsx(
-          "mx-auto flex w-full max-w-[430px] flex-col rounded-t-[24px] border border-b-0 border-[#E6E6E6] bg-white",
-          "!left-0 !right-0 shadow-[0px_-3px_10px_rgba(38,38,38,0.2)]",
-        )}
-        style={{ height: SHEET_HEIGHT }}
+    <>
+      <Sheet
+        isOpen={isOpen}
+        onClose={onClose}
+        detent="content"
+        avoidKeyboard={false}
       >
-        <Sheet.Header unstyled className="shrink-0 px-2 pt-2">
-          <div className={clsx("flex w-full flex-col items-center py-1")}>
-            <div className="h-1 w-16 rounded-[2px] bg-[#A2A3A3]" />
-          </div>
-        </Sheet.Header>
-
-        <Sheet.Content
-          disableDrag
+        <Sheet.Container
           unstyled
-          className="min-h-0 flex-1 overflow-hidden"
+          className={clsx(
+            "mx-auto flex w-full max-w-[430px] flex-col rounded-t-[24px] border border-b-0 border-[#E6E6E6] bg-white",
+            "!left-0 !right-0 shadow-[0px_-3px_10px_rgba(38,38,38,0.2)]",
+          )}
+          style={{ height: SHEET_HEIGHT }}
         >
-          <div className={clsx(FLEX, FLEX_COL, "h-full min-h-0 gap-4 px-2 pb-5")}>
-            <div
-              ref={scrollContainerRef}
-              className={clsx(
-                FLEX,
-                FLEX_COL,
-                "min-h-0 w-full flex-1 gap-5 overflow-y-auto px-2.5",
-              )}
-            >
-              {isPending && (
-                <p className="text-center text-sm font-normal leading-[21px] text-[#737373]">
-                  댓글을 불러오는 중...
-                </p>
-              )}
-              {!isPending && comments.length === 0 && (
-                <p className="text-center text-sm font-normal leading-[21px] text-[#737373]">
-                  아직 댓글이 없습니다.
-                </p>
-              )}
-              {comments.map((comment) => (
-                <CommentItem
-                  key={comment.commentId}
-                  comment={comment}
-                  canDelete={comment.userId === userId}
-                  isDeleting={isDeleting}
-                  onDelete={handleDelete}
-                />
-              ))}
-              {hasNextPage && <div ref={sentinelRef} aria-hidden />}
+          <Sheet.Header unstyled className="shrink-0 px-2 pt-2">
+            <div className={clsx("flex w-full flex-col items-center py-1")}>
+              <div className="h-1 w-16 rounded-[2px] bg-[#A2A3A3]" />
             </div>
+          </Sheet.Header>
 
-            <div className={clsx(FLEX, FLEX_COL, "w-full gap-4")}>
-              <div className="h-px w-full shrink-0 bg-[#DDDCDB]" />
-              <form
+          <Sheet.Content
+            disableDrag
+            unstyled
+            className="min-h-0 flex-1 overflow-hidden"
+          >
+            <div className={clsx(FLEX, FLEX_COL, "h-full min-h-0 gap-4 px-2 pb-5")}>
+              <div
+                ref={scrollContainerRef}
                 className={clsx(
                   FLEX,
-                  "box-border min-h-9 w-full shrink-0 items-end gap-2 rounded-[18px] border border-[#D3D3D3] px-4 py-1.5",
+                  FLEX_COL,
+                  "min-h-0 w-full flex-1 gap-5 overflow-y-auto px-2.5",
                 )}
-                onSubmit={handleSubmit}
               >
-                <textarea
-                  ref={textareaRef}
-                  rows={1}
-                  className="min-h-[21px] max-h-[63px] min-w-0 flex-1 resize-none overflow-y-auto bg-transparent text-sm font-normal leading-[21px] text-black outline-none placeholder:text-[#737373]"
-                  placeholder="댓글을 입력하세요"
-                  value={inputValue}
-                  onChange={(e) => setInputValue(e.target.value)}
-                  onKeyDown={handleKeyDown}
-                />
-                <button
-                  type="submit"
-                  className="flex size-3.5 shrink-0 items-center justify-center disabled:opacity-40"
-                  disabled={!inputValue.trim() || isSubmitting}
-                  aria-label="댓글 작성"
+                {isPending && (
+                  <p className="text-center text-sm font-normal leading-[21px] text-[#737373]">
+                    댓글을 불러오는 중...
+                  </p>
+                )}
+                {!isPending && comments.length === 0 && (
+                  <p className="text-center text-sm font-normal leading-[21px] text-[#737373]">
+                    아직 댓글이 없습니다.
+                  </p>
+                )}
+                {comments.map((comment) => {
+                  const isMine = isLoggedIn && comment.userId === userId;
+                  return (
+                    <CommentItem
+                      key={comment.commentId}
+                      comment={comment}
+                      canDelete={isMine}
+                      canReport={!isMine}
+                      isDeleting={isDeleting}
+                      onDelete={handleDelete}
+                      onReport={handleReport}
+                    />
+                  );
+                })}
+                {hasNextPage && <div ref={sentinelRef} aria-hidden />}
+              </div>
+
+              <div className={clsx(FLEX, FLEX_COL, "w-full gap-4")}>
+                <div className="h-px w-full shrink-0 bg-[#DDDCDB]" />
+                <form
+                  className={clsx(
+                    FLEX,
+                    "box-border min-h-9 w-full shrink-0 items-end gap-2 rounded-[18px] border border-[#D3D3D3] px-4 py-1.5",
+                  )}
+                  onSubmit={handleSubmit}
                 >
-                  <ArrowUp
-                    size={14}
-                    strokeWidth={2}
-                    className="text-[#414040]"
+                  <textarea
+                    ref={textareaRef}
+                    rows={1}
+                    className="min-h-[21px] max-h-[63px] min-w-0 flex-1 resize-none overflow-y-auto bg-transparent text-sm font-normal leading-[21px] text-black outline-none placeholder:text-[#737373]"
+                    placeholder="댓글을 입력하세요"
+                    value={inputValue}
+                    onChange={(e) => setInputValue(e.target.value)}
+                    onKeyDown={handleKeyDown}
                   />
-                </button>
-              </form>
+                  <button
+                    type="submit"
+                    className="flex size-3.5 shrink-0 items-center justify-center disabled:opacity-40"
+                    disabled={!inputValue.trim() || isSubmitting}
+                    aria-label="댓글 작성"
+                  >
+                    <ArrowUp
+                      size={14}
+                      strokeWidth={2}
+                      className="text-[#414040]"
+                    />
+                  </button>
+                </form>
+              </div>
             </div>
-          </div>
-        </Sheet.Content>
-      </Sheet.Container>
-      <Sheet.Backdrop
-        className="!left-1/2 !right-auto !w-full !max-w-[430px] !-translate-x-1/2 !bg-black/40"
-        onClick={onClose}
+          </Sheet.Content>
+        </Sheet.Container>
+        <Sheet.Backdrop
+          className="!left-1/2 !right-auto !w-full !max-w-[430px] !-translate-x-1/2 !bg-black/40"
+          onClick={onClose}
+        />
+      </Sheet>
+
+      <ReportDialog
+        isOpen={reportCommentId !== null}
+        title="댓글 신고"
+        onConfirm={handleConfirmReport}
+        onCancel={() => setReportCommentId(null)}
+        isPending={isReporting}
       />
-    </Sheet>
+    </>
   );
 };
 

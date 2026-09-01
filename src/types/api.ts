@@ -353,4 +353,20 @@ export type ReviewDetailResponse = {
 export type UserUpdateRequest = {
   nickname?: string;
   profileImageUrl?: string;
-}
+};
+
+export type ReportReason =
+  | "ABUSE"
+  | "SPAM"
+  | "SEXUAL"
+  | "FLOOD"
+  | "PRIVACY"
+  | "ETC";
+
+export type ReportCreateRequest = {
+  reason: ReportReason;
+};
+
+export type ReportCreateResponse = {
+  reportId: number;
+};

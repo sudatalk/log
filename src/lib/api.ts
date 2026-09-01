@@ -13,6 +13,8 @@ import type {
   ReviewContentsRequest,
   ReviewDetailResponse,
   ReviewSubmitResponse,
+  ReportCreateRequest,
+  ReportCreateResponse,
   ReviewWritePageResponse,
   ScheduledContent,
   SchedulesRequest,
@@ -414,5 +416,29 @@ export async function getReviewById(
       `Failed to fetch /reviews/${reviewId}: ${res.status} ${res.statusText}`,
     );
   }
+  return res.data;
+}
+
+export async function reportReview(
+  reviewId: number,
+  data: ReportCreateRequest,
+): Promise<ReportCreateResponse> {
+  const res = await axios.post(
+    `${API_BASE_URL}/reviews/${reviewId}/reports`,
+    data,
+  );
+
+  return res.data;
+}
+
+export async function reportComment(
+  commentId: number,
+  data: ReportCreateRequest,
+): Promise<ReportCreateResponse> {
+  const res = await axios.post(
+    `${API_BASE_URL}/reviews/comments/${commentId}/reports`,
+    data,
+  );
+
   return res.data;
 }

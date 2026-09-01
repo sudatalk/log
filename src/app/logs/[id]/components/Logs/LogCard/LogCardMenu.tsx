@@ -1,12 +1,15 @@
 "use client";
 
 import ConfirmDialog from "@/components/shared/ConfirmDialog";
-import { getRoute } from "@/constants/router";
+import { getRoute, REDIRECT_URL_KEY } from "@/constants/router";
 import { useDeleteReview } from "@/hooks/useDeleteReview";
+import { useReportReview } from "@/hooks/useReportReview";
+import type { ReportReason } from "@/types/api";
 import clsx from "clsx";
 import { MoreVertical } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
+import ReportDialog from "./ReportDialog";
 
 type Props = {
   reviewId: number;
@@ -20,10 +23,13 @@ const menuItemClassName =
 
 const LogCardMenu = ({ reviewId, contentId, userId, isMyReview }: Props) => {
   const router = useRouter();
+  const pathname = usePathname();
   const menuRef = useRef<HTMLDivElement>(null);
   const [isOpen, setIsOpen] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+  const [isReportDialogOpen, setIsReportDialogOpen] = useState(false);
   const { mutate: deleteReview, isPending: isDeleting } = useDeleteReview(contentId, userId);
+  const { mutate: reportReview, isPending: isReporting } = useReportReview();
 
   useEffect(() => {
     if (!isOpen) return;
@@ -53,6 +59,20 @@ const LogCardMenu = ({ reviewId, contentId, userId, isMyReview }: Props) => {
 
   const handleReport = () => {
     closeMenu();
+    if (!userId || Number.isNaN(userId)) {
+      router.push(getRoute.login({ [REDIRECT_URL_KEY]: pathname }));
+      return;
+    }
+    setIsReportDialogOpen(true);
+  };
+
+  const handleConfirmReport = (reason: ReportReason) => {
+    reportReview(
+      { reviewId, reason },
+      {
+        onSettled: () => setIsReportDialogOpen(false),
+      },
+    );
   };
 
   const handleDelete = () => {
@@ -116,6 +136,13 @@ const LogCardMenu = ({ reviewId, contentId, userId, isMyReview }: Props) => {
         onConfirm={handleConfirmDelete}
         onCancel={() => setIsDeleteDialogOpen(false)}
         isPending={isDeleting}
+      />
+
+      <ReportDialog
+        isOpen={isReportDialogOpen}
+        onConfirm={handleConfirmReport}
+        onCancel={() => setIsReportDialogOpen(false)}
+        isPending={isReporting}
       />
     </>
   );
