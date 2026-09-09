@@ -8,12 +8,17 @@ export function useDeleteReviewComment(reviewId: number, contentId: number) {
   return useMutation({
     mutationFn: (commentId: number) => deleteReviewComment(commentId),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: queryKeys.reviews.comments(reviewId) });
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.reviews.comments(reviewId),
+      });
       queryClient.invalidateQueries({
         queryKey: queryKeys.contents.reviews(contentId),
       });
       queryClient.invalidateQueries({
         queryKey: queryKeys.reviews.my,
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["reviews", "users"],
       });
     },
   });

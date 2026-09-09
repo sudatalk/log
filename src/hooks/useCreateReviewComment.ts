@@ -10,11 +10,20 @@ export function useCreateReviewComment(
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (content: string) => createReviewComment(reviewId, userId, { content }),
+    mutationFn: (content: string) =>
+      createReviewComment(reviewId, userId, { content }),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: queryKeys.reviews.comments(reviewId) });
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.reviews.comments(reviewId),
+      });
       queryClient.invalidateQueries({
         queryKey: queryKeys.contents.reviews(contentId),
+      });
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.reviews.my,
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["reviews", "users"],
       });
     },
   });

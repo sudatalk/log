@@ -15,6 +15,8 @@ import {
   W_FULL,
 } from "@/constants/tailwind";
 import { getRoute, REDIRECT_URL_KEY } from "@/constants/router";
+import { useDraftReviews } from "@/hooks/useDraftReviews";
+import { useMyReviews } from "@/hooks/useMyReviews";
 import { useToggleContentLike } from "@/hooks/useToggleContentLike";
 import clsx from "clsx";
 import { Pen } from "lucide-react";
@@ -75,6 +77,8 @@ const BookCard = ({ book, href, isLogined }: Props) => {
   const router = useRouter();
   const pathname = usePathname();
   const { mutate: toggleLike, isPending: isTogglingLike } = useToggleContentLike();
+  const { reviews: myReviews } = useMyReviews(isLogined);
+  const { drafts } = useDraftReviews(isLogined);
 
   const handleClickHeart = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -88,6 +92,43 @@ const BookCard = ({ book, href, isLogined }: Props) => {
     if (isTogglingLike) return;
 
     toggleLike(contentId);
+  };
+
+  const handleClickPen = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (!contentId) return;
+
+    const writePath = getRoute.write({ bookId: contentId });
+
+    if (!isLogined) {
+      router.push(getRoute.login({ [REDIRECT_URL_KEY]: writePath }));
+      return;
+    }
+
+    const published = myReviews.find((review) => review.contentId === contentId);
+    if (published) {
+      router.push(
+        getRoute.write({
+          bookId: contentId,
+          reviewId: published.reviewId,
+        }),
+      );
+      return;
+    }
+
+    const draft = drafts.find((item) => item.contentId === contentId);
+    if (draft) {
+      router.push(
+        getRoute.write({
+          bookId: contentId,
+          reviewId: draft.reviewId,
+        }),
+      );
+      return;
+    }
+
+    router.push(writePath);
   };
 
   const article = (
@@ -105,6 +146,7 @@ const BookCard = ({ book, href, isLogined }: Props) => {
             isLiked={liked}
             handleClickHeart={contentId ? handleClickHeart : undefined}
             messageCount={messageCount}
+            handleClickMessage={contentId ? handleClickPen : undefined}
             MessageIcon={Pen}
           />
           {dateInfo && <BookTime date={dateInfo.date} dateTime={dateInfo.dateTime} />}
