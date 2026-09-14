@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 
 function useLocalStorage<T>(key: string, initialValue: T) {
   const [storedValue, setStoredValue] = useState<T>(initialValue);
+  const [isLoading, setIsLoading] = useState(true);
 
   // 클라이언트에서만 localStorage를 읽는다.
   useEffect(() => {
@@ -15,6 +16,8 @@ function useLocalStorage<T>(key: string, initialValue: T) {
     } catch (error) {
       console.error("Error reading from localStorage", error);
     }
+
+    setIsLoading(false);
   }, [key]);
 
   const setValue = useCallback(
@@ -34,7 +37,7 @@ function useLocalStorage<T>(key: string, initialValue: T) {
     [key],
   );
 
-  return [storedValue, setValue] as const;
+  return [storedValue, setValue, isLoading] as const;
 }
 
 export default useLocalStorage;
