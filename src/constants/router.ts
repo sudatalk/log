@@ -3,6 +3,10 @@ export const REDIRECT_URL_KEY = "redirectUrl";
 type SearchParams = Record<string, string | number>;
 
 export const getRoute = {
+  home: (searchParams?: SearchParams) => {
+    return getPathWithParams(`/`, searchParams);
+  },
+
   login: (searchParams?: SearchParams) => {
     return getPathWithParams(`/login`, searchParams);
   },
