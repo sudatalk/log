@@ -1,4 +1,5 @@
 import { BookStats } from "@/components/home/BookStats";
+import { BookPurchaseChip } from "@/components/shared/BookPurchaseChip";
 import { ContentDetail } from "@/types/api";
 
 export function BookDetail({
@@ -7,7 +8,7 @@ export function BookDetail({
   author,
   description,
   content,
-
+  purchaseUrl,
   onClickHeart,
 }: {
   coverImageUrl: string;
@@ -15,7 +16,7 @@ export function BookDetail({
   author: string;
   description: string;
   content?: ContentDetail;
-
+  purchaseUrl?: string | null;
   onClickHeart?: () => void;
 }) {
   return (
@@ -27,16 +28,21 @@ export function BookDetail({
         className="aspect-[384/434] w-full object-cover"
       />
 
-      {content && (
-        <BookStats
-          contentId={content.id}
-          liked={content.liked}
-          likeCount={content.likeCount}
-          reviewCount={content.reviewCount}
-          averageRating={content.averageRating}
-          onClickHeart={onClickHeart}
-        />
-      )}
+      <div className="flex w-full items-center justify-between gap-2">
+        {content ? (
+          <BookStats
+            contentId={content.id}
+            liked={content.liked}
+            likeCount={content.likeCount}
+            reviewCount={content.reviewCount}
+            averageRating={content.averageRating}
+            onClickHeart={onClickHeart}
+          />
+        ) : (
+          <span />
+        )}
+        <BookPurchaseChip purchaseUrl={content?.purchaseUrl ?? purchaseUrl} />
+      </div>
 
       <div className="flex flex-col items-start gap-1.5 self-stretch">
         <h2 className="self-stretch text-2xl font-semibold leading-[29px] tracking-[0.2px] text-ink">

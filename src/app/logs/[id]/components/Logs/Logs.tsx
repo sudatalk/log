@@ -48,6 +48,7 @@ const Logs = () => {
         <BookCard
           book={{ ...content, liked }}
           isLogined={isLogined}
+          showPurchase
         />
       )}
       <div className={clsx(FLEX, FLEX_COL, "gap-2.5")}>

@@ -37,7 +37,7 @@ export function BookStats({
   };
 
   return (
-    <div className="flex items-center gap-[5px] self-stretch py-1">
+    <div className="flex items-center gap-[5px] py-1">
       <span
         className={`flex items-center gap-[5px] ${onClickHeart ? "cursor-pointer" : ""}`}
         onClick={onClickHeart ? handleClickHeart : undefined}
