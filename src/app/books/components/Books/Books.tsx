@@ -45,6 +45,7 @@ const Books = () => {
             }}
             href={`/logs/${schedule.contentId}`}
             isLogined={isLogined}
+            showPurchase
           />
         ))}
         {hasNextPage && <div ref={sentinelRef} aria-hidden />}

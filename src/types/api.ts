@@ -15,6 +15,7 @@ export type Schedule = {
   likeCount: number;
   commentCount: number;
   averageRating: number;
+  purchaseUrl?: string | null;
 };
 
 export type ScheduledContent = {
@@ -28,6 +29,7 @@ export type ScheduledContent = {
   startedAt: string;
   endedAt: string;
   memo?: string;
+  purchaseUrl?: string | null;
 };
 
 export type ContentStats = {
@@ -51,6 +53,7 @@ export type ContentDetail = {
   reviewCount: number;
   likeCount: number;
   averageRating: number | null;
+  purchaseUrl?: string | null;
 };
 
 export type LikeToggleResponse = {

@@ -46,6 +46,7 @@ export function BookSection() {
       title={book.title}
       author={book.author}
       description={book.description}
+      purchaseUrl={book.purchaseUrl}
       content={
         content
           ? {
