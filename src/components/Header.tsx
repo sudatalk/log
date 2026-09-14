@@ -16,6 +16,10 @@ export function Header() {
 
   const { data } = useUserMe({ enabled: isLogined });
 
+  const handleClickLogo = () => {
+    getRoute.home();
+  };
+
   const hnadleClickProfile = () => {
     if (!isLogined) {
       router.push(
@@ -41,16 +45,13 @@ export function Header() {
         >
           <ChevronLeft className="size-6 text-ink-secondary" />
         </button>
-        <div className="flex flex-1 items-center justify-center px-2 py-2">
+        <div className="flex flex-1 items-center justify-center px-2 py-2" onClick={handleClickLogo}>
           <Logo />
         </div>
-        <div
-          className="flex h-10 w-[43px] items-center justify-center"
-          onClick={hnadleClickProfile}
-        >
+        <div className="flex h-10 w-[43px] items-center justify-center" onClick={hnadleClickProfile}>
           {isLogined ? (
             <img
-              className="flex size-6 cursor-pointer items-center justify-center rounded-full bg-[#333333]"
+              className="flex size-9 cursor-pointer items-center justify-center rounded-full bg-[#333333]"
               src={data?.profileImageUrl}
               alt="프로필"
             />

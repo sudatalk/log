@@ -9,29 +9,27 @@ const CheckHeader = ({ children }: { children: React.ReactNode }) => {
   const [isLoading, setIsLoading] = useState(true);
   const queryClient = useQueryClient();
 
-  const [access_token, setAccessToken] = useLocalStorage<string>("access_token", "");
+  const [access_token, setAccessToken, isAccessTokenLoading] = useLocalStorage<string>("access_token", "");
 
   useEffect(() => {
-    if (!access_token) return;
-    try {
-      Kakao.Auth.setAccessToken(access_token);
-    } catch {
-      setAccessToken("");
-    }
-  }, [access_token]);
+    if (isAccessTokenLoading) return;
 
-  useEffect(() => {
-    (async () => {
+    if (access_token) {
       try {
-        await queryClient.ensureQueryData({
-          queryKey: USER_ID_QUERY_KEY,
-          queryFn: () => fetchCurrentUserId(queryClient),
-        });
-      } finally {
-        setIsLoading(false);
+        Kakao.Auth.setAccessToken(access_token);
+
+        (async () => {
+          await queryClient.prefetchQuery({
+            queryKey: USER_ID_QUERY_KEY,
+            queryFn: () => fetchCurrentUserId(queryClient),
+          });
+          setIsLoading(false);
+        })();
+      } catch {
+        setAccessToken("");
       }
-    })();
-  }, [queryClient]);
+    }
+  }, [access_token, isAccessTokenLoading, queryClient, setAccessToken]);
 
   return <>{!isLoading && children}</>;
 };
