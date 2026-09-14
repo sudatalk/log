@@ -2,6 +2,7 @@
 
 import { Spinner } from "@/components/ui/spinner";
 import { BG_BASE, CENTER, FLEX, FULL } from "@/constants/tailwind";
+import useLocalStorage from "@/hooks/useLocalStorage";
 import { getCheckUser } from "@/lib/api";
 import { UserStatus } from "@/types/api";
 import clsx from "clsx";
@@ -18,9 +19,12 @@ const Redirect = (props: Props) => {
 
   const router = useRouter();
 
+  const [, setAccessToken] = useLocalStorage<string>("access_token", "");
+
   useEffect(() => {
     try {
       Kakao.Auth.setAccessToken(access_token);
+      setAccessToken(access_token);
 
       (async () => {
         const statusInfo = await Kakao.Auth.getStatusInfo();
@@ -48,6 +52,7 @@ const Redirect = (props: Props) => {
       })();
     } catch {
       // TODO : 에러 처리
+      setAccessToken("");
 
       return;
     }
