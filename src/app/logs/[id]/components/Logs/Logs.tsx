@@ -19,9 +19,7 @@ const Logs = () => {
   const { userId, isLoading: isUserLoading } = useGetUserId();
   const isLogined = !!userId && !isUserLoading;
   const { data: content, isPending: isContentPending, isError: isContentError } = useContentDetail(contentId);
-  const { data: likesMap } = useContentLikes(
-    Number.isNaN(contentId) ? [] : [contentId],
-  );
+  const { data: likesMap } = useContentLikes(Number.isNaN(contentId) ? [] : [contentId]);
   const {
     reviews,
     fetchNextPage,
@@ -54,7 +52,7 @@ const Logs = () => {
       <div className={clsx(FLEX, FLEX_COL, "gap-2.5")}>
         {isReviewsPending && <Loading />}
         {isReviewsError && <Error />}
-        {reviews.map((review) => (
+        {[...reviews, ...reviews, ...reviews, ...reviews].map((review) => (
           <LogCard key={review.reviewId} review={review} contentId={contentId} />
         ))}
         {hasNextPage && <div ref={sentinelRef} aria-hidden />}

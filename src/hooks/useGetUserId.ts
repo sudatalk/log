@@ -5,9 +5,7 @@ import axios from "axios";
 
 export const USER_ID_QUERY_KEY = ["USER_ID"] as const;
 
-export async function fetchCurrentUserId(
-  queryClient: QueryClient,
-): Promise<number | undefined> {
+export async function fetchCurrentUserId(queryClient: QueryClient): Promise<number | undefined> {
   try {
     const statusInfo = await Kakao.Auth.getStatusInfo();
 
@@ -25,15 +23,11 @@ export async function fetchCurrentUserId(
         queryFn: () => getCheckUser({ appUserId: +appUserId }),
       });
 
-      if (
-        !userResponse.registered ||
-        userResponse.status === UserStatus.WITHDRAW
-      ) {
+      if (!userResponse.registered || userResponse.status === UserStatus.WITHDRAW) {
         return undefined;
       }
 
-      axios.defaults.headers.common["X-User-Id"] =
-        userResponse.userId.toString();
+      axios.defaults.headers.common["X-User-Id"] = userResponse.userId.toString();
       return userResponse.userId;
     }
 
@@ -47,7 +41,6 @@ const useGetUserId = () => {
   const { data: userId, isPending } = useQuery({
     queryKey: USER_ID_QUERY_KEY,
     queryFn: ({ client }) => fetchCurrentUserId(client),
-    staleTime: Infinity,
   });
 
   return { userId, isLoading: isPending };

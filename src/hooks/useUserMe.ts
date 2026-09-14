@@ -17,7 +17,6 @@ const useUserMe = (props: Props = {}) => {
     queryFn: userMeQueryFn,
     enabled: props.enabled || true,
     refetchOnMount: true,
-    staleTime: 0,
   });
 };
 

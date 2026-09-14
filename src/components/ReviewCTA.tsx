@@ -4,13 +4,7 @@ import { getRoute, REDIRECT_URL_KEY } from "@/constants/router";
 import useGetUserId from "@/hooks/useGetUserId";
 import { useRouter } from "next/navigation";
 
-export function ReviewCTA({
-  bookId,
-  daysLeft,
-}: {
-  bookId?: number;
-  daysLeft: number;
-}) {
+export function ReviewCTA({ bookId, daysLeft }: { bookId?: number; daysLeft: number }) {
   const router = useRouter();
 
   const { userId, isLoading } = useGetUserId();
@@ -18,12 +12,12 @@ export function ReviewCTA({
   const isLogined = !!userId && !isLoading;
 
   const hnadleClickReviewButton = () => {
+    if (!bookId) return;
+
     if (!isLogined) {
-      router.push(getRoute.login({ [REDIRECT_URL_KEY]: getRoute.write() }));
+      router.push(getRoute.login({ [REDIRECT_URL_KEY]: getRoute.write({ bookId }) }));
       return;
     }
-
-    if (!bookId) return;
 
     router.push(getRoute.write({ bookId }));
   };
@@ -31,16 +25,13 @@ export function ReviewCTA({
   return (
     <div className="flex flex-col items-center gap-1 self-stretch border-t border-[#DDDCDB] pt-3">
       <p className="text-[11px] font-light leading-[13px] text-ink-muted">
-        리뷰 마감까지{" "}
-        <span className="font-semibold text-ink">{daysLeft}일</span> 남았습니다
+        리뷰 마감까지 <span className="font-semibold text-ink">{daysLeft}일</span> 남았습니다
       </p>
       <button
         onClick={hnadleClickReviewButton}
         className="flex h-12 w-full cursor-pointer items-center justify-center rounded-[4px] bg-amber px-7"
       >
-        <span className="text-lg font-semibold leading-[21px] text-on-amber">
-          리뷰 참여하기
-        </span>
+        <span className="text-lg font-semibold leading-[21px] text-on-amber">리뷰 참여하기</span>
       </button>
     </div>
   );

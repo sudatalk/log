@@ -49,7 +49,7 @@ const menus = [
 const ProfileNav = () => {
   const router = useRouter();
 
-  const settingDisclousre = useDisclosure();
+  const settingDisclosure = useDisclosure();
 
   const handleClick = (routeKey: RouteKey) => {
     switch (routeKey) {
@@ -60,7 +60,7 @@ const ProfileNav = () => {
         router.push(getRoute.books());
         break;
       case RouteKey.SETTINGS:
-        settingDisclousre.handleOpen();
+        settingDisclosure.handleOpen();
         break;
     }
   };
@@ -71,16 +71,7 @@ const ProfileNav = () => {
         {menus.map(({ icon: Icon, label, bgColor, routeKey }) => (
           <button
             key={label}
-            className={clsx(
-              FLEX,
-              FLEX_1,
-              FLEX_COL,
-              GAP_1,
-              CENTER,
-              bgColor,
-              ROUNDED,
-              P_1,
-            )}
+            className={clsx(FLEX, FLEX_1, FLEX_COL, GAP_1, CENTER, bgColor, ROUNDED, P_1)}
             onClick={() => handleClick(routeKey)}
           >
             <div className={clsx(P_3, ROUNDED)}>
@@ -91,10 +82,7 @@ const ProfileNav = () => {
         ))}
       </div>
 
-      <SettingSheet
-        isOpen={settingDisclousre.isOpen}
-        onClose={settingDisclousre.handleClose}
-      />
+      <SettingSheet isOpen={settingDisclosure.isOpen} onClose={settingDisclosure.handleClose} />
     </>
   );
 };
