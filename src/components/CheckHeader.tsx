@@ -23,13 +23,17 @@ const CheckHeader = ({ children }: { children: React.ReactNode }) => {
             queryKey: USER_ID_QUERY_KEY,
             queryFn: () => fetchCurrentUserId(queryClient),
           });
-          setIsLoading(false);
         })();
       } catch {
         setAccessToken("");
       }
     }
+
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setIsLoading(false);
   }, [access_token, isAccessTokenLoading, queryClient, setAccessToken]);
+
+  console.log("isLoading : ", isLoading);
 
   return <>{!isLoading && children}</>;
 };

@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { FLEX, FLEX_COL } from "@/constants/tailwind";
 import useLocalStorage from "@/hooks/useLocalStorage";
+import { useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import clsx from "clsx";
 import { useRouter } from "next/navigation";
@@ -17,6 +18,8 @@ const SettingSheet = (props: Props) => {
 
   const router = useRouter();
 
+  const queryClient = useQueryClient();
+
   const [, setAccessToken] = useLocalStorage("access_token", "");
 
   const handleLogout = () => {
@@ -29,6 +32,7 @@ const SettingSheet = (props: Props) => {
     });
 
     setAccessToken("");
+    queryClient.removeQueries();
     router.push("/");
   };
 
@@ -43,6 +47,7 @@ const SettingSheet = (props: Props) => {
     });
 
     setAccessToken("");
+    queryClient.removeQueries();
     router.push("/");
   };
 

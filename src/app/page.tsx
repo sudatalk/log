@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { Header } from "@/components/Header";
 import { BookSection } from "@/components/home/BookSection";
@@ -9,9 +9,7 @@ import { useCurrentSchedules } from "@/hooks/useCurrentSchedules";
 import { calculateDaysLeft } from "@/lib/date";
 
 export default function HomePage() {
-  const {data:schedules} = useCurrentSchedules();
-
-  
+  const { data: schedules } = useCurrentSchedules();
 
   const book = schedules?.[0];
   const daysLeft = calculateDaysLeft(book?.endedAt);
