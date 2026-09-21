@@ -42,7 +42,13 @@ const Logs = () => {
     <div className={clsx(FLEX, FLEX_COL, "gap-2.5", "py-2.5", W_FULL)}>
       {isContentPending && <Loading />}
       {isContentError && <Error />}
-      {content && <BookCard book={{ ...content, liked }} isLogined={isLogined} />}
+      {content && (
+        <BookCard
+          book={{ ...content, liked }}
+          isLogined={isLogined}
+          showPurchase
+        />
+      )}
       <div className={clsx(FLEX, FLEX_COL, "gap-2.5")}>
         {isReviewsPending && <Loading />}
         {isReviewsError && <Error />}

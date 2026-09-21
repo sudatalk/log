@@ -1,6 +1,7 @@
 "use client";
 
 import Emoji from "@/components/shared/Emoji";
+import { BookPurchaseChip } from "@/components/shared/BookPurchaseChip";
 import {
   BG_SURFACE,
   BORDER,
@@ -41,12 +42,14 @@ export type BookCardData = {
   commentCount?: number;
   reviewCount?: number;
   endedAt?: string;
+  purchaseUrl?: string | null;
 };
 
 type Props = {
   book: BookCardData;
   href?: string;
   isLogined: boolean;
+  showPurchase?: boolean;
 };
 
 const formatDate = (iso: string) => {
@@ -57,7 +60,7 @@ const formatDate = (iso: string) => {
   return { date: `${y}. ${m}. ${day}`, dateTime: `${y}-${m}-${day}` };
 };
 
-const BookCard = ({ book, href, isLogined }: Props) => {
+const BookCard = ({ book, href, isLogined, showPurchase = false }: Props) => {
   const {
     title,
     author,
@@ -69,6 +72,7 @@ const BookCard = ({ book, href, isLogined }: Props) => {
     commentCount,
     reviewCount,
     endedAt,
+    purchaseUrl,
   } = book;
   const messageCount = commentCount ?? reviewCount ?? 0;
   const contentId = book.contentId ?? book.id;
@@ -131,8 +135,26 @@ const BookCard = ({ book, href, isLogined }: Props) => {
     router.push(writePath);
   };
 
+  const purchaseChip = showPurchase ? (
+    <BookPurchaseChip
+      purchaseUrl={purchaseUrl}
+      variant={dateInfo ? "icon" : "label"}
+    />
+  ) : null;
+
   const article = (
-    <article className={clsx(FLEX, ROUNDED, BORDER, BORDER_SOLID, BORDER_STRONG, "p-3.5", "gap-2.5", BG_SURFACE)}>
+    <article
+      className={clsx(
+        FLEX,
+        ROUNDED,
+        BORDER,
+        BORDER_SOLID,
+        BORDER_STRONG,
+        "p-3.5",
+        "gap-2.5",
+        BG_SURFACE,
+      )}
+    >
       <BookImage imageSrc={coverImageUrl} />
       <div className={clsx(FLEX, FLEX_1, FLEX_COL, "gap-[10px]")}>
         <header className={clsx(FLEX, W_FULL, ITEMS_CENTER, JUSTIFY_BETWEEN)}>
@@ -140,7 +162,7 @@ const BookCard = ({ book, href, isLogined }: Props) => {
           <Rating value={averageRating ?? undefined} />
         </header>
         <BookDescription description={description} />
-        <footer className={clsx(FLEX, W_FULL, ITEMS_CENTER, JUSTIFY_BETWEEN)}>
+        <footer className={clsx(FLEX, W_FULL, ITEMS_CENTER, JUSTIFY_BETWEEN, "gap-2")}>
           <Emoji
             heartCount={likeCount}
             isLiked={liked}
@@ -148,8 +170,12 @@ const BookCard = ({ book, href, isLogined }: Props) => {
             messageCount={messageCount}
             handleClickMessage={contentId ? handleClickPen : undefined}
             MessageIcon={Pen}
+            trailing={dateInfo ? purchaseChip : null}
           />
-          {dateInfo && <BookTime date={dateInfo.date} dateTime={dateInfo.dateTime} />}
+          <div className={clsx(FLEX, ITEMS_CENTER, "shrink-0")}>
+            {!dateInfo ? purchaseChip : null}
+            {dateInfo && <BookTime date={dateInfo.date} dateTime={dateInfo.dateTime} />}
+          </div>
         </footer>
       </div>
     </article>
