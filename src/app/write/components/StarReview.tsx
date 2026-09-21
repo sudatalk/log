@@ -48,7 +48,7 @@ const StarReview = (props: Props) => {
 
           const strokeWidth = isChecked ? 0 : 1.5;
 
-          const fill = isChecked ? "yellow" : "white";
+          const fill = isChecked ? "#F5C84C" : "white";
 
           return <Star key={index} strokeWidth={strokeWidth} fill={fill} onClick={() => handleChangeStar(index + 1)} />;
         })}
