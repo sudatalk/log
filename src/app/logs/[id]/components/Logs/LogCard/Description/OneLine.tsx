@@ -8,11 +8,8 @@ type Props = {
 const OneLine = ({ shortComment }: Props) => {
   return (
     <div className={clsx(FLEX, FLEX_COL, ROUNDED, OVERFLOW_HIDDEN, W_FULL)}>
-      <p
-        className={clsx(TEXT_SM, "rounded-lg px-2.5 py-2")}
-        style={{ backgroundColor: "#fb4b0033" }}
-      >
-        {`"${shortComment}"`}
+      <p className={clsx(TEXT_SM, "rounded-lg px-2.5 py-2")} style={{ backgroundColor: "#fb4b0033" }}>
+        {`${shortComment}`}
       </p>
     </div>
   );
