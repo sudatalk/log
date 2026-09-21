@@ -39,20 +39,16 @@ const RegisterPage = () => {
 
   const redirectUrl = searchParams.get(REDIRECT_URL_KEY);
 
-  const { mutateAsync: registerMutateAsync, isPending: isRegisterPending } =
-    useRegister();
-  const { mutateAsync: modifyMutateAsync, isPending: isModifyPending } =
-    useModify();
+  const { mutateAsync: registerMutateAsync, isPending: isRegisterPending } = useRegister();
+  const { mutateAsync: modifyMutateAsync, isPending: isModifyPending } = useModify();
 
   const [isOpen, setIsOpen] = useState(false);
 
-  const { nickname, setNickname, selected, setSelected, isModify } =
-    useRegisterForm();
+  const { nickname, setNickname, selected, setSelected, isModify } = useRegisterForm();
 
   const isPending = isRegisterPending || isModifyPending;
 
-  const disabled =
-    isPending || !nickname.trim() || typeof selected === "undefined";
+  const disabled = isPending || !nickname.trim() || typeof selected === "undefined";
 
   const handleOpenAgreementModal = () => {
     setIsOpen(true);
@@ -81,7 +77,10 @@ const RegisterPage = () => {
           agreedTermsIds: data?.map((value) => value.id!) || [],
         });
 
-        axios.defaults.headers.common["X-User-Id"] = response.id;
+        axios.interceptors.request.use((config) => {
+          axios.defaults.headers.common["X-User-Id"] = response.id;
+          return config;
+        });
 
         router.replace(redirectUrl || "/");
       } catch (error) {
@@ -101,8 +100,6 @@ const RegisterPage = () => {
 
   const handleModify = async () => {
     if (disabled) return;
-
-    console.log("selected : ", selected);
 
     await modifyMutateAsync({
       nickname,
@@ -135,11 +132,7 @@ const RegisterPage = () => {
           </Button>
         </div>
       </div>
-      <AgreementModal
-        isOpen={isOpen}
-        setIsOpen={setIsOpen}
-        handleSubmit={handleSubmit}
-      />
+      <AgreementModal isOpen={isOpen} setIsOpen={setIsOpen} handleSubmit={handleSubmit} />
     </>
   );
 };

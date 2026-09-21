@@ -15,7 +15,7 @@ const useUserMe = (props: Props = {}) => {
   return useQuery({
     queryKey: userMeQueryKey,
     queryFn: userMeQueryFn,
-    enabled: props.enabled || true,
+    enabled: props.enabled ?? true,
     refetchOnMount: true,
   });
 };

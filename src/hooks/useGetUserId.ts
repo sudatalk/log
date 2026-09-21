@@ -27,7 +27,10 @@ export async function fetchCurrentUserId(queryClient: QueryClient): Promise<numb
         return undefined;
       }
 
-      axios.defaults.headers.common["X-User-Id"] = userResponse.userId.toString();
+      axios.interceptors.request.use((config) => {
+        axios.defaults.headers.common["X-User-Id"] = userResponse.userId.toString();
+        return config;
+      });
       return userResponse.userId;
     }
 

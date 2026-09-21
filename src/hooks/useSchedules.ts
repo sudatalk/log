@@ -20,6 +20,7 @@ export function useSchedules() {
       const nextPage = lastPage.number + 1;
       return nextPage < lastPage.totalPages ? nextPage : undefined;
     },
+    refetchOnMount: true,
   });
 
   const schedules = query.data?.pages.flatMap((page) => page.content) ?? [];

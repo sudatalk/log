@@ -5,6 +5,7 @@ import { BG_BASE, CENTER, FLEX, FULL } from "@/constants/tailwind";
 import useLocalStorage from "@/hooks/useLocalStorage";
 import { getCheckUser } from "@/lib/api";
 import { UserStatus } from "@/types/api";
+import axios from "axios";
 import clsx from "clsx";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
@@ -39,6 +40,11 @@ const Redirect = (props: Props) => {
           const { id: appUserId } = user;
 
           const userResponse = await getCheckUser({ appUserId: +appUserId });
+
+          axios.interceptors.request.use((config) => {
+            axios.defaults.headers.common["X-User-Id"] = userResponse.userId.toString();
+            return config;
+          });
 
           // * 회원가입이 필요한 경우
           if (!userResponse.registered || userResponse.status === UserStatus.WITHDRAW) {
