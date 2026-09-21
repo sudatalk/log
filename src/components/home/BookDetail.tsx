@@ -20,40 +20,42 @@ export function BookDetail({
   onClickHeart?: () => void;
 }) {
   return (
-    <div className="flex min-w-0 flex-1 flex-col items-start gap-2 self-stretch">
+    <div className="flex min-w-0 flex-1 flex-col items-start gap-3 self-stretch">
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
         src={coverImageUrl}
         alt={`${title} 커버`}
-        className="aspect-[384/434] w-full object-cover"
+        className="mx-auto aspect-[3/4] w-[min(100%,300px)] object-cover"
       />
 
-      <div className="flex w-full items-center justify-between gap-2">
-        {content ? (
-          <BookStats
-            contentId={content.id}
-            liked={content.liked}
-            likeCount={content.likeCount}
-            reviewCount={content.reviewCount}
-            averageRating={content.averageRating}
-            onClickHeart={onClickHeart}
-          />
-        ) : (
-          <span />
-        )}
-        <BookPurchaseChip purchaseUrl={content?.purchaseUrl ?? purchaseUrl} />
-      </div>
+      {content && (
+        <BookStats
+          contentId={content.id}
+          liked={content.liked}
+          likeCount={content.likeCount}
+          reviewCount={content.reviewCount}
+          averageRating={content.averageRating}
+          onClickHeart={onClickHeart}
+          trailing={
+            <BookPurchaseChip
+              purchaseUrl={content.purchaseUrl ?? purchaseUrl}
+              variant="icon"
+              className="size-[18px] text-ink-muted"
+            />
+          }
+        />
+      )}
 
-      <div className="flex flex-col items-start gap-1.5 self-stretch">
-        <h2 className="self-stretch text-2xl font-semibold leading-[29px] tracking-[0.2px] text-ink">
+      <div className="flex flex-col items-start gap-2 self-stretch">
+        <h2 className="self-stretch text-[28px] font-semibold leading-[34px] tracking-[0.2px] text-ink">
           {title}
         </h2>
-        <p className="self-stretch text-sm font-normal leading-[17px] tracking-[0.2px] text-ink-secondary">
+        <p className="self-stretch text-base font-normal leading-5 tracking-[0.2px] text-ink-secondary">
           {author}
         </p>
       </div>
 
-      <p className="min-w-0 self-stretch break-words text-xs font-light leading-[160%] text-ink-muted">
+      <p className="min-w-0 self-stretch break-words text-sm font-normal leading-[160%] text-ink-muted">
         {description}
       </p>
     </div>

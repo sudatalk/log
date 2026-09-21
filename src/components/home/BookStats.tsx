@@ -3,6 +3,7 @@
 import { Heart, Pen, Star } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import Link from "next/link";
+import type { ReactNode } from "react";
 
 function Stat({ icon: Icon, value }: { icon: LucideIcon; value: string | number }) {
   return (
@@ -22,6 +23,7 @@ export function BookStats({
   reviewCount,
   averageRating,
   onClickHeart,
+  trailing,
 }: {
   contentId: number;
   liked: boolean;
@@ -29,6 +31,7 @@ export function BookStats({
   reviewCount: number;
   averageRating: number | null;
   onClickHeart?: () => void;
+  trailing?: ReactNode;
 }) {
   const handleClickHeart = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -37,7 +40,7 @@ export function BookStats({
   };
 
   return (
-    <div className="flex items-center gap-[5px] py-1">
+    <div className="flex items-center gap-[5px] self-stretch py-1">
       <span
         className={`flex items-center gap-[5px] ${onClickHeart ? "cursor-pointer" : ""}`}
         onClick={onClickHeart ? handleClickHeart : undefined}
@@ -61,7 +64,10 @@ export function BookStats({
           {reviewCount}
         </span>
       </Link>
-      {averageRating && <Stat icon={Star} value={averageRating} />}
+      {averageRating != null && averageRating > 0 && (
+        <Stat icon={Star} value={averageRating} />
+      )}
+      {trailing}
     </div>
   );
 }
