@@ -101,8 +101,6 @@ const RegisterPage = () => {
   const handleModify = async () => {
     if (disabled) return;
 
-    console.log("selected : ", selected);
-
     await modifyMutateAsync({
       nickname,
       profileImageUrl: PROFILE_IMAGE_LIST[selected],

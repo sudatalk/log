@@ -23,8 +23,6 @@ const CheckHeader = ({ children }: { children: React.ReactNode }) => {
         (async () => {
           const statusInfo = await Kakao.Auth.getStatusInfo();
 
-          console.log("statusInfo : ", statusInfo);
-
           if ("error" in statusInfo) {
             throw new Error("Kakao Auth getStatusInfo 오류 발생");
           }
@@ -51,8 +49,6 @@ const CheckHeader = ({ children }: { children: React.ReactNode }) => {
       }
     }
   }, [access_token, isAccessTokenLoading, queryClient, setAccessToken]);
-
-  console.log("isLoading : ", isLoading);
 
   return <>{!isLoading && children}</>;
 };
