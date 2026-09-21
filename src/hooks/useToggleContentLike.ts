@@ -15,6 +15,9 @@ export function useToggleContentLike() {
         queryKey: ["contents", "likes"],
       });
       queryClient.invalidateQueries({
+        queryKey: queryKeys.contents.detail(contentId),
+      });
+      queryClient.invalidateQueries({
         queryKey: queryKeys.schedules.all,
       });
     },

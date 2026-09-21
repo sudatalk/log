@@ -1,7 +1,7 @@
 "use client";
 
 import { openExternalUrl } from "@/lib/openExternalUrl";
-import clsx from "clsx";
+import { cn } from "@/lib/utils";
 import { ShoppingCart } from "lucide-react";
 
 type Props = {
@@ -34,12 +34,12 @@ export function BookPurchaseChip({
         type="button"
         aria-label="구매"
         onClick={handleClick}
-        className={clsx(
-          "inline-flex shrink-0 items-center justify-center p-0 text-ink",
+        className={cn(
+          "inline-flex size-3.5 shrink-0 items-center justify-center p-0 text-ink",
           className,
         )}
       >
-        <ShoppingCart size={14} strokeWidth={2} />
+        <ShoppingCart className="size-full" strokeWidth={2} />
       </button>
     );
   }
@@ -48,7 +48,7 @@ export function BookPurchaseChip({
     <button
       type="button"
       onClick={handleClick}
-      className={clsx(
+      className={cn(
         "inline-flex h-7 shrink-0 items-center rounded-full border border-[#C4B4A4] bg-[#FDFAF4] px-3",
         "text-xs font-medium leading-[14px] text-ink",
         className,

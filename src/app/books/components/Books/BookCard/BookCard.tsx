@@ -136,10 +136,7 @@ const BookCard = ({ book, href, isLogined, showPurchase = false }: Props) => {
   };
 
   const purchaseChip = showPurchase ? (
-    <BookPurchaseChip
-      purchaseUrl={purchaseUrl}
-      variant={dateInfo ? "icon" : "label"}
-    />
+    <BookPurchaseChip purchaseUrl={purchaseUrl} variant="icon" />
   ) : null;
 
   const article = (
@@ -170,12 +167,9 @@ const BookCard = ({ book, href, isLogined, showPurchase = false }: Props) => {
             messageCount={messageCount}
             handleClickMessage={contentId ? handleClickPen : undefined}
             MessageIcon={Pen}
-            trailing={dateInfo ? purchaseChip : null}
+            trailing={purchaseChip}
           />
-          <div className={clsx(FLEX, ITEMS_CENTER, "shrink-0")}>
-            {!dateInfo ? purchaseChip : null}
-            {dateInfo && <BookTime date={dateInfo.date} dateTime={dateInfo.dateTime} />}
-          </div>
+          {dateInfo && <BookTime date={dateInfo.date} dateTime={dateInfo.dateTime} />}
         </footer>
       </div>
     </article>
