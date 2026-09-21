@@ -19,14 +19,18 @@ export function BookDetail({
   purchaseUrl?: string | null;
   onClickHeart?: () => void;
 }) {
-  const fname = new URL(coverImageUrl).searchParams.get("fname");
+  // const fname = new URL(coverImageUrl).searchParams.get("fname");
 
-  const decodedUrl = fname ? decodeURIComponent(fname) : coverImageUrl;
+  // const decodedUrl = fname ? decodeURIComponent(fname) : coverImageUrl;
 
   return (
     <div className="flex min-w-0 flex-1 flex-col items-start gap-3 self-stretch">
       {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src={decodedUrl} alt={`${title} 커버`} className="mx-auto aspect-[3/4] w-[min(100%,300px)] object-cover" />
+      <img
+        src={coverImageUrl}
+        alt={`${title} 커버`}
+        className="mx-auto aspect-[3/4] w-[min(100%,300px)] object-cover"
+      />
 
       {content && (
         <BookStats

@@ -1,5 +1,6 @@
 "use client";
 
+import { round } from "@/utils/math";
 import { Heart, Pen, Star } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import Link from "next/link";
@@ -9,9 +10,7 @@ function Stat({ icon: Icon, value }: { icon: LucideIcon; value: string | number 
   return (
     <span className="flex items-center gap-[5px]">
       <Icon className="size-[18px] text-ink-muted" />
-      <span className="text-xs font-medium tracking-[0.2px] text-ink-muted">
-        {value}
-      </span>
+      <span className="text-xs font-medium tracking-[0.2px] text-ink-muted">{value}</span>
     </span>
   );
 }
@@ -51,22 +50,13 @@ export function BookStats({
           color={liked ? "#ef4444" : undefined}
           fill={liked ? "#ef4444" : "none"}
         />
-        <span className="text-xs font-medium tracking-[0.2px] text-ink-muted">
-          {likeCount}
-        </span>
+        <span className="text-xs font-medium tracking-[0.2px] text-ink-muted">{likeCount}</span>
       </span>
-      <Link
-        href={`/logs/${contentId}`}
-        className="flex items-center gap-[5px] cursor-pointer"
-      >
+      <Link href={`/logs/${contentId}`} className="flex items-center gap-[5px] cursor-pointer">
         <Pen className="size-[18px] text-ink-muted" strokeWidth={2} />
-        <span className="text-xs font-medium tracking-[0.2px] text-ink-muted">
-          {reviewCount}
-        </span>
+        <span className="text-xs font-medium tracking-[0.2px] text-ink-muted">{reviewCount}</span>
       </Link>
-      {averageRating != null && averageRating > 0 && (
-        <Stat icon={Star} value={averageRating} />
-      )}
+      {averageRating != null && averageRating > 0 && <Stat icon={Star} value={round(averageRating)} />}
       {trailing}
     </div>
   );
