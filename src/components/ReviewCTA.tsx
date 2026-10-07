@@ -1,7 +1,9 @@
 "use client";
 
 import { getRoute, REDIRECT_URL_KEY } from "@/constants/router";
+import { useDraftReviews } from "@/hooks/useDraftReviews";
 import useGetUserId from "@/hooks/useGetUserId";
+import { useMyReviews } from "@/hooks/useMyReviews";
 import { useRouter } from "next/navigation";
 
 export function ReviewCTA({ bookId, daysLeft }: { bookId?: number; daysLeft: number }) {
@@ -11,15 +13,42 @@ export function ReviewCTA({ bookId, daysLeft }: { bookId?: number; daysLeft: num
 
   const isLogined = !!userId && !isLoading;
 
+  const { reviews: myReviews } = useMyReviews(isLogined);
+  const { drafts } = useDraftReviews(isLogined);
+
   const hnadleClickReviewButton = () => {
     if (!bookId) return;
 
+    const writePath = getRoute.write({ bookId });
+
     if (!isLogined) {
-      router.push(getRoute.login({ [REDIRECT_URL_KEY]: getRoute.write({ bookId }) }));
+      router.push(getRoute.login({ [REDIRECT_URL_KEY]: writePath }));
       return;
     }
 
-    router.push(getRoute.write({ bookId }));
+    const published = myReviews.find((review) => review.contentId === bookId);
+    if (published) {
+      router.push(
+        getRoute.write({
+          bookId,
+          reviewId: published.reviewId,
+        }),
+      );
+      return;
+    }
+
+    const draft = drafts.find((item) => item.contentId === bookId);
+    if (draft) {
+      router.push(
+        getRoute.write({
+          bookId,
+          reviewId: draft.reviewId,
+        }),
+      );
+      return;
+    }
+
+    router.push(writePath);
   };
 
   return (

@@ -60,11 +60,7 @@ const LogCard = ({ review, contentId }: Props) => {
           }
         />
         {showBadgeRow && (
-          <LogBadgeRow
-            badges={badges}
-            onClickBadge={handleClickBadge}
-            trailing={<Rating value={review.rating} />}
-          />
+          <LogBadgeRow badges={badges} onClickBadge={handleClickBadge} trailing={<Rating value={review.rating} />} />
         )}
 
         {availableTypes.includes(selectedType) && <Description type={selectedType} review={review} />}

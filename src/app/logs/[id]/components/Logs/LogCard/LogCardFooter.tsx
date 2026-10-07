@@ -11,14 +11,7 @@ type Props = {
   action?: React.ReactNode;
 };
 
-const LogCardFooter = ({
-  heartCount,
-  messageCount,
-  isLiked,
-  handleClickHeart,
-  handleClickMessage,
-  action,
-}: Props) => {
+const LogCardFooter = ({ heartCount, messageCount, isLiked, handleClickHeart, handleClickMessage, action }: Props) => {
   return (
     <div className={clsx(FLEX, ITEMS_CENTER, action && JUSTIFY_BETWEEN)}>
       <Emoji
