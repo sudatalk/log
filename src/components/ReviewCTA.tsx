@@ -16,7 +16,7 @@ export function ReviewCTA({ bookId, daysLeft }: { bookId?: number; daysLeft: num
   const { reviews: myReviews } = useMyReviews(isLogined);
   const { drafts } = useDraftReviews(isLogined);
 
-  const hnadleClickReviewButton = () => {
+  const handleClickReviewButton = () => {
     if (!bookId) return;
 
     const writePath = getRoute.write({ bookId });
@@ -57,7 +57,7 @@ export function ReviewCTA({ bookId, daysLeft }: { bookId?: number; daysLeft: num
         리뷰 마감까지 <span className="font-semibold text-ink">{daysLeft}일</span> 남았습니다
       </p>
       <button
-        onClick={hnadleClickReviewButton}
+        onClick={handleClickReviewButton}
         className="flex h-12 w-full cursor-pointer items-center justify-center rounded-[4px] bg-amber px-7"
       >
         <span className="text-lg font-semibold leading-[21px] text-on-amber">리뷰 참여하기</span>
