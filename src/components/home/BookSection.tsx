@@ -19,13 +19,10 @@ export function BookSection() {
   const { data: schedules } = useCurrentSchedules();
   const book = schedules?.find((s) => s.categoryType === CategoryType.BOOK);
   const { data: content } = useContentDetail(book?.contentId);
-  const { data: likesMap } = useContentLikes(
-    book?.contentId !== undefined ? [book.contentId] : [],
-  );
-  const { mutate: toggleLike, isPending: isTogglingLike } =
-    useToggleContentLike();
+  const { data: likesMap } = useContentLikes(book?.contentId !== undefined ? [book.contentId] : []);
+  const { mutate: toggleLike, isPending: isTogglingLike } = useToggleContentLike();
 
-  if (!book) return null;
+  if (!book) return <></>;
 
   const handleClickHeart = () => {
     if (!isLogined) {
@@ -36,9 +33,7 @@ export function BookSection() {
     toggleLike(book.contentId);
   };
 
-  const liked = likesMap
-    ? (likesMap[String(book.contentId)] ?? false)
-    : false;
+  const liked = likesMap ? (likesMap[String(book.contentId)] ?? false) : false;
 
   return (
     <BookDetail
