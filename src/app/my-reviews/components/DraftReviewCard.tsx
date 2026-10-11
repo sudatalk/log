@@ -11,7 +11,7 @@ type Props = {
 };
 
 const DraftReviewCard = ({ draft }: Props) => {
-  const { title, author, coverImageUrl, savedAt, reviewDeadline, contentId } = draft;
+  const { title, author, coverImageUrl, savedAt, reviewDeadline, contentId, reviewId } = draft;
   const daysLeft = reviewDeadline ? calculateDaysLeft(reviewDeadline) : undefined;
   const savedDate = formatReviewDate(savedAt);
 
@@ -49,7 +49,10 @@ const DraftReviewCard = ({ draft }: Props) => {
             {savedDate} 저장
           </time>
           <Link
-            href={getRoute.write({ bookId: contentId })}
+            href={getRoute.write({
+              bookId: contentId,
+              reviewId,
+            })}
             className="flex h-6 shrink-0 items-center rounded bg-[#1F1F1F] px-3.5 text-xs font-medium leading-[14px] text-[#FEFEFF]"
           >
             수정
