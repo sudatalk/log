@@ -1,6 +1,7 @@
 import { BookStats } from "@/components/home/BookStats";
 import { BookPurchaseChip } from "@/components/shared/BookPurchaseChip";
 import { ContentDetail } from "@/types/api";
+import { getDecodedFname } from "@/utils/url";
 
 export function BookDetail({
   coverImageUrl,
@@ -19,15 +20,12 @@ export function BookDetail({
   purchaseUrl?: string | null;
   onClickHeart?: () => void;
 }) {
-  // const fname = new URL(coverImageUrl).searchParams.get("fname");
-
-  // const decodedUrl = fname ? decodeURIComponent(fname) : coverImageUrl;
+  const imageUrl = getDecodedFname(coverImageUrl);
 
   return (
     <div className="flex min-w-0 flex-1 flex-col items-start gap-3 self-stretch">
-      {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
-        src={coverImageUrl}
+        src={imageUrl || ""}
         alt={`${title} 커버`}
         className="mx-auto aspect-[3/4] w-[min(100%,300px)] object-cover"
       />
