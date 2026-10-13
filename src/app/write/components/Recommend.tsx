@@ -58,7 +58,7 @@ const Recommend = (props: Props) => {
         <div className={clsx(FLEX, FLEX_COL, FLEX_8, GAP_1)}>
           <p className={clsx(FONT_SEMIBOLD)}>추천 질문에 답하기</p>
           <p className={clsx(TEXT_XS, TEXT_GRAY)}>
-            AI 가 생성한 질문에 답해보세요
+            추천 질문에 답해보세요
           </p>
         </div>
         {isOpen ? <ChevronDown /> : <ChevronUp />}
