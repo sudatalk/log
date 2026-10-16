@@ -2,9 +2,35 @@ import { CardType } from "./types/card";
 
 export type ReviewContent = {
   shortComment: string;
-  questions: { length: number };
-  quotes: { length: number };
+  questions: Array<{ question?: string; answer?: string }>;
+  quotes: Array<{ quote?: string; reason?: string | null }>;
   comment?: string;
+};
+
+const hasText = (value?: string | null) => !!value?.trim();
+
+export const hasOneLineContent = (shortComment?: string | null) =>
+  hasText(shortComment);
+
+export const hasRecommendContent = (
+  questions: ReviewContent["questions"] = [],
+) => questions.some((item) => hasText(item.answer));
+
+export const hasImpressiveContent = (
+  quotes: ReviewContent["quotes"] = [],
+) => quotes.some((item) => hasText(item.quote));
+
+export const hasFreeContent = (comment?: string | null) => hasText(comment);
+
+export const getAvailableTypes = (review: ReviewContent) => {
+  const types: string[] = [];
+
+  if (hasOneLineContent(review.shortComment)) types.push(CardType.ONE_LINE);
+  if (hasRecommendContent(review.questions)) types.push(CardType.RECOMMEND);
+  if (hasImpressiveContent(review.quotes)) types.push(CardType.IMPRESSIVE);
+  if (hasFreeContent(review.comment)) types.push(CardType.FREE);
+
+  return types;
 };
 
 export type LogBadgeItem = {
@@ -13,17 +39,6 @@ export type LogBadgeItem = {
   color: string;
   svg: string;
   label: string;
-};
-
-export const getAvailableTypes = (review: ReviewContent) => {
-  const types: string[] = [];
-
-  if (review.shortComment) types.push(CardType.ONE_LINE);
-  if (review.questions.length > 0) types.push(CardType.RECOMMEND);
-  if (review.quotes.length > 0) types.push(CardType.IMPRESSIVE);
-  if (review.comment) types.push(CardType.FREE);
-
-  return types;
 };
 
 export const getLogBadges = (selectedType: string): LogBadgeItem[] => [

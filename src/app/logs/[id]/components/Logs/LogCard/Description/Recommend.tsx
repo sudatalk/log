@@ -1,10 +1,13 @@
 import { Textarea } from "@/components/ui/textarea";
 import { FLEX, FLEX_COL, FONT_MEDIUM, OVERFLOW_HIDDEN, ROUNDED, TEXT_SM, W_FULL } from "@/constants/tailwind";
-import type { ReviewQuestionItem } from "@/types/api";
 import clsx from "clsx";
 
 type Props = {
-  questions: ReviewQuestionItem[];
+  questions: Array<{
+    id: number;
+    question: string;
+    answer: string;
+  }>;
 };
 
 const Recommend = ({ questions }: Props) => {
