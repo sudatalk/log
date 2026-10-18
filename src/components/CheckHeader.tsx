@@ -41,14 +41,13 @@ const CheckHeader = ({ children }: { children: React.ReactNode }) => {
               return config;
             });
           }
-
-          setIsLoading(false);
         })();
       } catch {
         setAccessToken("");
+      } finally {
+        setIsLoading(false);
       }
     } else {
-      // eslint-disable-next-line react-hooks/set-state-in-effect
       setIsLoading(false);
     }
   }, [access_token, isAccessTokenLoading, queryClient, setAccessToken]);
