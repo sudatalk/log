@@ -10,6 +10,8 @@ import { MoreVertical } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import ReportDialog from "./ReportDialog";
+import { useQueryClient } from "@tanstack/react-query";
+import { queryKeys } from "@/constants/queryKeys";
 
 type Props = {
   reviewId: number;
@@ -30,6 +32,8 @@ const LogCardMenu = ({ reviewId, contentId, userId, isMyReview }: Props) => {
   const [isReportDialogOpen, setIsReportDialogOpen] = useState(false);
   const { mutate: deleteReview, isPending: isDeleting } = useDeleteReview(contentId, userId);
   const { mutate: reportReview, isPending: isReporting } = useReportReview();
+
+  const queryClient = useQueryClient();
 
   useEffect(() => {
     if (!isOpen) return;
@@ -78,6 +82,10 @@ const LogCardMenu = ({ reviewId, contentId, userId, isMyReview }: Props) => {
   const handleDelete = () => {
     closeMenu();
     setIsDeleteDialogOpen(true);
+
+    queryClient.refetchQueries({
+      queryKey: [queryKeys.reviews.my, queryKeys.reviews.drafts],
+    });
   };
 
   const handleConfirmDelete = () => {
