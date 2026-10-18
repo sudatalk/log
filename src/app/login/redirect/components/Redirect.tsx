@@ -41,7 +41,9 @@ const Redirect = (props: Props) => {
 
           const userResponse = await getCheckUser({ appUserId: +appUserId });
 
-          axios.defaults.headers.common["X-User-Id"] = userResponse.userId.toString();
+          if (userResponse.userId) {
+            axios.defaults.headers.common["X-User-Id"] = userResponse.userId.toString();
+          }
 
           // * 회원가입이 필요한 경우
           if (!userResponse.registered || userResponse.status === UserStatus.WITHDRAW) {

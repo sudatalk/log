@@ -42,7 +42,9 @@ const LoginPage = () => {
 
             if (!userResponse.registered || userResponse.status === UserStatus.WITHDRAW) return;
 
-            axios.defaults.headers.common["X-User-Id"] = userResponse.userId.toString();
+            if (userResponse.userId) {
+              axios.defaults.headers.common["X-User-Id"] = userResponse.userId.toString();
+            }
 
             router.replace(redirectUrl);
           }

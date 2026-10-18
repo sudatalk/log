@@ -9,6 +9,7 @@ import { useEffect, useState } from "react";
 
 const CheckHeader = ({ children }: { children: React.ReactNode }) => {
   const [isLoading, setIsLoading] = useState(true);
+
   const queryClient = useQueryClient();
 
   const [access_token, setAccessToken, isAccessTokenLoading] = useLocalStorage<string>("access_token", "");
@@ -45,7 +46,9 @@ const CheckHeader = ({ children }: { children: React.ReactNode }) => {
             return;
           }
 
-          axios.defaults.headers.common["X-User-Id"] = userResponse.userId.toString();
+          if (userResponse.userId) {
+            axios.defaults.headers.common["X-User-Id"] = userResponse.userId.toString();
+          }
         }
       } catch {
         setAccessToken("");
