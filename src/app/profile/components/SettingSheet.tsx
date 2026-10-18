@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { FLEX, FLEX_COL } from "@/constants/tailwind";
 import useLocalStorage from "@/hooks/useLocalStorage";
+import useWithdraw from "@/hooks/useWithdraw";
 import { useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import clsx from "clsx";
@@ -22,6 +23,8 @@ const SettingSheet = (props: Props) => {
 
   const [, setAccessToken] = useLocalStorage("access_token", "");
 
+  const { mutate } = useWithdraw();
+
   const handleLogout = () => {
     Kakao.Auth.cleanup();
     Kakao.Auth.logout();
@@ -40,7 +43,8 @@ const SettingSheet = (props: Props) => {
     Kakao.Auth.cleanup();
     Kakao.Auth.logout();
 
-    // TODO : 탈퇴
+    mutate();
+
     axios.interceptors.request.use((config) => {
       axios.defaults.headers.common["X-User-Id"] = "";
       return config;
