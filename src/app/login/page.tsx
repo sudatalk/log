@@ -42,10 +42,7 @@ const LoginPage = () => {
 
             if (!userResponse.registered || userResponse.status === UserStatus.WITHDRAW) return;
 
-            axios.interceptors.request.use((config) => {
-              axios.defaults.headers.common["X-User-Id"] = userResponse.userId.toString();
-              return config;
-            });
+            axios.defaults.headers.common["X-User-Id"] = userResponse.userId.toString();
 
             router.replace(redirectUrl);
           }
