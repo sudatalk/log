@@ -1,7 +1,7 @@
 "use client";
 
+import { getCheckUserQueryFn, getCheckUserQueryKey } from "@/hooks/useGetCheckUser";
 import useLocalStorage from "@/hooks/useLocalStorage";
-import { getCheckUser } from "@/lib/api";
 import { UserStatus } from "@/types/api";
 import { useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
@@ -32,7 +32,10 @@ const CheckHeader = ({ children }: { children: React.ReactNode }) => {
           if (status === "connected" && !!user) {
             const { id: appUserId } = user;
 
-            const userResponse = await getCheckUser({ appUserId: +appUserId });
+            const userResponse = await queryClient.fetchQuery({
+              queryKey: getCheckUserQueryKey,
+              queryFn: () => getCheckUserQueryFn(appUserId),
+            });
 
             if (!userResponse.registered || userResponse.status === UserStatus.WITHDRAW) return;
 

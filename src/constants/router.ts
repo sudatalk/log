@@ -32,6 +32,10 @@ export const getRoute = {
   books: (searchParams?: SearchParams) => {
     return getPathWithParams(`/books`, searchParams);
   },
+
+  logs: (contentId: string | number, searchParams?: SearchParams) => {
+    return getPathWithParams(`/logs/${contentId}`, searchParams);
+  },
 };
 
 const getPathWithParams = (path: string, params?: SearchParams) => {

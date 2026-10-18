@@ -1,9 +1,12 @@
 "use client";
 
+import { getRoute, REDIRECT_URL_KEY } from "@/constants/router";
+import useGetUserId from "@/hooks/useGetUserId";
 import { round } from "@/utils/math";
 import { Heart, Pen, Star } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import type { ReactNode } from "react";
 
 function Stat({ icon: Icon, value }: { icon: LucideIcon; value: string | number }) {
@@ -32,10 +35,26 @@ export function BookStats({
   onClickHeart?: () => void;
   trailing?: ReactNode;
 }) {
+  const { userId, isLoading } = useGetUserId();
+  const isLogined = !!userId && !isLoading;
+
+  const router = useRouter();
+
   const handleClickHeart = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
     onClickHeart?.();
+  };
+
+  const handleClickReview = (event: React.MouseEvent<HTMLAnchorElement>) => {
+    event.preventDefault();
+
+    if (!isLogined) {
+      router.push(getRoute.login({ [REDIRECT_URL_KEY]: getRoute.logs(contentId) }));
+      return;
+    }
+
+    router.push(getRoute.login({ [REDIRECT_URL_KEY]: getRoute.logs(contentId) }));
   };
 
   return (
@@ -52,7 +71,7 @@ export function BookStats({
         />
         <span className="text-xs font-medium tracking-[0.2px] text-ink-muted">{likeCount}</span>
       </span>
-      <Link href={`/logs/${contentId}`} className="flex items-center gap-[5px] cursor-pointer">
+      <Link href="#" onClick={handleClickReview} className="flex items-center gap-[5px] cursor-pointer">
         <Pen className="size-[18px] text-ink-muted" strokeWidth={2} />
         <span className="text-xs font-medium tracking-[0.2px] text-ink-muted">{reviewCount}</span>
       </Link>
