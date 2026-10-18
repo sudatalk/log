@@ -192,7 +192,7 @@ export enum UserStatus {
 
 export type UserCheckResponse = {
   registered: boolean;
-  userId: number;
+  userId?: number;
   status: UserStatus;
 };
 
