@@ -4,76 +4,66 @@ import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { EMBER_ICON, FLEX, FLEX_COL, W_FULL } from "@/constants/tailwind";
+import { Term } from "@/types/api";
 import clsx from "clsx";
-import { type FormEvent, useState } from "react";
-import { Term, TermType } from "@/types/api";
+import { type FormEvent, useEffect, useState } from "react";
 
 type Props = {
-  onSubmit?: (agreementCheckList: Record<TermType, boolean>) => void;
+  onSubmit?: (agreementCheckList: Record<number, boolean>) => void;
   terms?: Term[];
 };
 
-const isTermType = (value: string): value is TermType => {
-  return Object.values(TermType).some((type) => type === value);
-};
+const getInitialState = (terms?: Term[]): Record<number, boolean> => {
+  if (!terms) return {};
 
-const getInitialState = (terms?: Term[]): Record<TermType, boolean> => {
-  const INITIAL_STATE = {} as Record<TermType, boolean>;
-
-  if (!terms) return INITIAL_STATE;
-
-  return terms.reduce((acc, term) => {
-    if (!term.type) return acc;
-
-    acc[term.type] = false;
+  return terms.reduce<Record<number, boolean>>((acc, term) => {
+    acc[term.id] = false;
     return acc;
-  }, INITIAL_STATE);
+  }, {});
 };
 
-const AgreementModalContainer = ({ onSubmit, terms }: Props) => {
-  const [agreementCheckList, setAgreementCheckList] = useState(
-    getInitialState(terms),
-  );
+const AgreementModalContainer = ({ onSubmit, terms = [] }: Props) => {
+  const [agreementCheckList, setAgreementCheckList] = useState(() => getInitialState(terms));
 
-  const handleCheckedChange = (key: TermType, checked: boolean) => {
+  useEffect(() => {
+    setAgreementCheckList(getInitialState(terms));
+  }, [terms]);
+
+  const handleCheckedChange = (id: number, checked: boolean) => {
     setAgreementCheckList((prev) => ({
       ...prev,
-      [key]: checked,
+      [id]: checked,
     }));
   };
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    if (!Object.values(agreementCheckList).every((value) => value)) {
+    const isAllRequiredChecked = terms.filter((term) => term.required).every((term) => agreementCheckList[term.id]);
+
+    if (!isAllRequiredChecked) {
       return;
     }
 
     onSubmit?.(agreementCheckList);
   };
 
+  const isAllRequiredChecked = terms.filter((term) => term.required).every((term) => agreementCheckList[term.id]);
+
   return (
-    <form
-      onSubmit={handleSubmit}
-      className={clsx(FLEX, FLEX_COL, W_FULL, "gap-4", "p-4")}
-    >
+    <form onSubmit={handleSubmit} className={clsx(FLEX, FLEX_COL, W_FULL, "gap-4", "p-4")}>
       <FieldGroup>
-        {Object.keys(agreementCheckList).map((value) => {
-          const key = isTermType(value) ? value : undefined;
-
-          if (!key) return <></>;
-
-          const checkboxId = `agreement-checkbox-${key}`;
-
-          const isChecked = agreementCheckList[key];
+        {terms.map((term) => {
+          const checkboxId = `agreement-checkbox-${term.id}`;
+          const isChecked = agreementCheckList[term.id] ?? false;
 
           return (
-            <Field key={key} orientation="horizontal">
+            <Field key={term.id} orientation="horizontal">
               <Checkbox
                 id={checkboxId}
                 name={checkboxId}
                 checked={isChecked}
-                onCheckedChange={(checked) => handleCheckedChange(key, checked)}
+                onCheckedChange={(checked) => handleCheckedChange(term.id, checked === true)}
                 style={{
                   height: 25,
                   width: 25,
@@ -81,19 +71,30 @@ const AgreementModalContainer = ({ onSubmit, terms }: Props) => {
                   fontSize: 20,
                 }}
               />
-              <FieldLabel htmlFor={checkboxId} style={{ fontSize: 14 }}>
-                {terms?.find((term) => term.type === key)?.content}
+
+              <FieldLabel htmlFor={checkboxId} style={{ fontSize: 14 }} className="cursor-pointer">
+                {term.required && "[필수]"} {term.title}
+                <a
+                  className="underline"
+                  href={term.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={(event) => event.stopPropagation()}
+                >
+                  보기
+                </a>
               </FieldLabel>
             </Field>
           );
         })}
       </FieldGroup>
+
       <Button
         type="submit"
         size="lg"
         className={clsx(EMBER_ICON, W_FULL)}
         style={{ height: 40 }}
-        disabled={!Object.values(agreementCheckList).every((value) => value)}
+        disabled={!isAllRequiredChecked}
       >
         입장하기
       </Button>
