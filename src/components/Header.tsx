@@ -17,7 +17,7 @@ export function Header() {
   const { data } = useUserMe({ enabled: isLogined });
 
   const handleClickLogo = () => {
-    getRoute.home();
+    router.push(getRoute.home());
   };
 
   const hnadleClickProfile = () => {
