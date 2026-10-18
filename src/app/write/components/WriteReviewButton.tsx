@@ -1,30 +1,16 @@
 import { Button } from "@/components/ui/button";
-import {
-  CENTER,
-  FLEX,
-  GAP_5,
-  P_3,
-  ROUNDED,
-  STICKY,
-  TEXT_XL,
-  W_FULL,
-} from "@/constants/tailwind";
+import { CENTER, FLEX, GAP_5, P_3, ROUNDED, STICKY, TEXT_XL, W_FULL } from "@/constants/tailwind";
 import clsx from "clsx";
 import { ReviewType } from "../hooks/useWriteReview";
-import { useSearchParams } from "next/navigation";
-import { REVIEW_ID_SEARCH_PARAMS_KEY } from "../hooks/useReview";
 
 type Props = {
   disabled: boolean;
+  isModify: boolean;
   handleSubmitReview: (type: ReviewType) => void;
 };
 
 const WriteReviewButton = (props: Props) => {
-  const { disabled, handleSubmitReview } = props;
-
-  const searchParams = useSearchParams();
-
-  const isModify = !!searchParams.get(REVIEW_ID_SEARCH_PARAMS_KEY);
+  const { disabled, isModify, handleSubmitReview } = props;
 
   return (
     <div className={clsx(FLEX, W_FULL, CENTER, GAP_5, STICKY, P_3, "bottom-0")}>
