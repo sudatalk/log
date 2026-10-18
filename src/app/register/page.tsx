@@ -77,10 +77,7 @@ const RegisterPage = () => {
           agreedTermsIds: data?.map((value) => value.id!) || [],
         });
 
-        axios.interceptors.request.use((config) => {
-          axios.defaults.headers.common["X-User-Id"] = response.id;
-          return config;
-        });
+        axios.defaults.headers.common["X-User-Id"] = response.id;
 
         router.replace(redirectUrl || "/");
       } catch (error) {

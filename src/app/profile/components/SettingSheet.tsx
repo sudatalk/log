@@ -29,10 +29,7 @@ const SettingSheet = (props: Props) => {
     Kakao.Auth.cleanup();
     Kakao.Auth.logout();
 
-    axios.interceptors.request.use((config) => {
-      axios.defaults.headers.common["X-User-Id"] = "";
-      return config;
-    });
+    axios.defaults.headers.common["X-User-Id"] = "";
 
     setAccessToken("");
     queryClient.removeQueries();
@@ -45,10 +42,7 @@ const SettingSheet = (props: Props) => {
 
     mutate();
 
-    axios.interceptors.request.use((config) => {
-      axios.defaults.headers.common["X-User-Id"] = "";
-      return config;
-    });
+    axios.defaults.headers.common["X-User-Id"] = "";
 
     setAccessToken("");
     queryClient.removeQueries();
