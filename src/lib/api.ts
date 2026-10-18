@@ -32,12 +32,9 @@ import axios from "axios";
 
 // TODO: api host 환경변수로 분리
 // 임시코드. 서버는 백엔드를 직접 호출, 브라우저는 next.config.ts의 rewrites로 같은 origin 프록시.
-const API_BASE_URL =
-  typeof window === "undefined" ? "http://localhost:8080" : "/api";
+const API_BASE_URL = typeof window === "undefined" ? "http://localhost:8080" : "/api";
 
-export async function getSchedules(
-  params: SchedulesRequest,
-): Promise<SchedulesResponse> {
+export async function getSchedules(params: SchedulesRequest): Promise<SchedulesResponse> {
   const query = new URLSearchParams({
     size: String(params.size),
     page: String(params.page),
@@ -45,9 +42,7 @@ export async function getSchedules(
   const res = await axios.get(`${API_BASE_URL}/schedules?${query}`);
 
   if (!res.data) {
-    throw new Error(
-      `Failed to fetch /schedules: ${res.status} ${res.statusText}`,
-    );
+    throw new Error(`Failed to fetch /schedules: ${res.status} ${res.statusText}`);
   }
 
   return res.data;
@@ -57,33 +52,23 @@ export async function getCurrentSchedules(): Promise<ScheduledContent[]> {
   const res = await axios.get(`${API_BASE_URL}/schedules/current`);
 
   if (!res.data) {
-    throw new Error(
-      `Failed to fetch /schedules/current: ${res.status} ${res.statusText}`,
-    );
+    throw new Error(`Failed to fetch /schedules/current: ${res.status} ${res.statusText}`);
   }
 
   return res.data;
 }
 
-export async function getContentStats(
-  contentId: number,
-): Promise<ContentStats> {
+export async function getContentStats(contentId: number): Promise<ContentStats> {
   const res = await axios.get(`${API_BASE_URL}/contents/${contentId}/stats`);
 
   if (!res.data) {
-    throw new Error(
-      `Failed to fetch /contents/${contentId}/stats: ${res.status} ${res.statusText}`,
-    );
+    throw new Error(`Failed to fetch /contents/${contentId}/stats: ${res.status} ${res.statusText}`);
   }
 
   return res.data;
 }
 
-export async function getCheckUser({
-  appUserId,
-}: {
-  appUserId: number;
-}): Promise<UserCheckResponse> {
+export async function getCheckUser({ appUserId }: { appUserId: number }): Promise<UserCheckResponse> {
   const res = await axios.get(`${API_BASE_URL}/users/check`, {
     headers: {
       appUserId: String(appUserId),
@@ -91,23 +76,17 @@ export async function getCheckUser({
   });
 
   if (!res.data) {
-    throw new Error(
-      `Failed to fetch /users/check: ${res.status} ${res.statusText}`,
-    );
+    throw new Error(`Failed to fetch /users/check: ${res.status} ${res.statusText}`);
   }
 
   return res.data;
 }
 
-export async function getContentDetail(
-  contentId: number,
-): Promise<ContentDetail> {
+export async function getContentDetail(contentId: number): Promise<ContentDetail> {
   const res = await axios.get(`${API_BASE_URL}/contents/${contentId}`);
 
   if (!res.data) {
-    throw new Error(
-      `Failed to fetch /contents/${contentId}: ${res.status} ${res.statusText}`,
-    );
+    throw new Error(`Failed to fetch /contents/${contentId}: ${res.status} ${res.statusText}`);
   }
 
   return res.data;
@@ -127,53 +106,38 @@ export async function getContentReviews(
     headers["X-User-Id"] = String(userId);
   }
 
-  const res = await axios.get(
-    `${API_BASE_URL}/contents/${contentId}/reviews?${query}`,
-    {
-      headers,
-    },
-  );
+  const res = await axios.get(`${API_BASE_URL}/contents/${contentId}/reviews?${query}`, {
+    headers,
+  });
 
   if (!res.data) {
-    throw new Error(
-      `Failed to fetch /contents/${contentId}/reviews: ${res.status} ${res.statusText}`,
-    );
+    throw new Error(`Failed to fetch /contents/${contentId}/reviews: ${res.status} ${res.statusText}`);
   }
 
   return res.data;
 }
 
-export async function toggleContentLike(
-  contentId: number,
-): Promise<LikeToggleResponse> {
+export async function toggleContentLike(contentId: number): Promise<LikeToggleResponse> {
   const res = await axios.post(`${API_BASE_URL}/contents/${contentId}/like`);
 
   if (!res.data) {
-    throw new Error(
-      `Failed to toggle /contents/${contentId}/like: ${res.status} ${res.statusText}`,
-    );
+    throw new Error(`Failed to toggle /contents/${contentId}/like: ${res.status} ${res.statusText}`);
   }
 
   return res.data;
 }
 
-export async function getContentLikeStatus(
-  contentId: number,
-): Promise<LikeToggleResponse> {
+export async function getContentLikeStatus(contentId: number): Promise<LikeToggleResponse> {
   const res = await axios.get(`${API_BASE_URL}/contents/${contentId}/like`);
 
   if (!res.data) {
-    throw new Error(
-      `Failed to fetch /contents/${contentId}/like: ${res.status} ${res.statusText}`,
-    );
+    throw new Error(`Failed to fetch /contents/${contentId}/like: ${res.status} ${res.statusText}`);
   }
 
   return res.data;
 }
 
-export async function getContentLikes(
-  contentIds: number[],
-): Promise<Record<string, boolean>> {
+export async function getContentLikes(contentIds: number[]): Promise<Record<string, boolean>> {
   if (contentIds.length === 0) return {};
 
   const query = new URLSearchParams();
@@ -182,32 +146,23 @@ export async function getContentLikes(
   const res = await axios.get(`${API_BASE_URL}/contents/likes?${query}`);
 
   if (!res.data) {
-    throw new Error(
-      `Failed to fetch /contents/likes: ${res.status} ${res.statusText}`,
-    );
+    throw new Error(`Failed to fetch /contents/likes: ${res.status} ${res.statusText}`);
   }
 
   return res.data.likes ?? {};
 }
 
-export async function toggleReviewLike(
-  reviewId: number,
-): Promise<LikeToggleResponse> {
+export async function toggleReviewLike(reviewId: number): Promise<LikeToggleResponse> {
   const res = await axios.post(`${API_BASE_URL}/reviews/${reviewId}/like`);
 
   if (!res.data) {
-    throw new Error(
-      `Failed to toggle /reviews/${reviewId}/like: ${res.status} ${res.statusText}`,
-    );
+    throw new Error(`Failed to toggle /reviews/${reviewId}/like: ${res.status} ${res.statusText}`);
   }
 
   return res.data;
 }
 
-export async function deleteReview(
-  reviewId: number,
-  userId: number,
-): Promise<void> {
+export async function deleteReview(reviewId: number, userId: number): Promise<void> {
   const res = await fetch(`${API_BASE_URL}/reviews/${reviewId}`, {
     method: "DELETE",
     headers: {
@@ -215,9 +170,7 @@ export async function deleteReview(
     },
   });
   if (!res.ok) {
-    throw new Error(
-      `Failed to delete /reviews/${reviewId}: ${res.status} ${res.statusText}`,
-    );
+    throw new Error(`Failed to delete /reviews/${reviewId}: ${res.status} ${res.statusText}`);
   }
 }
 
@@ -233,13 +186,9 @@ export async function getReviewComments(
     page: String(params.page),
     size: String(params.size),
   });
-  const res = await fetch(
-    `${API_BASE_URL}/reviews/${reviewId}/comments?${query}`,
-  );
+  const res = await fetch(`${API_BASE_URL}/reviews/${reviewId}/comments?${query}`);
   if (!res.ok) {
-    throw new Error(
-      `Failed to fetch /reviews/${reviewId}/comments: ${res.status} ${res.statusText}`,
-    );
+    throw new Error(`Failed to fetch /reviews/${reviewId}/comments: ${res.status} ${res.statusText}`);
   }
   return res.json();
 }
@@ -258,16 +207,12 @@ export async function createReviewComment(
     body: JSON.stringify(data),
   });
   if (!res.ok) {
-    throw new Error(
-      `Failed to create /reviews/${reviewId}/comments: ${res.status} ${res.statusText}`,
-    );
+    throw new Error(`Failed to create /reviews/${reviewId}/comments: ${res.status} ${res.statusText}`);
   }
   return res.json();
 }
 
-export async function postSignUpUser(
-  data: UserSignUpRequest,
-): Promise<UserSignUpResponse> {
+export async function postSignUpUser(data: UserSignUpRequest): Promise<UserSignUpResponse> {
   const res = await axios.post(`${API_BASE_URL}/users/sign-up`, data, {
     headers: {
       "Content-Type": "application/json",
@@ -275,34 +220,24 @@ export async function postSignUpUser(
   });
 
   if (!res.data) {
-    throw new Error(
-      `Failed to fetch /users/sign-up: ${res.status} ${res.statusText}`,
-    );
+    throw new Error(`Failed to fetch /users/sign-up: ${res.status} ${res.statusText}`);
   }
 
   return res.data;
 }
 
-
-
 export async function reviewContents(params: {
   contentId: number;
   data: ReviewContentsRequest;
 }): Promise<ReviewSubmitResponse> {
-  const res = await axios.put(
-    `${API_BASE_URL}/reviews/contents/${params.contentId}/publish`,
-    params.data,
-    {
-      headers: {
-        "Content-Type": "application/json",
-      },
+  const res = await axios.put(`${API_BASE_URL}/reviews/contents/${params.contentId}/publish`, params.data, {
+    headers: {
+      "Content-Type": "application/json",
     },
-  );
+  });
 
   if (!res.data) {
-    throw new Error(
-      `Failed to fetch /reviews/contents/${params.contentId}: ${res.status} ${res.statusText}`,
-    );
+    throw new Error(`Failed to fetch /reviews/contents/${params.contentId}: ${res.status} ${res.statusText}`);
   }
 
   return res.data;
@@ -312,34 +247,24 @@ export async function draftReviewContents(params: {
   contentId: number;
   data: ReviewContentsRequest;
 }): Promise<ReviewSubmitResponse> {
-  const res = await axios.put(
-    `${API_BASE_URL}/reviews/contents/${params.contentId}/draft`,
-    params.data,
-    {
-      headers: {
-        "Content-Type": "application/json",
-      },
+  const res = await axios.put(`${API_BASE_URL}/reviews/contents/${params.contentId}/draft`, params.data, {
+    headers: {
+      "Content-Type": "application/json",
     },
-  );
+  });
 
   if (!res.data) {
-    throw new Error(
-      `Failed to fetch /reviews/contents/${params.contentId}: ${res.status} ${res.statusText}`,
-    );
+    throw new Error(`Failed to fetch /reviews/contents/${params.contentId}: ${res.status} ${res.statusText}`);
   }
 
   return res.data;
 }
 
-export async function getReviewContents(
-  contentId: number,
-): Promise<ReviewWritePageResponse> {
+export async function getReviewContents(contentId: number): Promise<ReviewWritePageResponse> {
   const res = await axios.get(`${API_BASE_URL}/reviews/contents/${contentId}`);
 
   if (!res.data) {
-    throw new Error(
-      `Failed to fetch /reviews/contents/${contentId}: ${res.status} ${res.statusText}`,
-    );
+    throw new Error(`Failed to fetch /reviews/contents/${contentId}: ${res.status} ${res.statusText}`);
   }
 
   return res.data;
@@ -348,9 +273,7 @@ export async function getReviewContents(
 export async function getUserMe(): Promise<UserMeResponse> {
   const res = await axios.get(`${API_BASE_URL}/users/me`);
   if (!res.data) {
-    throw new Error(
-      `Failed to fetch /users/me: ${res.status} ${res.statusText}`,
-    );
+    throw new Error(`Failed to fetch /users/me: ${res.status} ${res.statusText}`);
   }
   return res.data;
 }
@@ -358,14 +281,18 @@ export async function getUserMe(): Promise<UserMeResponse> {
 export async function patchUserMe(params: UserUpdateRequest): Promise<UserMeResponse> {
   const res = await axios.patch(`${API_BASE_URL}/users/me`, params);
   if (!res.data) {
-    throw new Error(
-      `Failed to fetch /users/me: ${res.status} ${res.statusText}`,
-    );
+    throw new Error(`Failed to fetch /users/me: ${res.status} ${res.statusText}`);
   }
   return res.data;
 }
 
-
+export async function deleteUserMe(): Promise<UserMeResponse> {
+  const res = await axios.delete(`${API_BASE_URL}/users/me`);
+  if (!res.data) {
+    throw new Error(`Failed to fetch /users/me: ${res.status} ${res.statusText}`);
+  }
+  return res.data;
+}
 
 export async function getTerms(): Promise<Term[]> {
   const res = await axios.get(`${API_BASE_URL}/terms`);
@@ -399,46 +326,28 @@ export async function getUserReviews(userId: number): Promise<UserReviewResponse
   const res = await axios.get(`${API_BASE_URL}/reviews/users/${userId}`);
 
   if (!res.data) {
-    throw new Error(
-      `Failed to fetch /reviews/users/${userId}: ${res.status} ${res.statusText}`,
-    );
+    throw new Error(`Failed to fetch /reviews/users/${userId}: ${res.status} ${res.statusText}`);
   }
 
   return res.data;
 }
 
-export async function getReviewById(
-  reviewId: string,
-): Promise<ReviewDetailResponse> {
+export async function getReviewById(reviewId: string): Promise<ReviewDetailResponse> {
   const res = await axios.get(`${API_BASE_URL}/reviews/${reviewId}`);
   if (!res.data) {
-    throw new Error(
-      `Failed to fetch /reviews/${reviewId}: ${res.status} ${res.statusText}`,
-    );
+    throw new Error(`Failed to fetch /reviews/${reviewId}: ${res.status} ${res.statusText}`);
   }
   return res.data;
 }
 
-export async function reportReview(
-  reviewId: number,
-  data: ReportCreateRequest,
-): Promise<ReportCreateResponse> {
-  const res = await axios.post(
-    `${API_BASE_URL}/reviews/${reviewId}/reports`,
-    data,
-  );
+export async function reportReview(reviewId: number, data: ReportCreateRequest): Promise<ReportCreateResponse> {
+  const res = await axios.post(`${API_BASE_URL}/reviews/${reviewId}/reports`, data);
 
   return res.data;
 }
 
-export async function reportComment(
-  commentId: number,
-  data: ReportCreateRequest,
-): Promise<ReportCreateResponse> {
-  const res = await axios.post(
-    `${API_BASE_URL}/reviews/comments/${commentId}/reports`,
-    data,
-  );
+export async function reportComment(commentId: number, data: ReportCreateRequest): Promise<ReportCreateResponse> {
+  const res = await axios.post(`${API_BASE_URL}/reviews/comments/${commentId}/reports`, data);
 
   return res.data;
 }
