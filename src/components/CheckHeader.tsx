@@ -16,42 +16,46 @@ const CheckHeader = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     if (isAccessTokenLoading) return;
 
-    if (access_token) {
+    if (!access_token) {
+      setIsLoading(false);
+      return;
+    }
+
+    const checkUser = async () => {
       try {
         Kakao.Auth.setAccessToken(access_token);
 
-        (async () => {
-          const statusInfo = await Kakao.Auth.getStatusInfo();
+        const statusInfo = await Kakao.Auth.getStatusInfo();
 
-          if ("error" in statusInfo) {
-            throw new Error("Kakao Auth getStatusInfo 오류 발생");
+        if ("error" in statusInfo) {
+          throw new Error("Kakao Auth getStatusInfo 오류 발생");
+        }
+
+        const { status, user } = statusInfo;
+
+        if (status === "connected" && user) {
+          const { id: appUserId } = user;
+
+          const userResponse = await queryClient.fetchQuery({
+            queryKey: getCheckUserQueryKey,
+            queryFn: () => getCheckUserQueryFn(appUserId),
+          });
+
+          if (!userResponse.registered || userResponse.status === UserStatus.WITHDRAW) {
+            return;
           }
 
-          const { status, user } = statusInfo;
-
-          if (status === "connected" && !!user) {
-            const { id: appUserId } = user;
-
-            const userResponse = await queryClient.fetchQuery({
-              queryKey: getCheckUserQueryKey,
-              queryFn: () => getCheckUserQueryFn(appUserId),
-            });
-
-            if (!userResponse.registered || userResponse.status === UserStatus.WITHDRAW) return;
-
-            axios.defaults.headers.common["X-User-Id"] = userResponse.userId.toString();
-          }
-        })();
+          axios.defaults.headers.common["X-User-Id"] = userResponse.userId.toString();
+        }
       } catch {
         setAccessToken("");
       } finally {
         setIsLoading(false);
       }
-    } else {
-      setIsLoading(false);
-    }
-  }, [access_token, isAccessTokenLoading, queryClient, setAccessToken]);
+    };
 
+    checkUser();
+  }, [access_token, isAccessTokenLoading, queryClient, setAccessToken]);
   return <>{!isLoading && children}</>;
 };
 
