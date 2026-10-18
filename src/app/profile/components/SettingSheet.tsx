@@ -23,7 +23,7 @@ const SettingSheet = (props: Props) => {
 
   const [, setAccessToken] = useLocalStorage("access_token", "");
 
-  const { mutate } = useWithdraw();
+  const { mutateAsync } = useWithdraw();
 
   const handleLogout = () => {
     Kakao.Auth.cleanup();
@@ -36,11 +36,11 @@ const SettingSheet = (props: Props) => {
     router.push("/");
   };
 
-  const handleWithdraw = () => {
+  const handleWithdraw = async () => {
+    await mutateAsync();
+
     Kakao.Auth.cleanup();
     Kakao.Auth.logout();
-
-    mutate();
 
     axios.defaults.headers.common["X-User-Id"] = "";
 
