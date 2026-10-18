@@ -10,10 +10,12 @@ import Logs from "./components/Logs";
 import { useParams, useRouter } from "next/navigation";
 import { getRoute, REDIRECT_URL_KEY } from "@/constants/router";
 import useGetUserId from "@/hooks/useGetUserId";
+import { useDraftReviews } from "@/hooks/useDraftReviews";
+import { useMyReviews } from "@/hooks/useMyReviews";
 
 export default function LogsPage() {
   const params = useParams();
-  const bookId = params["id"]?.toString();
+  const bookId = Number(params["id"]);
 
   const router = useRouter();
 
@@ -21,15 +23,42 @@ export default function LogsPage() {
 
   const isLogined = !!userId && !isLoading;
 
-  const hnadleClickReviewButton = () => {
+  const { reviews: myReviews } = useMyReviews(isLogined);
+  const { drafts } = useDraftReviews(isLogined);
+
+  const handleClickReviewButton = () => {
     if (!bookId) return;
 
+    const writePath = getRoute.write({ bookId });
+
     if (!isLogined) {
-      router.push(getRoute.login({ [REDIRECT_URL_KEY]: getRoute.write({ bookId }) }));
+      router.push(getRoute.login({ [REDIRECT_URL_KEY]: writePath }));
       return;
     }
 
-    router.push(getRoute.write({ bookId }));
+    const published = myReviews.find((review) => review.contentId === bookId);
+    if (published) {
+      router.push(
+        getRoute.write({
+          bookId,
+          reviewId: published.reviewId,
+        }),
+      );
+      return;
+    }
+
+    const draft = drafts.find((item) => item.contentId === bookId);
+    if (draft) {
+      router.push(
+        getRoute.write({
+          bookId,
+          reviewId: draft.reviewId,
+        }),
+      );
+      return;
+    }
+
+    router.push(writePath);
   };
 
   return (
@@ -42,7 +71,7 @@ export default function LogsPage() {
         <div className="sticky bottom-0 z-[5] shrink-0 bg-surface px-3 pb-3">
           <button
             className="flex h-12 w-full cursor-pointer items-center justify-center rounded-[4px] bg-amber px-7"
-            onClick={hnadleClickReviewButton}
+            onClick={handleClickReviewButton}
           >
             <span className="text-lg font-semibold leading-[21px] text-on-amber">리뷰 참여하기</span>
           </button>
