@@ -1,7 +1,7 @@
-import { getCheckUser } from "@/lib/api";
 import { UserStatus } from "@/types/api";
 import { QueryClient, useQuery } from "@tanstack/react-query";
 import axios from "axios";
+import { getCheckUserQueryFn, getCheckUserQueryKey } from "./useGetCheckUser";
 
 export const USER_ID_QUERY_KEY = ["USER_ID"] as const;
 
@@ -19,8 +19,8 @@ export async function fetchCurrentUserId(queryClient: QueryClient): Promise<numb
       const { id: appUserId } = user;
 
       const userResponse = await queryClient.fetchQuery({
-        queryKey: ["CHECK_USER"],
-        queryFn: () => getCheckUser({ appUserId: +appUserId }),
+        queryKey: getCheckUserQueryKey,
+        queryFn: () => getCheckUserQueryFn(appUserId),
       });
 
       if (!userResponse.registered || userResponse.status === UserStatus.WITHDRAW) {
