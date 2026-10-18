@@ -220,10 +220,9 @@ export type UserMeResponse = {
 };
 
 export type Term = {
-  id?: number;
-  type?: TermType;
-  version?: number;
-  content?: string;
+  id: number;
+  title: string;
+  url: string;
   required?: boolean;
   sequence?: number;
 };
@@ -358,13 +357,7 @@ export type UserUpdateRequest = {
   profileImageUrl?: string;
 };
 
-export type ReportReason =
-  | "ABUSE"
-  | "SPAM"
-  | "SEXUAL"
-  | "FLOOD"
-  | "PRIVACY"
-  | "ETC";
+export type ReportReason = "ABUSE" | "SPAM" | "SEXUAL" | "FLOOD" | "PRIVACY" | "ETC";
 
 export type ReportCreateRequest = {
   reason: ReportReason;
