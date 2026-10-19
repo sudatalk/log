@@ -5,7 +5,7 @@ import { FONT_SEMIBOLD } from "@/constants/tailwind";
 import { openExternalUrl } from "@/lib/openExternalUrl";
 import { cn } from "@/lib/utils";
 import clsx from "clsx";
-import { ShoppingCart, X } from "lucide-react";
+import { ShoppingCart } from "lucide-react";
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 
@@ -78,17 +78,9 @@ export function BookPurchaseChip({
           aria-labelledby="purchase-disclosure-title"
           className="relative z-10 w-full max-w-[320px] rounded-2xl border border-line bg-white p-5 shadow-[0px_8px_24px_rgba(38,38,38,0.16)]"
         >
-          <button
-            type="button"
-            aria-label="닫기"
-            onClick={handleClose}
-            className="absolute top-3 right-3 inline-flex size-6 cursor-pointer items-center justify-center rounded-full text-ink-muted"
-          >
-            <X className="size-4" strokeWidth={2} />
-          </button>
           <p
             id="purchase-disclosure-title"
-            className="pr-6 text-sm leading-[160%] text-ink"
+            className="text-sm leading-[160%] text-ink"
           >
             {DISCLOSURE}
           </p>
@@ -111,7 +103,7 @@ export function BookPurchaseChip({
           aria-label="구매"
           onClick={handleClick}
           className={cn(
-            "inline-flex size-3.5 shrink-0 cursor-pointer items-center justify-center p-0 text-ink",
+            "inline-flex size-[18px] shrink-0 cursor-pointer items-center justify-center p-0 text-ink",
             className,
           )}
         >
