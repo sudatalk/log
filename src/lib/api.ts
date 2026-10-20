@@ -286,12 +286,8 @@ export async function patchUserMe(params: UserUpdateRequest): Promise<UserMeResp
   return res.data;
 }
 
-export async function deleteUserMe(): Promise<UserMeResponse> {
-  const res = await axios.delete(`${API_BASE_URL}/users/me`);
-  if (!res.data) {
-    throw new Error(`Failed to fetch /users/me: ${res.status} ${res.statusText}`);
-  }
-  return res.data;
+export async function deleteUserMe(): Promise<void> {
+  await axios.delete(`${API_BASE_URL}/users/me`);
 }
 
 export async function getTerms(): Promise<Term[]> {

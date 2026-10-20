@@ -8,6 +8,7 @@ import axios from "axios";
 import clsx from "clsx";
 import { useRouter } from "next/navigation";
 import { Sheet } from "react-modal-sheet";
+import { toast } from "sonner";
 
 type Props = {
   isOpen: boolean;
@@ -29,6 +30,8 @@ const SettingSheet = (props: Props) => {
     Kakao.Auth.cleanup();
     Kakao.Auth.logout();
 
+    toast("로그아웃에 성공했습니다.");
+
     axios.defaults.headers.common["X-User-Id"] = "";
 
     setAccessToken("");
@@ -38,6 +41,8 @@ const SettingSheet = (props: Props) => {
 
   const handleWithdraw = async () => {
     await mutateAsync();
+
+    toast("회원탈퇴에 성공했습니다.");
 
     Kakao.Auth.cleanup();
     Kakao.Auth.logout();
