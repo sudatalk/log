@@ -12,7 +12,7 @@ import type { ReactNode } from "react";
 function Stat({ icon: Icon, value }: { icon: LucideIcon; value: string | number }) {
   return (
     <span className="flex items-center gap-[5px]">
-      <Icon className="size-[18px] text-ink-muted" />
+      <Icon className="size-5 text-ink-muted" />
       <span className="text-xs font-medium tracking-[0.2px] text-ink-muted">{value}</span>
     </span>
   );
@@ -58,13 +58,13 @@ export function BookStats({
   };
 
   return (
-    <div className="flex items-center gap-[5px] self-stretch py-1">
+    <div className="flex items-center gap-2 self-stretch py-1">
       <span
         className={`flex items-center gap-[5px] ${onClickHeart ? "cursor-pointer" : ""}`}
         onClick={onClickHeart ? handleClickHeart : undefined}
       >
         <Heart
-          className={`size-[18px] ${onClickHeart ? "cursor-pointer" : "text-ink-muted"}`}
+          className={`size-5 ${onClickHeart ? "cursor-pointer" : "text-ink-muted"}`}
           strokeWidth={2}
           color={liked ? "#ef4444" : undefined}
           fill={liked ? "#ef4444" : "none"}
@@ -72,7 +72,7 @@ export function BookStats({
         <span className="text-xs font-medium tracking-[0.2px] text-ink-muted">{likeCount}</span>
       </span>
       <Link href="#" onClick={handleClickReview} className="flex items-center gap-[5px] cursor-pointer">
-        <Pen className="size-[18px] text-ink-muted" strokeWidth={2} />
+        <Pen className="size-5 text-ink-muted" strokeWidth={2} />
         <span className="text-xs font-medium tracking-[0.2px] text-ink-muted">{reviewCount}</span>
       </Link>
       {averageRating != null && averageRating > 0 && <Stat icon={Star} value={round(averageRating)} />}

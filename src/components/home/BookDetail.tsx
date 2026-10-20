@@ -42,7 +42,7 @@ export function BookDetail({
             <BookPurchaseChip
               purchaseUrl={content.purchaseUrl ?? purchaseUrl}
               variant="icon"
-              className="size-[18px] text-ink-muted"
+              className="size-5 text-ink-muted"
             />
           }
         />
