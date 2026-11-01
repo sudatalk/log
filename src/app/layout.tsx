@@ -35,20 +35,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html
-      lang="kr"
-      className={`${pretendard.variable} ${notoSerifKR.variable} h-full antialiased`}
-    >
+    <html lang="kr" className={`${pretendard.variable} ${notoSerifKR.variable} h-full antialiased`}>
+      <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+      </head>
       <body className={clsx("min-h-full", FULL)}>
-        <div
-          className={clsx(
-            "mx-auto min-h-screen max-w-none lg:max-w-[430px]",
-            FULL,
-            FLEX,
-            FLEX_COL,
-            BG_BASE,
-          )}
-        >
+        <div className={clsx("mx-auto min-h-screen max-w-none lg:max-w-[430px]", FULL, FLEX, FLEX_COL, BG_BASE)}>
           <KakaoSDKChecker>
             <QueryProvider>
               {children} <Toaster />
