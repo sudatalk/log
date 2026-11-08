@@ -347,3 +347,9 @@ export async function reportComment(commentId: number, data: ReportCreateRequest
 
   return res.data;
 }
+
+export async function getReviewsContentsWrite(contentId: number): Promise<ReviewWritePageResponse> {
+  const res = await axios.get(`${API_BASE_URL}/reviews/contents/${contentId}/write`);
+
+  return res.data;
+}
