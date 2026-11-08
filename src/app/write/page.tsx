@@ -31,6 +31,7 @@ import { toast } from "sonner";
 import { getRoute } from "@/constants/router";
 import useGetUserId from "@/hooks/useGetUserId";
 import { useMyReviews } from "@/hooks/useMyReviews";
+import useGetReviewContent from "./hooks/useGetReviewContent";
 
 const BOOK_ID_SERACH_PARAMS_KEY = "bookId";
 
@@ -40,6 +41,10 @@ const ReviewWritePage = () => {
   const searchParams = useSearchParams();
   const bookId = searchParams.get(BOOK_ID_SERACH_PARAMS_KEY) || "";
   const reviewId = searchParams.get(REVIEW_ID_SEARCH_PARAMS_KEY) || "";
+
+  const { data } = useGetReviewContent({ contentId: bookId });
+
+  const question = data?.recommendedQuestions?.[0]?.question;
 
   const { userId, isLoading } = useGetUserId();
 
@@ -84,8 +89,7 @@ const ReviewWritePage = () => {
           ],
           questionAnswers: [
             {
-              // TODO : 책의 정보에 추천 질문 고정 서버에서 받을 필요가 있음
-              question: "이 책에서 가장 공감했던 인물은 누구이며, 그 이유는 무엇인가요?",
+              question,
               answer: review.recommend,
             },
           ],
@@ -133,7 +137,7 @@ const ReviewWritePage = () => {
           <OneLineReview oneLine={review.oneLine} handleChangeOneLine={handleChangeOneLine} />
           <StarReview star={review.star} handleChangeStar={handleChangeStar} />
           <div className={clsx(FLEX, GAP_3, FLEX_COL)}>
-            <Recommend recommend={review.recommend} handleChangeRecommend={handleChangeRecommend} />
+            <Recommend question={question} recommend={review.recommend} handleChangeRecommend={handleChangeRecommend} />
             <Impressive
               sentence={review.impressive.sentence}
               impression={review.impressive.impression}

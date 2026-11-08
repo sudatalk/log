@@ -317,7 +317,7 @@ export type UserReviewResponse = {
 };
 
 export type ReviewWritePageResponse = {
-  conetent?: {
+  content?: {
     id?: number;
     title?: string;
     author?: string;
@@ -325,6 +325,11 @@ export type ReviewWritePageResponse = {
     description?: string;
   };
   deadlineAt?: string;
+  recommendedQuestions?: {
+    id?: number;
+    question?: string;
+    sequence?: number;
+  }[];
   draftData?: {
     reviewId?: number;
     shortComment?: string;
