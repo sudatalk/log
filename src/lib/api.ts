@@ -29,10 +29,11 @@ import type {
 } from "@/types/api";
 
 import axios from "axios";
+import { SERVER_API_URL } from "@/constants/site";
 
-// TODO: api host 환경변수로 분리
-// 임시코드. 서버는 백엔드를 직접 호출, 브라우저는 next.config.ts의 rewrites로 같은 origin 프록시.
-const API_BASE_URL = typeof window === "undefined" ? "http://localhost:8080" : "/api";
+// 서버는 백엔드 직접 호출, 브라우저는 next.config.ts rewrites로 같은 origin 프록시.
+const API_BASE_URL =
+  typeof window === "undefined" ? SERVER_API_URL : "/api";
 
 export async function getSchedules(params: SchedulesRequest): Promise<SchedulesResponse> {
   const query = new URLSearchParams({

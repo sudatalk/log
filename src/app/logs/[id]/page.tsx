@@ -1,83 +1,81 @@
-"use client";
+import type { Metadata } from "next";
+import { SITE_NAME, SITE_URL } from "@/constants/site";
+import { JsonLd } from "@/components/seo/JsonLd";
+import { bookJsonLd, fetchContentForSeo } from "@/lib/seo";
+import LogsPageClient from "./LogsPageClient";
 
-import { BottomNav } from "@/components/BottomNav";
-import { Header } from "@/components/Header";
-import { QueryHydrator } from "@/components/QueryHydrator";
-import { BG_BASE, FLEX, FLEX_COL, FULL } from "@/constants/tailwind";
-import clsx from "clsx";
-import LogsContainer from "./components/LogsContainer";
-import Logs from "./components/Logs";
-import { useParams, useRouter } from "next/navigation";
-import { getRoute, REDIRECT_URL_KEY } from "@/constants/router";
-import useGetUserId from "@/hooks/useGetUserId";
-import { useDraftReviews } from "@/hooks/useDraftReviews";
-import { useMyReviews } from "@/hooks/useMyReviews";
+type Props = {
+  params: Promise<{ id: string }>;
+};
 
-export default function LogsPage() {
-  const params = useParams();
-  const bookId = Number(params["id"]);
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { id } = await params;
+  const contentId = Number(id);
+  const content = Number.isFinite(contentId)
+    ? await fetchContentForSeo(contentId)
+    : null;
 
-  const router = useRouter();
+  if (!content) {
+    return {
+      title: "책 리뷰",
+      description: `${SITE_NAME}에서 책 리뷰를 읽고 함께 참여하세요.`,
+      alternates: {
+        canonical: `/logs/${id}`,
+      },
+    };
+  }
 
-  const { userId, isLoading } = useGetUserId();
+  const description =
+    content.description?.slice(0, 120) ||
+    `${content.title} — ${content.author}. ${SITE_NAME}에서 리뷰를 읽고 남겨보세요.`;
 
-  const isLogined = !!userId && !isLoading;
-
-  const { reviews: myReviews } = useMyReviews(isLogined);
-  const { drafts } = useDraftReviews(isLogined);
-
-  const handleClickReviewButton = () => {
-    if (!bookId) return;
-
-    const writePath = getRoute.write({ bookId });
-
-    if (!isLogined) {
-      router.push(getRoute.login({ [REDIRECT_URL_KEY]: writePath }));
-      return;
-    }
-
-    const published = myReviews.find((review) => review.contentId === bookId);
-    if (published) {
-      router.push(
-        getRoute.write({
-          bookId,
-          reviewId: published.reviewId,
-        }),
-      );
-      return;
-    }
-
-    const draft = drafts.find((item) => item.contentId === bookId);
-    if (draft) {
-      router.push(
-        getRoute.write({
-          bookId,
-          reviewId: draft.reviewId,
-        }),
-      );
-      return;
-    }
-
-    router.push(writePath);
+  return {
+    title: content.title,
+    description,
+    alternates: {
+      canonical: `/logs/${content.id}`,
+    },
+      openGraph: {
+      type: "article",
+      title: `${content.title} | ${SITE_NAME}`,
+      description,
+      url: `${SITE_URL}/logs/${content.id}`,
+      images: content.coverImageUrl
+        ? [
+            {
+              url: content.coverImageUrl,
+              alt: `${content.title} 표지`,
+            },
+          ]
+        : undefined,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${content.title} | ${SITE_NAME}`,
+      description,
+      images: content.coverImageUrl ? [content.coverImageUrl] : undefined,
+    },
   };
+}
+
+export default async function LogsPage({ params }: Props) {
+  const { id } = await params;
+  const contentId = Number(id);
+  const content = Number.isFinite(contentId)
+    ? await fetchContentForSeo(contentId)
+    : null;
 
   return (
-    <QueryHydrator>
-      <div className={clsx(FULL, FLEX, BG_BASE, FLEX_COL)}>
-        <Header />
-        <LogsContainer>
-          <Logs />
-        </LogsContainer>
-        <div className="sticky bottom-0 z-[5] shrink-0 bg-surface px-3 pb-3">
-          <button
-            className="flex h-12 w-full cursor-pointer items-center justify-center rounded-[4px] bg-amber px-7"
-            onClick={handleClickReviewButton}
-          >
-            <span className="text-lg font-semibold leading-[21px] text-on-amber">리뷰 참여하기</span>
-          </button>
-        </div>
-        <BottomNav />
-      </div>
-    </QueryHydrator>
+    <>
+      {content && <JsonLd data={bookJsonLd(content)} />}
+      {content && (
+        <section className="sr-only">
+          <h1>{content.title}</h1>
+          <p>{content.author}</p>
+          {content.description && <p>{content.description}</p>}
+        </section>
+      )}
+      <LogsPageClient />
+    </>
   );
 }
