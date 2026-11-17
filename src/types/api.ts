@@ -3,6 +3,11 @@ export enum CategoryType {
   MOVIE = "MOVIE",
 }
 
+export type Tag = {
+  id: number;
+  name: string;
+};
+
 export type Schedule = {
   scheduleId: number;
   contentId: number;
@@ -16,6 +21,7 @@ export type Schedule = {
   commentCount: number;
   averageRating: number;
   purchaseUrl?: string | null;
+  tags?: Tag[];
 };
 
 export type ScheduledContent = {
@@ -30,6 +36,7 @@ export type ScheduledContent = {
   endedAt: string;
   memo?: string;
   purchaseUrl?: string | null;
+  tags?: Tag[];
 };
 
 export type ContentStats = {
@@ -54,6 +61,7 @@ export type ContentDetail = {
   likeCount: number;
   averageRating: number | null;
   purchaseUrl?: string | null;
+  tags?: Tag[];
 };
 
 export type LikeToggleResponse = {

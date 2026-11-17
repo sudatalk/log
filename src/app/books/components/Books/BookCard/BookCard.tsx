@@ -26,6 +26,8 @@ import Rating from "@/app/logs/[id]/components/Logs/LogCard/Rating";
 import BookImage from "./BookImage";
 import BookDescription from "./BookDescription";
 import BookCardTitle from "./BookCardTitle";
+import BookKeywords from "./BookKeywords";
+import type { Tag } from "@/types/api";
 
 export type BookCardData = {
   contentId?: number;
@@ -41,6 +43,7 @@ export type BookCardData = {
   reviewCount?: number;
   endedAt?: string;
   purchaseUrl?: string | null;
+  tags?: Tag[];
 };
 
 type Props = {
@@ -71,6 +74,7 @@ const BookCard = ({ book, href, isLogined, showPurchase = false }: Props) => {
     reviewCount,
     endedAt,
     purchaseUrl,
+    tags,
   } = book;
   const messageCount = commentCount ?? reviewCount ?? 0;
   const contentId = book.contentId ?? book.id;
@@ -105,6 +109,7 @@ const BookCard = ({ book, href, isLogined, showPurchase = false }: Props) => {
           <Rating value={averageRating ?? undefined} />
         </header>
         <BookDescription description={description} />
+        {tags && tags.length > 0 && <BookKeywords tags={tags} />}
         <footer className={clsx(FLEX, W_FULL, ITEMS_CENTER, JUSTIFY_BETWEEN, "gap-2")}>
           <Emoji
             heartCount={likeCount}
