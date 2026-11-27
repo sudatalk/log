@@ -51,6 +51,7 @@ type Props = {
   href?: string;
   isLogined: boolean;
   showPurchase?: boolean;
+  expandableDescription?: boolean;
 };
 
 const formatDate = (iso: string) => {
@@ -61,7 +62,13 @@ const formatDate = (iso: string) => {
   return { date: `${y}. ${m}. ${day}`, dateTime: `${y}-${m}-${day}` };
 };
 
-const BookCard = ({ book, href, isLogined, showPurchase = false }: Props) => {
+const BookCard = ({
+  book,
+  href,
+  isLogined,
+  showPurchase = false,
+  expandableDescription = false,
+}: Props) => {
   const {
     title,
     author,
@@ -108,7 +115,10 @@ const BookCard = ({ book, href, isLogined, showPurchase = false }: Props) => {
           <BookCardTitle title={title} author={author} />
           <Rating value={averageRating ?? undefined} />
         </header>
-        <BookDescription description={description} />
+        <BookDescription
+          description={description}
+          expandable={expandableDescription}
+        />
         {tags && tags.length > 0 && <BookKeywords tags={tags} />}
         <footer className={clsx(FLEX, W_FULL, ITEMS_CENTER, JUSTIFY_BETWEEN, "gap-2")}>
           <Emoji
